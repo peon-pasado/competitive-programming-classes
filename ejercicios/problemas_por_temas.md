@@ -12,11 +12,23 @@
 
 ### tag: io
 
+- [Word](https://codeforces.com/problemset/problem/59/A)
+
+### tag: array
+
 
 
 
 
 # complete search
+
+## simulation
+
+- [Queries on a String](https://codeforces.com/problemset/problem/598/B)
+
+### tag: string, modular-arithmetic
+
+
 
 # binary search
 
