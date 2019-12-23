@@ -8,6 +8,14 @@
 
 ### tag: string, very easy brute force 
 
+- [Bachgold Problem](https://codeforces.com/problemset/problem/749/A)
+
+### tag: io
+
+
+
+
+
 # complete search
 
 # binary search
