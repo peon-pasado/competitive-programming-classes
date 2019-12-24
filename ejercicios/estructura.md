@@ -31,7 +31,7 @@
 
 5ta semana
 
-- fuerza bruta 3: simulacion, construcciones
+- fuerza bruta 3: simulacion
 
   - referencias:
   
@@ -55,7 +55,7 @@ generando numeros con un patron.
 
 8va semana
 
-- tiny greedy: monovariant and invariants
+- tiny greedy: monovariant and invariants, construcciones
 
 - greedy framework: como hacer pequeños problemas greedy
 
