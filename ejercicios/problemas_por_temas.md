@@ -28,6 +28,9 @@
 
 ### tag: string, modular-arithmetic
 
+- [New Year Candles](https://codeforces.com/contest/379/problem/A)
+
+### tag: basic math
 
 
 # binary search
