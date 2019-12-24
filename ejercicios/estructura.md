@@ -11,7 +11,7 @@
 - matematica basica: 
 
   - gcd, lcm, inversa, bezout, pequeño teorema de fermat,
-  euler, combinatoria, induccion.
+  euler, combinatoria, criba.
 
 3ra semana:
 
@@ -27,7 +27,7 @@
 
 - team contest: mate basica + weak constraints + particiones
 
-- recursion: torres de hanoi, modelar problemas, subestructura.
+- recursion: torres de hanoi, modelar problemas, subestructura, induccion.
 
 5ta semana
 
@@ -50,7 +50,8 @@
 
 - utec contest?:
 
-- bitmask + complete search: minimum independent set
+- bitmask + complete search: minimum independent set, recreando divisores,
+generando numeros con un patron.
 
 8va semana
 
@@ -62,5 +63,5 @@
 
 - team contest: bitmaks + tiny greedy + greedy basico
 
-- meet in the middle: baby step giant step, maximum xor rd-path in a grid
+- meet in the middle: baby step giant step, maximum xor rd-path in a grid,
 graph problems.
