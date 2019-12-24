@@ -24,7 +24,7 @@
 #### [B. Modulo Equality](https://codeforces.com/contest/1269/problem/B)
 - Dificultad: 1500
 - Haces fuerza bruta para fijar el primer elemento
-- [Solution](https://codeforces.com/contest/1269/problem/B)
+- [Solution](https://codeforces.com/contest/1269/submission/67337460)
 
 #### [B2. K for the Price of One (Hard Version)](https://codeforces.com/contest/1282/problem/B2)
 - Dificultad: 1600
@@ -32,6 +32,12 @@
 - Probablemente tengan problemas para saber si pasa. La complejidad es O(k * (n  / k)) = O(n)
 - Es probable que se compliquen intentando buscar soluciones complejas
 - [Solution](https://codeforces.com/contest/1282/submission/67538548)
+
+#### [D. Number of Parallelograms](https://codeforces.com/contest/660/problem/D)
+- Dificultad 1900
+- Dado n puntos distintos, encontrar la cantidad de paralelogramos que se pueden formar con ellos
+- [Solution](https://codeforces.com/contest/660/submission/66580728)
+
 
 ## weak constraints
 
@@ -64,11 +70,6 @@
 - Se puede probar todas las opciones de acuerdo a la suma de digitos % 3
 - [Solution](https://codeforces.com/contest/792/submission/66819392)
 
-#### [D. Number of Parallelograms](https://codeforces.com/contest/660/problem/D)
-- Dificultad 1900
-- Dado n puntos distintos, encontrar la cantidad de paralelogramos que se pueden formar con ellos
-- No sabía en qué categoría ponerlo
-- [Solution](https://codeforces.com/contest/660/submission/66580728)
 
 ## Simulation 
 
