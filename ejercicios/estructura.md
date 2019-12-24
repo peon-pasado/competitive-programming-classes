@@ -35,7 +35,7 @@
 
   - referencias:
   
-      - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics.
+      - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics. Capitulo 1.
 
 - backtraking 1: de recursion a backtracking
 
