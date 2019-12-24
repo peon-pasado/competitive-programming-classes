@@ -6,48 +6,57 @@
 
 2da semana:
 
-- team contest
+- team contest: implementacion + stl
 
-- matematica basica
+- matematica basica: 
+
+  - gcd, lcm, inversa, bezout, pequeño teorema de fermat,
+  euler, combinatoria, induccion.
 
 3ra semana:
 
-- fuerza bruta 1
+- fuerza bruta 1:
 
-- fuerza bruta 2
+  - weak constraints
+
+- fuerza bruta 2:
+
+  - particiones
 
 4ta semana
 
-- team contest
+- team contest: mate basica + weak constraints + particiones
 
-- recursion
+- recursion: torres de hanoi, modelar problemas, subestructura.
 
 5ta semana
 
-- fuerza bruta 3
+- fuerza bruta 3: simulacion
 
-- backtraking 1
+- backtraking 1: de recursion a backtracking
 
 6ta semana
 
-- team contest
+- team contest: recursion + simulacion + backtracking
 
-- backtracking 2
+- backtracking 2: backtracking para programacion dinamica,
+  que varibales son importantes?.
 
 7ma semana
 
-- utec contest?
+- utec contest?:
 
-- bitmask + complete search
+- bitmask + complete search: minimum independent set
 
 8va semana
 
 - tiny greedy: monovariant and invariants
 
-- greedy framework
+- greedy framework: como hacer pequeños problemas greedy
 
 9na semana
 
-- team contest
+- team contest: bitmaks + tiny greedy + greedy basico
 
-- meet in the middle
+- meet in the middle: baby step giant step, maximum xor rd-path in a grid
+graph problems.
