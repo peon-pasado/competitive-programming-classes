@@ -31,7 +31,7 @@
 
 5ta semana
 
-- fuerza bruta 3: simulacion
+- fuerza bruta 3: simulacion, construcciones
 
   - referencias:
   
