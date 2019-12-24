@@ -33,6 +33,10 @@
 
 - fuerza bruta 3: simulacion
 
+  - referencias:
+  
+      - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics.
+
 - backtraking 1: de recursion a backtracking
 
 6ta semana
