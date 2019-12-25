@@ -120,11 +120,6 @@
 
 ## Greedy
 
-#### [12B. Correct Solution?](https://codeforces.com/contest/12/problem/B)
-- Dificultad: 1400
-- Fijar el menor digito > 0 como primero y luego iterar sobre el resto ascendentemente.
-- [Solution](https://codeforces.com/contest/12/submission/67574516)
-
 #### [1271B. Blocks](https://codeforces.com/contest/1271/problem/B)
 - Dificultad: 1300
 - Hay una estrategia greedy obvia. Algunos demoraron regular en codearla
@@ -134,6 +129,11 @@
 - Dificultad: 1300
 - Es un greedy intuitivo
 - [Solution](https://atcoder.jp/contests/abc148/submissions/9065149)
+
+#### [12B. Correct Solution?](https://codeforces.com/contest/12/problem/B)
+- Dificultad: 1400
+- Fijar el menor digito > 0 como primero y luego iterar sobre el resto ascendentemente.
+- [Solution](https://codeforces.com/contest/12/submission/67574516)
 
 #### [1281B. Amazon Web Services](https://codeforces.com/contest/1281/problem/B)
 - Dificultad: 1500
