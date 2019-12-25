@@ -2,7 +2,7 @@
 
 ## Math
 
-#### [ABC. E - Double Factorial](https://atcoder.jp/contests/abc148/tasks/abc148_e)
+#### [ABC148. E - Double Factorial](https://atcoder.jp/contests/abc148/tasks/abc148_e)
 - Dificultad: 1400
 - Encontrar la cantidad de trailing zeros de n!! = n * (n - 2) * (n - 4) * (n - 6) ...
 - [Solution](https://atcoder.jp/contests/abc148/submissions/9073297)
@@ -130,7 +130,7 @@
 - Hay una estrategia greedy obvia. Algunos demoraron regular en codearla
 - [Solution](https://codeforces.com/contest/1271/submission/66944298)
 
-#### [ABC. D - Brick Break](https://atcoder.jp/contests/abc148/tasks/abc148_d)
+#### [ABC148. D - Brick Break](https://atcoder.jp/contests/abc148/tasks/abc148_d)
 - Dificultad: 1300
 - Es un greedy intuitivo
 - [Solution](https://atcoder.jp/contests/abc148/submissions/9065149)
