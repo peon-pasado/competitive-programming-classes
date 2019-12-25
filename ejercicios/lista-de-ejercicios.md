@@ -60,15 +60,15 @@
 
 ## partition problems (dividir por casos)
 
-#### [1271C. Shawarma Teng](https://codeforces.com/contest/1271/problem/C)
-- Dificultad: 1300
-- Se reduce a intentar 4 posiciones
-- [Solution](https://codeforces.com/contest/1271/submission/66954660)
-
 #### [1266A. Competitive Programmer](https://codeforces.com/contest/1266/problem/A)
 - Dificultad: 1000
 - Debes encontrar si existe una permutación divisible por 60 (Pruebas que sea por 5, 3 y 4)
 - [Solution](https://codeforces.com/contest/1266/submission/67082070)
+
+#### [1271C. Shawarma Teng](https://codeforces.com/contest/1271/problem/C)
+- Dificultad: 1300
+- Se reduce a intentar 4 posiciones
+- [Solution](https://codeforces.com/contest/1271/submission/66954660)
 
 #### [792C. Divide by Three](https://codeforces.com/contest/792/problem/C)
 - Dificultad 2000 (me parece menos en realidad)
