@@ -1,0 +1,102 @@
+1era semana:
+
+- introduccion a pc: Racso
+  * Crear cuentas
+  * Beneficios de competitiva
+  * Plataformas a usar
+  * Conceptos básicos
+
+- implementacion + stl: Leonidas
+  * Complejidades
+  * string
+  * vector, queue, priority queue
+  * sort
+  * map
+  * set
+  * I/O
+
+2da semana:
+
+- team contest: implementacion + stl: Miguel
+  * 1:40 de contest
+  * 20 descanso
+  * 1 hora de upsolving
+
+- matematica basica: Miguel
+  
+  - gcd, lcm, inversa, bezout, pequeño teorema de fermat,
+  euler, combinatoria, criba.
+
+3ra semana:
+
+- fuerza bruta 1: Leonidas
+  - weak constraints
+  * Identificar las variables por las que es mejor atacar el problema
+  * Cantidad de divisores es cbrt(3)
+  * Problemas cuando fijas una variable
+
+- fuerza bruta 2: Leonidas
+  * Fijar la respuesta
+  * Reducir de variables
+  * Mini va a ayudar a buscar problemas
+
+4ta semana
+
+- team contest: mate basica + fuerza bruta 1 y fuerza bruta 2: Leonidas
+  * 1:40 de contest
+  * 20 descanso
+  * 1 hora de upsolving
+
+- recursion: Leonidas
+  * torres de hanoi
+  * modelar problemas (pensar en recursivo)
+  * subestructura
+  * induccion.
+  
+5ta semana
+
+- fuerza bruta 3: simulacion
+  - referencias:
+      - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics. Capitulo 1.
+  - Racso tiene un problema en español de simulación en Polygon
+
+- backtraking 1: de recursion a backtracking: Racso
+  - Conceptos inciales
+  - Problemas típicos (8 reinas, mochila, etc)
+
+6ta semana
+
+- team contest: recursion + simulacion + backtracking: Racso
+
+- backtracking 2: backtracking para programacion dinamica: Miguel
+  - Definir los minimos estados (prepararse para DP)
+  - Atacar problemas de DP con backtracking  
+
+7ma semana
+
+- Repaso: Miguel
+
+- bitmask + complete search: Miguel
+  * minimum independent set
+  * recreando divisores
+  * generando numeros con un patron.
+
+8va semana
+
+- introducción a greedy: Racso
+  * monovariant and invariants
+  * construcciones
+
+- greedy framework: Miguel
+  * como hacer pequeños problemas greedy
+
+9na semana
+
+- team contest: Leonidas
+  * bitmaks + tiny greedy + greedy basico
+
+- meet in the middle: Miguel
+  * baby step giant step
+  * maximum xor rd-path in a grid
+  * graph problems.
+  * Compartir
