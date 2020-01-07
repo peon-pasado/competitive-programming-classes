@@ -1,5 +1,173 @@
 ---
-title: "Introducción a programación competitiva"
+title: "Clase 01: Introducción"
+author: "GPC-UNI Resto del Mundo"
+date: "07-01-2020"
+output: html_document
+header-includes:
+- \usepackage{float}
+- \usepackage{multirow}
 ---
 
-TO DO
+## Programación Competitiva
+
+La programación competitiva es un deporte mental que consiste en un grupo de participantes que intentan resolver un conjunto de problemas con un programa bajo ciertas especificaciones.
+
+Una competencia de programación brinda a los participantes los problemas a resolver, la reglas de la misma y el método de verificación de las soluciones. Usualmente las soluciones son analizadas por una computadora de la organización de manera automática, comparando la salida del código fuente enviado con una solución modelo sobre un conjunto secreto de casos de prueba.
+
+Los competidores destacados suelen estar en la mira de empresas internacionales como Google, Facebook, Yandex, VK, JetBrains, etc; debido a su alta capacidad de resolución y modelamiento de problemas algoritmicos.
+
+### Principales competencias
+
+En equipo:
+
+* International Collegiate Programming Contest, organizado por la ICPC Foundation
+
+* IEEEXtreme, organizado por la IEEE
+
+* Codechef SnackDown, organizado por Codechef
+
+* Open Cup, organizada por Yandex y otras empresas de Rusia
+
+<p align="center">
+  <img width="300" height="130"src="https://i.imgur.com/LJZYz2a.png">
+  <img width="300" height="130" src="https://s3.amazonaws.com/codechef_shared/download/small-banner/SNCKQL19/snck-fb-banner.jpg">
+</p>
+
+Individuales:
+
+* International Olympiad in Informatics, dirigida a escolares (lastimosamente, Perú aún no puede participar en ella)
+
+* Google Code Jam, organizada por Google
+
+* Facebook Hacker Cup, organizada por Facebook
+
+* Topcoder Open, organizada por Topcoder
+
+* Yandex.Algorithm, organizada por Yandex
+
+* VK Cup, organizada por VK
+
+
+<p align="center">
+  <img width="300" height="140" src="https://i.imgur.com/3n3hjAV.png">
+  <img width="300" height="140" src="https://i.imgur.com/fWldiMx.jpg">
+  <img width="300" height="140" src="https://i.imgur.com/YlInPb4.png">
+</p>
+
+### ICPC
+
+La competencia más antigua y reconocida de todas es la ICPC (*International Collegiate Programming Contest*), la cual data desde los años 70s y reúne a los competidores universitarios de más alto nivel de todo el mundo.
+
+<p align="center">
+  <img src="https://icpc.baylor.edu/xwiki/wiki/public/download/worldfinals/schedule/2020HostLogo.png">
+</p>
+
+La competencia consta de dos etapas:
+
+1. Fase Regional: Cada super región (Continente) tiene competencias regionales de 5 horas para definir a sus representantes en la final mundial. Algunos países realizan clasificatorias internas previas a las regionales.
+
+2. Final Mundial: Se define al campeón mundial de programación en una competencia de 5 horas con aproximadamente 135 equipos.
+
+### Resultados de Perú en la ICPC
+
+Estas son todas las participaciones en las ICPC World Finals de Perú en toda su historia.
+
+|  Año |                     Representantes                    |                                     Universidades                                     |
+|:----:|:-----------------------------------------------------:|:-------------------------------------------------------------------------------------:|
+| 2011 |                       HaCkErMaTh                      |                        Pontificia Universidad Católica del Perú                       |
+| 2012 | Los Desempleados FIIS<br>FOR(ac+=Polya;Peru;Varsovia) | Universidad Nacional de Ingeniería - FIIS<br>Pontificia Universidad Católica del Perú |
+| 2013 |                 Los Desempleados FIIS                 |                       Universidad Nacional de Ingeniería - FIIS                       |
+| 2014 |     Bugs, Lucas y Coyote<br>Los Chobys del Averno     |       Universidad Católica San Pablo<br>Pontificia Universidad Católica del Perú      |
+| 2015 |                       Codesumare                      |                             Universidad Católica San Pablo                            |
+| 2016 |                         1000KB                        |                       Universidad Nacional de Ingeniería - FIIS                       |
+| 2017 |                   O(1) O(n) O(u(n))                   |                     Pontificia Universidad Católica del Perú - FCI                    |
+| 2018 |                   O(1) O(n) O(u(n))                   |                     Pontificia Universidad Católica del Perú - FCI                    |
+| 2019 |                     Gracias, Marco                    |                        Universidad Nacional de Ingeniería - FC                        |
+| 2020 |                    Rating MiSeRable                   |                        Universidad Nacional de Ingeniería - FC                        |
+
+## ¿Cómo prepararse?
+
+De manera similar a cualquier competencia, uno debe seguir un entrenamiento teórico y práctico para poder subir su nivel. Los principales recursos base para programación competitiva son:
+
+### Libros
+
+1. Introduction to Algorithms (3rd Edition) - Cormen, Leiserson, Rivest & Stein.
+
+2. Competitive Programming 3: The New Lower Bound of Programming Contests - Felix Halim & Steven Halim
+
+3. The Algorithm Design Manual - Steven Skiena
+
+### Jueces online
+
+1. Codeforces - [Link](https://codeforces.com/)
+
+2. Topcoder - [Link](https://www.topcoder.com/)
+
+3. Codechef - [Link](https://www.codechef.com/)
+
+4. UVa Online Judge - [Link](https://onlinejudge.org/)
+
+5. ICPC Live Archive - [Link](https://icpcarchive.ecs.baylor.edu/index.php)
+
+6. Sphere Online Judge - [Link](https://www.spoj.com/)
+
+7. Timus Online Judge - [Link](https://acm.timus.ru/)
+
+8. HackerRank - [Link](https://www.hackerrank.com/)
+
+9. HackerEarth - [Link](https://www.hackerearth.com/)
+
+### Simulador de Competencias
+
+1. Kattis - [Link](https://open.kattis.com/)
+
+2. Virtual Judge - [Link](https://vjudge.net/)
+
+Por ahora hay que crear cuentas en cada uno de los jueces y simuladores. Piensen bien sus nombres de usuario pues los reconocerán por ellos al momento de competir.
+
+## Conceptos iniciales
+
+Una competencia está compuesta por problemas, así que es necesario entender los componentes de un problema.
+
+Un **problema** está compuesto por:
+
+* Enunciado: Contextualización y explicación del resultado requerido respecto a los datos brindados.
+
+* Tiempo Límite: Tiempo máximo de ejecución que se puede demorar un programa para resolver el problema.
+
+* Memoria Límite: Memoria máxima que puede consumir un programa para resolver el problema.
+
+* Casos de prueba: Escenarios posibles para el contexto del problema que son usados como referencia para determinar la correctitud de una solución.
+
+* Subtasks: Restricciones adicionales para diferentes dificultades del problema.
+
+Asimismo, los veredictos posibles más frecuentes que pueda recibir un caso de prueba son:
+
+|       Veredicto       |                          Significado                          |
+|:---------------------:|:-------------------------------------------------------------:|
+| Memory limit exceeded |     El programa intentó consumir más memoria de la límite     |
+|  Time limit exceeded  |           El programa no terminó en el tiempo límite          |
+|     Runtime error     |   El programa retornó un código de ejecución diferente de 0   |
+|      Wrong answer     |            El programa dio una respuesta incorrecta           |
+|   Compilation Error   | El programa no tiene una sintaxis correcta y no pudo compilar |
+|        Accepted       |    El programa dio una respuesta correcta al caso de prueba   |
+
+**Nota**: Probemos los resultados en Codeforces para el problema [Watermelon](https://codeforces.com/problemset/problem/4/A)
+
+Dependiendo del formato de la competencia, se definen el puntaje y la penalidad, los dos estilos principales son:
+
+### Estilo ICPC
+
+Todos los problemas valen 1 como puntaje, y se obtendrá una penalidad por problema igual a:
+
+$$ Penalidad(Problema) = 20 * (\text{Intentos incorrectos hasta obtener Accepted}) + \text{Tiempo en minutos para obtener Accepted} $$
+
+Sin embargo, esta penalidad será considerada **si y solo si** el participante llega a obtener *Accepted* en el problema.
+
+Los participantes son rankeados según mejor puntaje y, en caso de empate, menor penalidad. Los casos de empate completo son resueltos considerando la última solución enviada en tiempo diferente: el participante que haya enviado antes dicha solución es mejor rankeado.
+
+### Estilo IOI
+
+En este caso, cada problema tiene un máximo puntaje (en el caso que uno lo resuelva en su totalidad), así como subtasks para obtener puntaje parcial.
+
+Los participantes son rankeados según mejor puntaje y en el caso de empate, ambos participantes reciben el mismo puesto.
