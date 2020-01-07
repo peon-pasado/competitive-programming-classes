@@ -4,10 +4,8 @@ navbar:
   left:
     - text: "Cronograma"
       href: schedule.html
-    - text: "Introducción"
-      href: sesion-01.html
-    - text: "STL"
-      href: sesion-02.html
+    - text: "Clases"
+      href: clases.html
 output_dir: "."
 output:
   html_document:

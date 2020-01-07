@@ -1,5 +1,3 @@
 ---
 title: "GPC-UNI Resto del mundo"
 ---
-
-TO DO
