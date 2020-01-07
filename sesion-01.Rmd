@@ -26,7 +26,7 @@ En equipo:
 * Open Cup, organizada por Yandex y otras empresas de Rusia
 
 <p align="center">
-  <img width="300" height="130"src="https://i.imgur.com/LJZYz2a.png">
+  <img width="300" height="130" src="https://i.imgur.com/LJZYz2a.png">
   <img width="300" height="130" src="https://s3.amazonaws.com/codechef_shared/download/small-banner/SNCKQL19/snck-fb-banner.jpg">
 </p>
 
