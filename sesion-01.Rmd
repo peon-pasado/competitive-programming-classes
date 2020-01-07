@@ -3,9 +3,6 @@ title: "Clase 01: Introducción"
 author: "GPC-UNI Resto del Mundo"
 date: "07-01-2020"
 output: html_document
-header-includes:
-- \usepackage{float}
-- \usepackage{multirow}
 ---
 
 ## Programación Competitiva
