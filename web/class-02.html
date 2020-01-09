@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 02: Complejidades + STL</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 02: Complejidades + STL</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">09-01-2020</h4>
+
+</div>
+
+
+<div class="topic">
+Complejidad algorítmica: problema motivacional
+</div>
+<p>Cómo podriamos determinar cuánto demorará el siguiente programa (aproximadamente) para cualquier valor de <code>n</code> ?</p>
+<pre class="cpp"><code>vector &lt;bool&gt; sieve (int n) {
+  vector &lt;bool&gt; is_prime(n, true);
+  is_prime[0] = is_prime[1] = false;
+  for (int i = 2; i &lt; n; i++) {
+    if (!is_prime[i]) continue;
+    for (int j = i + i; j &lt; n; j += i) {
+      is_prime[j] = false;
+    }
+  }
+  return is_prime;
+}</code></pre>
+<p><a href="./code/class-02/sieve.cpp">Full code</a></p>
+<p>Podemos tomar el tiempo que demora en ejecutar para distintos valores de <code>n</code>:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">n</th>
+<th align="center">time(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1000000</td>
+<td align="center">0.099296</td>
+</tr>
+<tr class="even">
+<td align="center">1100000</td>
+<td align="center">0.092526</td>
+</tr>
+<tr class="odd">
+<td align="center">1200000</td>
+<td align="center">0.098912</td>
+</tr>
+<tr class="even">
+<td align="center">1300000</td>
+<td align="center">0.108183</td>
+</tr>
+<tr class="odd">
+<td align="center">1400000</td>
+<td align="center">0.118805</td>
+</tr>
+<tr class="even">
+<td align="center">1500000</td>
+<td align="center">0.121858</td>
+</tr>
+<tr class="odd">
+<td align="center">1600000</td>
+<td align="center">0.127802</td>
+</tr>
+<tr class="even">
+<td align="center">1700000</td>
+<td align="center">0.133683</td>
+</tr>
+<tr class="odd">
+<td align="center">1800000</td>
+<td align="center">0.142920</td>
+</tr>
+<tr class="even">
+<td align="center">1900000</td>
+<td align="center">0.157752</td>
+</tr>
+</tbody>
+</table>
+<p>Luego podríamos interpolar una función a partir de esos puntos, así obtendríamos la función <code>f(x) = tiempo aproximado que demora nuestro programa cuando n = x</code></p>
+<p>Sin embargo, hacer todo lo anterior para cada idea que se nos ocurra sería muy trabajoso, por eso se busca una manera teórica de obtener una buena cota superior de <code>f(x)</code>.</p>
+<div class="topic">
+Notación Big O
+</div>
+<div id="operaciones-básicas" class="section level3">
+<h3>Operaciones básicas</h3>
+<p>Definamos ciertas operaciones como básicas o fundamentales. Asumiremos que el tiempo que demoran en ejecutarse cualquiera de ellas es el mismo. Estas operaciones son:</p>
+<ul>
+<li>Creación y asignacion de una variable</li>
+<li>Operaciones aritméticas</li>
+<li>Llamada de funciones</li>
+</ul>
+<p>Ahora nuestro tarea consistirá en encontrar una función <code>g(x) = cantidad de operaciones básicas que realiza nuestro programa para n = x</code></p>
+<p>Así, considerando que nuestra computadora puede realizar aproximadamente <span class="math inline">\(T = 10^8\)</span> operaciones básicas por segundo, podemos decir que</p>
+<p><span class="math display">\[f(x) \approx \frac{g(x)}{T}\]</span></p>
+<p>Sin embargo, usualmente <code>g(x)</code> tendrá la forma</p>
+<p><span class="math display">\[g(x) = a_n x^m + a_{m - 1} x^{m - 1} \dots a_1 x + a_0\]</span></p>
+<p>Pero solo consideraremos el término de mayor grado y no tendremos en cuenta las constantes, es decir consideraremos que</p>
+<p><span class="math display">\[g(x) = x^m\]</span></p>
+<p>Esto significa que <span class="math display">\[g(x) \in O(x^m)\]</span></p>
+<p>Pero se suele escribir <span class="math display">\[g(x) = O(x^m)\]</span></p>
+<p><code>Esta parte se explicará con más detalle en la pizarra</code></p>
+</div>
+<div id="ejemplos" class="section level3">
+<h3>Ejemplos</h3>
+<p><span class="math display">\[g(n) = 5n + 12 = O(n)\]</span></p>
+<p><span class="math display">\[g(n) = 100.1 n ^ 2 + \pi n + 1 = O(n^2)\]</span></p>
+<p><span class="math display">\[g(n) = 100 = O(1)\]</span></p>
+<p>Y como en general queremos quedarnos con el término que más aporte a la función y eliminar constantes, tenemos los siguientes ejemplos:</p>
+<p><span class="math display">\[g(n) = n! + n^2 = O(n!)\]</span></p>
+<p><span class="math display">\[g(n) = 2^n + n^5 = O(2^n)\]</span></p>
+<p><span class="math display">\[g(n) = n \log n + n = O(n \log n)\]</span></p>
+<p><span class="math display">\[g(n) = n \sqrt{n} + n^2 = O(n^2)\]</span></p>
+</div>
+<div id="usos-prácticos" class="section level3">
+<h3>Usos prácticos</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="center">input size</th>
+<th align="center">usually valid time complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n \leq 10\)</span></td>
+<td align="center"><span class="math inline">\(O(n!)\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n \leq 20\)</span></td>
+<td align="center"><span class="math inline">\(O(2^n)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n \leq 500\)</span></td>
+<td align="center"><span class="math inline">\(O(n^3)\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n \leq 5000\)</span></td>
+<td align="center"><span class="math inline">\(O(n^2)\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(n \leq 10^6\)</span></td>
+<td align="center"><span class="math inline">\(O(n) \text{ or } O(n \log n)\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(n &gt; 10^6\)</span></td>
+<td align="center"><span class="math inline">\(O(1) \text{ or } O(\log n)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Fuente: <a href="https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf">Antti Laaksonen.Competitive programmer’s handbook - chapter 2</a> (lectura recomendada)</p>
+<p><code>Se verán algunos ejemplos más en la pizarra</code></p>
+<div class="topic">
+Standard Template Library (STL): Introducción
+</div>
+<p>La STL es una colección de librerías de C++ que podremos usar en los concursos de programación. Esta nos facilitará estructuras comúnes (array, stack, set, priority_queue, map, …), algoritmos comúnes (sort, next_permutation, binary_search, lower_bound, upper_bound, …), funciones comúnes (Input-Output (I/O), sqrt, pow, abs, min, max, …).</p>
+<p>Antes de estudiar lo que nos ofrece la STL comencemos entendiendo como funciona un programa sencillo:</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main () {
+  cout &lt;&lt; &quot;Hola mundo&quot; &lt;&lt; &#39;\n&#39;;
+  return 0;
+}</code></pre>
+<p><code>La explicación se dará en la pizarra</code></p>
+<p>Extra: En realidad también puedes practicar competitiva en otros lenguajes.</p>
+<p>Ejemplos:</p>
+<ul>
+<li><p><a href="https://codeforces.com/submissions/Petr/page/3">Petr</a></p></li>
+<li><p><a href="https://codeforces.com/submissions/pajenegod">pajenegod</a></p></li>
+</ul>
+<p>Pero lo recomendable es C++ por su eficiencia y simplicidad.</p>
+<div class="topic">
+Tipos de datos numéricos y operaciones aritméticas
+</div>
+</div>
+<div id="tipos-de-datos-enteros" class="section level3">
+<h3>Tipos de datos enteros</h3>
+<ul>
+<li><code>int</code> <span class="math inline">\([2^{31}, 2^{31}) \approx [-10^9, 10^9]\)</span></li>
+<li><code>long long</code> <span class="math inline">\([2^{63}, 2^{63}) \approx [-10^{18}, 10^{18}]\)</span></li>
+</ul>
+</div>
+<div id="tipos-de-datos-flotantes" class="section level3">
+<h3>Tipos de datos flotantes</h3>
+<ul>
+<li>float</li>
+<li>double</li>
+<li>long double</li>
+</ul>
+</div>
+<div id="operaciones-aritméticas" class="section level3">
+<h3>Operaciones aritméticas</h3>
+<ul>
+<li>suma: x + y</li>
+<li>resta: x - y</li>
+<li>producto: x * y</li>
+<li>división: x / y (cuidado si quieres el resultado en <code>float</code> pero ‘x’, ‘y’ son enteros)</li>
+<li>exponenciación: pow(x, y) (te retorna el resultado en <code>double</code>)</li>
+</ul>
+</div>
+<div id="orden-de-precedencia" class="section level3">
+<h3>Orden de precedencia</h3>
+<p><code>int &lt; long long &lt; float &lt; double &lt; long double</code></p>
+<p>Entonces Si tenemos</p>
+<pre class="cpp"><code>int x = 1;
+long long y = 8;
+auto z = x + y; // long long</code></pre>
+<pre class="cpp"><code>int x = 1;
+float y = 8;
+auto z = x + y; // float</code></pre>
+<div class="topic">
+String
+</div>
+<p>Otro tipo de dato muy utilizado es <code>string</code>.</p>
+<p>En <a href="http://www.cplusplus.com/reference/string/string/">cplusplus.com</a> encontrarás una referencia de como puedes operar con strings. Las operaciones más comunes son:</p>
+<pre class="cpp"><code>string s;
+// lectura
+cin &gt;&gt; s; // así también se lee un int, long long, float, ...
+// recorrido
+for (int i = 0; i &lt; s.size(); i++) {
+  // s[i]: accede al elemento en la posicion i
+  cout &lt;&lt; s[i] &lt;&lt; &#39;\n&#39;; // así también se imprime un int, long long, float, ...
+}
+s[2] = &#39;b&#39;; // así se modifica el caracter en una posición
+// así podemos imprimir todo el string
+cout &lt;&lt; s &lt;&lt; &#39;\n&#39;;
+s += &#39;a&#39;; // así podemos agregar la letra &#39;a&#39; al final del string s
+cout &lt;&lt; s.substr(2, 2) &lt;&lt; &#39;\n&#39;; // chequear que hace esto
+// la comparación es igual que con los otros tipos de datos
+if (s == &quot;hola&quot;) cout &lt;&lt; &quot;ok&quot; &lt;&lt; &#39;\n&#39;;</code></pre>
+<div class="topic">
+Vector
+</div>
+<p>En <a href="http://www.cplusplus.com/reference/vector/vector/">cplusplus.com</a> encontrarás una referencia de como puedes operar con vectores. Las operaciones más comunes son:</p>
+<pre class="cpp"><code>vector &lt;int&gt; arr;
+// Agregar un elemento al final - O(1)
+arr.push_back(123);
+arr.push_back(987);
+arr.push_back(343);
+arr.push_back(134);
+arr.push_back(345);
+// Quitar un elemento del final - O(1)
+arr.pop_back();
+// Agregar un elemento en la posición `i` - O(n)
+int i = 2;
+arr.insert(begin(arr) + i, 234);
+// Eliminar un elemento de la posición `i` - O(n)
+i = 1;
+arr.erase(begin(arr) + i);
+// Copiar el vector - O(n)
+vector &lt;int&gt; arrCopy = arr;
+// Para iterar el arr podemos hacerlo así:
+for (int arr_i: arr) ;
+// O también asi
+// arr.size() nos retorna la cantidad de elementos - O(1)
+for (int i = 0; i &lt; arr.size(); i++) ;
+// Si queremos eliminar todos los elementos - O(n)
+arr.clear();</code></pre>
+<p>En resumen, los métodos más frecuentes para vectores son:</p>
+<p><img src="images/class-02/vector.jpg" /></p>
+<p>Y un <a href="http://www.cplusplus.com/reference/deque/deque/">deque</a> nos permite lo mismo que un <code>vector</code>, pero tienes 2 métodos extras</p>
+<ul>
+<li><p>push_front: Inserta un elemento al inicio en O(1)</p></li>
+<li><p>pop_front: Eliminae el primer elemento en O(1)</p></li>
+</ul>
+<p>Investigar que hacen las siguientes funciones:</p>
+<ul>
+<li><a href="http://www.cplusplus.com/reference/algorithm/min_element/"><code>min_element</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/sort/"><code>sort</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/fill/"><code>fill</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/reverse/"><code>reverse</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/random_shuffle/"><code>random_shuffle</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/unique/"><code>unique</code></a></li>
+<li><a href="http://www.cplusplus.com/reference/algorithm/count/"><code>count</code></a></li>
+</ul>
+<p>Pregunta: ¿Y como se declararía una matriz?</p>
+<div class="topic">
+Set
+</div>
+<p>En <a href="http://www.cplusplus.com/reference/set/set/">cplusplus.com</a> encontrarás una referencia de como puedes operar con set. Las operaciones más comunes son:</p>
+<pre class="cpp"><code>set &lt;int&gt; S;
+// Insertar un elemento - O(log n)
+S.insert(3);
+S.insert(4);
+S.insert(-100);
+S.insert(-345);
+// Comprobemos que los elementos son guardados en orden ascendente
+for (auto x: S) {
+  cout &lt;&lt; x &lt;&lt; endl;
+}
+// Ver si un elemento pertenece al Set - O(log n)
+if (S.count(4) &gt; 0) {
+  cout &lt;&lt; &quot;4 esta en el Set\n&quot;;
+}
+// Tambien podemos usar find para esto
+if (S.find(4) != end(S)) {
+  cout &lt;&lt; &quot;4 esta en el Set&quot; &lt;&lt; endl;
+}
+// Eliminar un elemento - O(log n)
+S.erase(4);
+// Tambien podemos eliminar así
+S.erase(S.find(-100));
+// Si previamente guardamos
+// auto it = S.find(val) - O(log n)
+// Luego
+// S.erase(it) - O(1)</code></pre>
+<p>En resumen, los métodos más frecuentes para vectores son:</p>
+<p><img src="images/class-02/set.jpg" /></p>
+<p>Leer sobre <a href="http://www.cplusplus.com/reference/set/multiset/">multisets</a></p>
+<div class="topic">
+Map
+</div>
+<p>En <a href="http://www.cplusplus.com/reference/map/map/">cplusplus.com</a> encontrarás una referencia de como puedes operar con maps.</p>
+<p>Las complejidad de sus operaciones es la misma que la de un set.</p>
+<p>Se recomienda leer <a href="https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf">Antti Laaksonen.Competitive programmer’s handbook - chapter 1 y 3</a>. La sección 1.4 te ayudará a entender las prácticas que comúnmente encontrarás en competitiva (que eventualmente terminarás usando) y en el capítulo 4 podrás ver más ejemplos de como usar <code>vector</code>, <code>set</code>, <code>map</code> y algunas cosas más.</p>
+<p>También te puede interesar:</p>
+<ul>
+<li><p><a href="https://codeforces.com/blog/entry/64218">Competitive C++ Manifesto: A Style Guide</a></p></li>
+<li><p><a href="https://www.topcoder.com/community/competitive-programming/tutorials/power-up-c-with-the-standard-template-library-part-1/">TopCoder - Power up C++ with the Standard Template Library - Part I</a></p></li>
+</ul>
+<div class="topic">
+<a href="https://vjudge.net/contest/350997">Contest</a>
+</div>
+<p>El solucionario se incluirá después de terminado el contest. Good luck!</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

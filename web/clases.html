@@ -69,6 +69,7 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -275,8 +276,21 @@ $(document).ready(function () {
         <li>
   <a href="schedule.html">Cronograma</a>
 </li>
-<li>
-  <a href="clases.html">Clases</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -298,7 +312,8 @@ $(document).ready(function () {
 <div id="semana-1" class="section level2">
 <h2>Semana 1</h2>
 <ul>
-<li><a href="./sesion-01.html">Introducción</a></li>
+<li><a href="./class-01.html">Introducción</a></li>
+<li><a href="./class-02.html">Complejidades + STL</a></li>
 </ul>
 </div>
 

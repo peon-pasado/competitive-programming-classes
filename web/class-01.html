@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 01: Introducción</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 01: Introducción</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">07-01-2020</h4>
+
+</div>
+
+
+<div id="programación-competitiva" class="section level2">
+<h2>Programación Competitiva</h2>
+<p>La programación competitiva es un deporte mental que consiste en un grupo de participantes que intentan resolver un conjunto de problemas con un programa bajo ciertas especificaciones.</p>
+<p>Una competencia de programación brinda a los participantes los problemas a resolver, la reglas de la misma y el método de verificación de las soluciones. Usualmente las soluciones son analizadas por una computadora de la organización de manera automática, comparando la salida del código fuente enviado con una solución modelo sobre un conjunto secreto de casos de prueba.</p>
+<p>Los competidores destacados suelen estar en la mira de empresas internacionales como Google, Facebook, Yandex, VK, JetBrains, etc; debido a su alta capacidad de resolución y modelamiento de problemas algoritmicos.</p>
+<div id="principales-competencias" class="section level3">
+<h3>Principales competencias</h3>
+<p>En equipo:</p>
+<ul>
+<li><p>International Collegiate Programming Contest, organizado por la ICPC Foundation</p></li>
+<li><p>IEEEXtreme, organizado por la IEEE</p></li>
+<li><p>Codechef SnackDown, organizado por Codechef</p></li>
+<li><p>Open Cup, organizada por Yandex y otras empresas de Rusia</p></li>
+</ul>
+<p align="center">
+<img width="300" height="130" src="https://i.imgur.com/LJZYz2a.png"> <img width="300" height="130" src="https://s3.amazonaws.com/codechef_shared/download/small-banner/SNCKQL19/snck-fb-banner.jpg">
+</p>
+<p>Individuales:</p>
+<ul>
+<li><p>International Olympiad in Informatics, dirigida a escolares (lastimosamente, Perú aún no puede participar en ella)</p></li>
+<li><p>Google Code Jam, organizada por Google</p></li>
+<li><p>Facebook Hacker Cup, organizada por Facebook</p></li>
+<li><p>Topcoder Open, organizada por Topcoder</p></li>
+<li><p>Yandex.Algorithm, organizada por Yandex</p></li>
+<li><p>VK Cup, organizada por VK</p></li>
+</ul>
+<p align="center">
+<img width="300" height="140" src="https://i.imgur.com/3n3hjAV.png"> <img width="300" height="140" src="https://i.imgur.com/fWldiMx.jpg"> <img width="300" height="140" src="https://i.imgur.com/YlInPb4.png">
+</p>
+</div>
+<div id="icpc" class="section level3">
+<h3>ICPC</h3>
+<p>La competencia más antigua y reconocida de todas es la ICPC (<em>International Collegiate Programming Contest</em>), la cual data desde los años 70s y reúne a los competidores universitarios de más alto nivel de todo el mundo.</p>
+<p align="center">
+<img src="https://icpc.baylor.edu/xwiki/wiki/public/download/worldfinals/schedule/2020HostLogo.png">
+</p>
+<p>La competencia consta de dos etapas:</p>
+<ol style="list-style-type: decimal">
+<li><p>Fase Regional: Cada super región (Continente) tiene competencias regionales de 5 horas para definir a sus representantes en la final mundial. Algunos países realizan clasificatorias internas previas a las regionales.</p></li>
+<li><p>Final Mundial: Se define al campeón mundial de programación en una competencia de 5 horas con aproximadamente 135 equipos.</p></li>
+</ol>
+</div>
+<div id="resultados-de-perú-en-la-icpc" class="section level3">
+<h3>Resultados de Perú en la ICPC</h3>
+<p>Estas son todas las participaciones en las ICPC World Finals de Perú en toda su historia.</p>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="20%" />
+<col width="28%" />
+<col width="46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Año</th>
+<th>Equipo</th>
+<th>Universidades</th>
+<th>Representantes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><br>2011</td>
+<td><br>HaCkErMaTh</td>
+<td><br>Pontificia Universidad Católica del Perú</td>
+<td>Jesús Alejandro Peña Mesías<br>Daniel Chen Soncco Huarsaya<br>Walter Alfredo Erquínigo Pezo</td>
+</tr>
+<tr class="even">
+<td><br><br><br>2012</td>
+<td><br>Los Desempleados FIIS<br><br><br><br>FOR(ac+=Polya;Peru;Varsovia)<br></td>
+<td><br>Universidad Nacional de Ingeniería - FIIS<br><br><br><br>Pontificia Universidad Católica del Perú<br></td>
+<td>Mario Ynocente Castro<br>Roy Palacios Rezza<br>Jonathan Durand Espinoza<br><br>Jesús Alejandro Peña Mesías<br>Daniel Chen Soncco Huarsaya<br>Walter Alfredo Erquínigo Pezo</td>
+</tr>
+<tr class="odd">
+<td><br>2013</td>
+<td><br>Los Desempleados FIIS</td>
+<td><br>Universidad Nacional de Ingeniería - FIIS</td>
+<td>Mario Ynocente Castro<br>Roy Palacios Rezza<br>Maicol Gomez</td>
+</tr>
+<tr class="even">
+<td><br><br><br>2014</td>
+<td><br>Bugs, Lucas y Coyote<br><br><br><br>Los Chobys del Averno<br></td>
+<td><br>Universidad Católica San Pablo<br><br><br><br>Pontificia Universidad Católica del Perú<br></td>
+<td>Aldo Culquicondor<br>Jainor Cárdenas<br>Joshimar Córdova<br><br>Jesús Figueroa<br>Jose Miguel Noblecilla<br>André Quispesaravia</td>
+</tr>
+<tr class="odd">
+<td><br>2015</td>
+<td><br>Codesumare<br></td>
+<td><br>Universidad Católica San Pablo</td>
+<td>Jainor Néstor Cárdenas<br>Aldo Paolo Culquicondor<br>Carlos Eduardo Guillén</td>
+</tr>
+<tr class="even">
+<td><br>2016</td>
+<td><br>1000KB<br></td>
+<td><br>Universidad Nacional de Ingeniería - FIIS</td>
+<td>Diego Mansilla<br>Víctor Cueva<br>Josue Julcarima</td>
+</tr>
+<tr class="odd">
+<td><br>2017<br></td>
+<td><br>O(1) O(n) O(u(n))<br></td>
+<td><br>Pontificia Universidad Católica del Perú - FCI<br></td>
+<td>Jesús Espino<br>Rodrigo Horruitiner<br>Paul Luyo</td>
+</tr>
+<tr class="even">
+<td><br>2018</td>
+<td><br>O(1) O(n) O(u(n))</td>
+<td><br>Pontificia Universidad Católica del Perú - FCI</td>
+<td>Jesús Espino<br>Rodrigo Horruitiner<br>Paul Luyo</td>
+</tr>
+<tr class="odd">
+<td><br>2019</td>
+<td><br>Gracias, Marco<br></td>
+<td><br>Universidad Nacional de Ingeniería - FC<br></td>
+<td>Miguel Miní<br>Racsó Galván<br>Sergio Sánchez</td>
+</tr>
+<tr class="even">
+<td><br>2020<br></td>
+<td><br>Rating MiSeRable</td>
+<td><br>Universidad Nacional de Ingeniería - FC<br></td>
+<td>Miguel Miní<br>Racsó Galván<br>Sergio Sánchez</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="cómo-prepararse" class="section level2">
+<h2>¿Cómo prepararse?</h2>
+<p>De manera similar a cualquier competencia, uno debe seguir un entrenamiento teórico y práctico para poder subir su nivel. Los principales recursos base para programación competitiva son:</p>
+<div id="libros" class="section level3">
+<h3>Libros</h3>
+<ol style="list-style-type: decimal">
+<li><p>Introduction to Algorithms (3rd Edition) - Cormen, Leiserson, Rivest &amp; Stein.</p></li>
+<li><p>Competitive Programming 3: The New Lower Bound of Programming Contests - Felix Halim &amp; Steven Halim</p></li>
+<li><p>The Algorithm Design Manual - Steven Skiena</p></li>
+</ol>
+</div>
+<div id="jueces-online" class="section level3">
+<h3>Jueces online</h3>
+<ol style="list-style-type: decimal">
+<li><p>Codeforces - <a href="https://codeforces.com/">Link</a></p></li>
+<li><p>Topcoder - <a href="https://www.topcoder.com/">Link</a></p></li>
+<li><p>Codechef - <a href="https://www.codechef.com/">Link</a></p></li>
+<li><p>UVa Online Judge - <a href="https://onlinejudge.org/">Link</a></p></li>
+<li><p>ICPC Live Archive - <a href="https://icpcarchive.ecs.baylor.edu/index.php">Link</a></p></li>
+<li><p>Sphere Online Judge - <a href="https://www.spoj.com/">Link</a></p></li>
+<li><p>Timus Online Judge - <a href="https://acm.timus.ru/">Link</a></p></li>
+<li><p>HackerRank - <a href="https://www.hackerrank.com/">Link</a></p></li>
+<li><p>HackerEarth - <a href="https://www.hackerearth.com/">Link</a></p></li>
+</ol>
+</div>
+<div id="simulador-de-competencias" class="section level3">
+<h3>Simulador de Competencias</h3>
+<ol style="list-style-type: decimal">
+<li><p>Kattis - <a href="https://open.kattis.com/">Link</a></p></li>
+<li><p>Virtual Judge - <a href="https://vjudge.net/">Link</a></p></li>
+</ol>
+<p>Por ahora hay que crear cuentas en cada uno de los jueces y simuladores. Piensen bien sus nombres de usuario pues los reconocerán por ellos al momento de competir.</p>
+</div>
+</div>
+<div id="conceptos-iniciales" class="section level2">
+<h2>Conceptos iniciales</h2>
+<p>Una competencia está compuesta por problemas, así que es necesario entender los componentes de un problema.</p>
+<p>Un <strong>problema</strong> está compuesto por:</p>
+<ul>
+<li><p>Enunciado: Contextualización y explicación del resultado requerido respecto a los datos brindados.</p></li>
+<li><p>Tiempo Límite: Tiempo máximo de ejecución que se puede demorar un programa para resolver el problema.</p></li>
+<li><p>Memoria Límite: Memoria máxima que puede consumir un programa para resolver el problema.</p></li>
+<li><p>Casos de prueba: Escenarios posibles para el contexto del problema que son usados como referencia para determinar la correctitud de una solución.</p></li>
+<li><p>Subtasks: Restricciones adicionales para diferentes dificultades del problema.</p></li>
+</ul>
+<p>Asimismo, los veredictos posibles más frecuentes que pueda recibir un caso de prueba son:</p>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Veredicto</th>
+<th align="center">Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Memory limit exceeded</td>
+<td align="center">El programa intentó consumir más memoria de la límite</td>
+</tr>
+<tr class="even">
+<td align="center">Time limit exceeded</td>
+<td align="center">El programa no terminó en el tiempo límite</td>
+</tr>
+<tr class="odd">
+<td align="center">Runtime error</td>
+<td align="center">El programa retornó un código de ejecución diferente de 0</td>
+</tr>
+<tr class="even">
+<td align="center">Wrong answer</td>
+<td align="center">El programa dio una respuesta incorrecta</td>
+</tr>
+<tr class="odd">
+<td align="center">Compilation Error</td>
+<td align="center">El programa no tiene una sintaxis correcta y no pudo compilar</td>
+</tr>
+<tr class="even">
+<td align="center">Accepted</td>
+<td align="center">El programa dio una respuesta correcta al caso de prueba</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Nota</strong>: Probemos los resultados en Codeforces para el problema <a href="https://codeforces.com/problemset/problem/4/A">Watermelon</a></p>
+<p>Dependiendo del formato de la competencia, se definen el puntaje y la penalidad, los dos estilos principales son:</p>
+<div id="estilo-icpc" class="section level3">
+<h3>Estilo ICPC</h3>
+<p>Todos los problemas valen 1 como puntaje, y se obtendrá una penalidad por problema igual a:</p>
+<p><span class="math display">\[ Penalidad(Problema) = 20 * (\text{Intentos incorrectos hasta obtener Accepted}) + \text{Tiempo en minutos para obtener Accepted} \]</span></p>
+<p>Sin embargo, esta penalidad será considerada <strong>si y solo si</strong> el participante llega a obtener <em>Accepted</em> en el problema.</p>
+<p>Los participantes son rankeados según mejor puntaje y, en caso de empate, menor penalidad. Los casos de empate completo son resueltos considerando la última solución enviada en tiempo diferente: el participante que haya enviado antes dicha solución es mejor rankeado.</p>
+</div>
+<div id="estilo-ioi" class="section level3">
+<h3>Estilo IOI</h3>
+<p>En este caso, cada problema tiene un máximo puntaje (en el caso que uno lo resuelva en su totalidad), así como subtasks para obtener puntaje parcial.</p>
+<p>Los participantes son rankeados según mejor puntaje y en el caso de empate, ambos participantes reciben el mismo puesto.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

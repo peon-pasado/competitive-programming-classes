@@ -4,20 +4,22 @@ title: "Plan semanal"
 
 1era semana:
 
-- introduccion a pc: Racso
-  * Crear cuentas
-  * Beneficios de competitiva
+- Introduccion a la programación competitiva: Racso
+  * ¿Qué es programación competitiva?
+  * Principales competencias
   * Plataformas a usar
-  * Conceptos básicos
+  * Conceptos iniciales: competencia, estructura de problemas, veredictos
+    y estilos de competencias 
 
-- implementacion + stl: Leonidas
-  * Complejidades
+- Complejidades + stl: Leonidas
+  * Complejidad algorítmica: problema motivacional
+  * Notación Big-O
+  * Standard template Library (STL): introducción
+  * Tipos de datos numéricos y operaciones aritméticas< 
   * string
-  * vector, queue, priority queue
-  * sort
-  * map
+  * vector
   * set
-  * I/O
+  * map
 
 2da semana:
 

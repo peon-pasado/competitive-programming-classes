@@ -6,8 +6,15 @@ navbar:
       href: schedule.html
     - text: "Clases"
       href: clases.html
-output_dir: "."
+      menu:
+        - text: Semana 1
+        - text: Introducción
+          href: class-01.html
+        - text: Complejidades + STL
+          href: class-02.html
+output_dir: "web"
 output:
   html_document:
     theme: yeti
     highlight: textmate
+    css: style.css

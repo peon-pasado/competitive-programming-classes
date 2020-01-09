@@ -2,5 +2,5 @@
 
 Build the web
 ```R
-rmarkdown::render_site()
+bash build.sh
 ```

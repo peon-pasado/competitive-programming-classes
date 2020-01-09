@@ -4,4 +4,5 @@ title: "Clases"
 
 ## Semana 1
 
-- [Introducción](./sesion-01.html)
+- [Introducción](./class-01.html)
+- [Complejidades + STL](./class-02.html)

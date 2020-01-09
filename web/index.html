@@ -11,7 +11,7 @@
 
 
 
-<title>Plan semanal</title>
+<title>GPC-UNI Resto del mundo</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
@@ -69,6 +69,7 @@ h6 {
 }
 </style>
 
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 
 
@@ -275,8 +276,21 @@ $(document).ready(function () {
         <li>
   <a href="schedule.html">Cronograma</a>
 </li>
-<li>
-  <a href="clases.html">Clases</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -290,137 +304,25 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Plan semanal</h1>
+<h1 class="title toc-ignore">GPC-UNI Resto del mundo</h1>
 
 </div>
 
 
-<p>1era semana:</p>
+<p>Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020</p>
+<div id="entrenadores" class="section level4">
+<h4>Entrenadores</h4>
 <ul>
-<li>introduccion a pc: Racso
-<ul>
-<li>Crear cuentas</li>
-<li>Beneficios de competitiva</li>
-<li>Plataformas a usar</li>
-<li>Conceptos básicos</li>
-</ul></li>
-<li>implementacion + stl: Leonidas
-<ul>
-<li>Complejidades</li>
-<li>string</li>
-<li>vector, queue, priority queue</li>
-<li>sort</li>
-<li>map</li>
-<li>set</li>
-<li>I/O</li>
-</ul></li>
+<li>José Leonidas García Gonzales<br />
+</li>
+<li>Miguel Alessandro Mini Huambachano<br />
+</li>
+<li>Victor Racsó Galván Oyola<br />
+</li>
+<li>Sergio Sanchez Rojas</li>
 </ul>
-<p>2da semana:</p>
-<ul>
-<li><p>team contest: implementacion + stl: Miguel</p>
-<ul>
-<li>1:40 de contest</li>
-<li>20 descanso</li>
-<li>1 hora de upsolving</li>
-</ul></li>
-<li><p>matematica basica: Miguel</p>
-<ul>
-<li>gcd, lcm, inversa, bezout, pequeño teorema de fermat, euler, combinatoria, criba.</li>
-</ul></li>
-</ul>
-<p>3ra semana:</p>
-<ul>
-<li>fuerza bruta 1: Leonidas
-<ul>
-<li>weak constraints</li>
-<li>Identificar las variables por las que es mejor atacar el problema</li>
-<li>Cantidad de divisores es cbrt(3)</li>
-<li>Problemas cuando fijas una variable</li>
-</ul></li>
-<li>fuerza bruta 2: Leonidas
-<ul>
-<li>Fijar la respuesta</li>
-<li>Reducir de variables</li>
-<li>Mini va a ayudar a buscar problemas</li>
-</ul></li>
-</ul>
-<p>4ta semana</p>
-<ul>
-<li>team contest: mate basica + fuerza bruta 1 y fuerza bruta 2: Leonidas
-<ul>
-<li>1:40 de contest</li>
-<li>20 descanso</li>
-<li>1 hora de upsolving</li>
-</ul></li>
-<li>recursion: Leonidas
-<ul>
-<li>torres de hanoi</li>
-<li>modelar problemas (pensar en recursivo)</li>
-<li>subestructura</li>
-<li>induccion.</li>
-</ul></li>
-</ul>
-<p>5ta semana</p>
-<ul>
-<li>fuerza bruta 3: simulacion
-<ul>
-<li>referencias:
-<ul>
-<li>R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics. Capitulo 1.</li>
-</ul></li>
-<li>Racso tiene un problema en español de simulación en Polygon</li>
-</ul></li>
-<li>backtraking 1: de recursion a backtracking: Racso
-<ul>
-<li>Conceptos inciales</li>
-<li>Problemas típicos (8 reinas, mochila, etc)</li>
-</ul></li>
-</ul>
-<p>6ta semana</p>
-<ul>
-<li><p>team contest: recursion + simulacion + backtracking: Racso</p></li>
-<li><p>backtracking 2: backtracking para programacion dinamica: Miguel</p>
-<ul>
-<li>Definir los minimos estados (prepararse para DP)</li>
-<li>Atacar problemas de DP con backtracking</li>
-</ul></li>
-</ul>
-<p>7ma semana</p>
-<ul>
-<li><p>Repaso: Miguel</p></li>
-<li><p>bitmask + complete search: Miguel</p>
-<ul>
-<li>minimum independent set</li>
-<li>recreando divisores</li>
-<li>generando numeros con un patron.</li>
-</ul></li>
-</ul>
-<p>8va semana</p>
-<ul>
-<li>introducción a greedy: Racso
-<ul>
-<li>monovariant and invariants</li>
-<li>construcciones</li>
-</ul></li>
-<li>greedy framework: Miguel
-<ul>
-<li>como hacer pequeños problemas greedy</li>
-</ul></li>
-</ul>
-<p>9na semana</p>
-<ul>
-<li>team contest: Leonidas
-<ul>
-<li>bitmaks + tiny greedy + greedy basico</li>
-</ul></li>
-<li>meet in the middle: Miguel
-<ul>
-<li>baby step giant step</li>
-<li>maximum xor rd-path in a grid</li>
-<li>graph problems.</li>
-<li>Compartir</li>
-</ul></li>
-</ul>
+<p><a href="./clases.html">Clases</a></p>
+</div>
 
 
 

@@ -1,3 +1,13 @@
 ---
 title: "GPC-UNI Resto del mundo"
 ---
+
+Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
+
+#### Entrenadores
+- José Leonidas García Gonzales  
+- Miguel Alessandro Mini Huambachano  
+- Victor Racsó Galván Oyola  
+- Sergio Sanchez Rojas  
+
+[Clases](./clases.html)
