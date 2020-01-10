@@ -480,3 +480,5 @@ int main () {
   return (0);
 }
 ```
+
+[Upsolving Contest](https://vjudge.net/contest/351059)
