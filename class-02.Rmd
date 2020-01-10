@@ -356,7 +356,8 @@ int main () {
   return (0);
 }
 ```
-What happen if we use `int` instead of `long long` (try $n = m = 10^9, a = 1$)
+
+¿Qué pasa si usamos `int` en lugar de `long long`? (intenta $n = m = 10^9, a = 1$)
 
 ### <a href="https://codeforces.com/problemset/problem/1278/A" target="_blank">Problema B: Shuffle Hashing</a>
 
