@@ -5,6 +5,10 @@ date: "07-01-2020"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
 ## Programación Competitiva
 
 La programación competitiva es un deporte mental que consiste en un grupo de participantes que intentan resolver un conjunto de problemas con un programa bajo ciertas especificaciones.
