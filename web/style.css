@@ -23,3 +23,24 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.solution-title .title {
+  border-bottom: 1px dashed;
+  display: inline;
+  cursor: pointer;
+}
+
+.code-title .title {
+  display: inline;
+  cursor: pointer;
+}
+
+
+.solution-body {
+  border: 1px solid gray;
+  background-color: #def;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 5px;
+}
+

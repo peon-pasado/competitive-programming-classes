@@ -2,7 +2,7 @@
 title: "Plan semanal"
 ---
 
-1era semana:
+### Semana 1
 
 - Introduccion a la programación competitiva: Racso
   * ¿Qué es programación competitiva?
@@ -11,7 +11,7 @@ title: "Plan semanal"
   * Conceptos iniciales: competencia, estructura de problemas, veredictos
     y estilos de competencias 
 
-- Complejidades + stl: Leonidas
+- Complejidades + STL: Leonidas
   * Complejidad algorítmica: problema motivacional
   * Notación Big-O
   * Standard template Library (STL): introducción

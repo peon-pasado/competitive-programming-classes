@@ -11,7 +11,7 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 <div class="topic">Complejidad algorítmica: problema motivacional</div>
 
-Cómo podriamos determinar cuánto demorará el siguiente programa (aproximadamente) para cualquier valor de `n` ?
+¿ Cómo podriamos determinar cuánto demorará el siguiente programa (aproximadamente) para cualquier valor de `n` ?
 
 ```c++
 vector <bool> sieve (int n) {
@@ -183,8 +183,7 @@ Pero lo recomendable es C++ por su eficiencia y simplicidad.
 
 `int < long long < float < double < long double`
 
-Entonces
-Si tenemos
+Ejemplos:
 
 ```c++
 int x = 1;
@@ -204,7 +203,7 @@ Otro tipo de dato muy utilizado es `string`.
 
 En [cplusplus.com](http://www.cplusplus.com/reference/string/string/)
 encontrarás una referencia de como puedes operar con strings. Las operaciones
-más comunes son:
+más comúnes son:
 
 ```c++
 string s;
@@ -228,7 +227,7 @@ if (s == "hola") cout << "ok" << '\n';
 
 En [cplusplus.com](http://www.cplusplus.com/reference/vector/vector/)
 encontrarás una referencia de como puedes operar con vectores. Las operaciones
-más comunes son:
+más comúnes son:
 
 ```c++
 vector <int> arr;
@@ -278,12 +277,12 @@ Investigar que hacen las siguientes funciones:
 * [`unique`](http://www.cplusplus.com/reference/algorithm/unique/)
 * [`count`](http://www.cplusplus.com/reference/algorithm/count/)
 
-Pregunta: ¿Y como se declararía una matriz?
+Pregunta: ¿Y cómo se declararía una matriz?
 
 <div class="topic">Set</div>
 En [cplusplus.com](http://www.cplusplus.com/reference/set/set/)
 encontrarás una referencia de como puedes operar con set. Las operaciones
-más comunes son:
+más comúnes son:
 
 ```c++
 set <int> S;
@@ -314,7 +313,7 @@ S.erase(S.find(-100));
 // S.erase(it) - O(1)
 ```
 
-En resumen, los métodos más frecuentes para vectores son:
+En resumen, los métodos más frecuentes para sets son:
 
 ![](./images/class-02/set.jpg)
 
@@ -329,7 +328,7 @@ encontrarás una referencia de como puedes operar con maps.
 Las complejidad de sus operaciones es la misma que la de un set.
 
 Se recomienda leer  [Antti  Laaksonen.Competitive  programmer’s  handbook - chapter
-1 y 3](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf). La sección 1.4 te ayudará a entender las prácticas que comúnmente encontrarás en competitiva (que eventualmente terminarás usando) y en el capítulo 4 podrás ver más ejemplos de como usar `vector`, `set`, `map` y algunas cosas más.
+1 y 4](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf). La sección 1.4 te ayudará a entender las prácticas que comúnmente encontrarás en competitiva (que eventualmente terminarás usando) y en el capítulo 4 podrás ver más ejemplos de como usar `vector`, `set`, `map` y algunas cosas más.
 
 También te puede interesar:
 
@@ -340,6 +339,17 @@ También te puede interesar:
 
 <div class=topic><a href="https://vjudge.net/contest/350997">Contest</a></div>
 
+
+<!-- Begins problem A -->
+<div class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">A: Theatre Square</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemA" class="collapse">
+<div class="card-body solution-body">
+
 ### <a href="https://codeforces.com/problemset/problem/1/A" target="_blank">Problem A: Theatre Square</a>
 Básicamente necesitamos encontrar $x * y$ donde  
 $x = min\{x \mid x * a \geq n\}$  
@@ -348,6 +358,15 @@ Entonces, $$x = \lceil \frac{n}{a} \rceil \land y = \lceil \frac{m}{a} \rceil $$
 Y tenemos la siguiente propiedad:
 $$\lceil a / b \rceil = \lfloor (a + b - 1) / b \rfloor$$
 El siguiente código usa esta idea.
+
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemA" class="collapse">
+  
 ```c++
 #include <bits/stdc++.h>
 using namespace std;
@@ -360,8 +379,28 @@ int main () {
   return (0);
 }
 ```
+  </div>
+  <!-- ends code -->
 
 ¿Qué pasa si usamos `int` en lugar de `long long`? (intenta $n = m = 10^9, a = 1$)
+
+</div>
+</div>
+</div>
+<!-- ends problem A -->
+
+
+
+
+<!-- Begins problem B -->
+<div class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">B: Shuffle Hashing</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemB" class="collapse">
+<div class="card-body solution-body">
 
 ### <a href="https://codeforces.com/problemset/problem/1278/A" target="_blank">Problema B: Shuffle Hashing</a>
 
@@ -373,6 +412,13 @@ Entonces $sort(h[n:n + m]) = sort(p)$
 
 Entonces probaremos si se cumple eso para algun tamaño de $n$.
 
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemB" class="collapse">
+  
 ```c++
 #include <bits/stdc++.h>
 
@@ -407,11 +453,38 @@ int main () {
   return (0);
 }
 ```
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem B -->
+
+
+
+
+<!-- Begins problem C -->
+<div class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">C: Chat Server</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemC" class="collapse">
+<div class="card-body solution-body">
 
 ### <a href="https://codeforces.com/problemset/problem/5/A" target="_blank">Problema C: Chat Server's Outgoing Traffic</a>
 
 Solo simula lo que te dice el problema.
 
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemC" class="collapse">
+  
 ```c++
 #include <bits/stdc++.h>
 
@@ -446,12 +519,39 @@ int main () {
   return (0);
 }
 ```
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem C -->
+
+
+
+
+<!-- Begins problem D -->
+<div class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">D: Counting-out Rhyme</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemD" class="collapse">
+<div class="card-body solution-body">
 
 ### <a href="https://codeforces.com/problemset/problem/792/B" target="_blank">Problema D: Counting-out Rhyme</a>
 
 Los constrains son pequeños, podemos simplemente simular lo que nos dice el
 problema.
 
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemD" class="collapse">
+  
 ```c++
 #include <bits/stdc++.h>
 
@@ -485,5 +585,15 @@ int main () {
   return (0);
 }
 ```
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem D -->
+
+
+
 
 [Upsolving Contest](https://vjudge.net/contest/351059)
