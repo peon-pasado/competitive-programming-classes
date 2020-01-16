@@ -5,13 +5,15 @@ navbar:
     - text: "Cronograma"
       href: schedule.html
     - text: "Clases"
-      href: clases.html
       menu:
         - text: Semana 1
         - text: Introducción
           href: class-01.html
         - text: Complejidades + STL
           href: class-02.html
+        - text: Semana 2
+        - text: Contest 1
+          href: contest-01.html
 output_dir: "web"
 output:
   html_document:

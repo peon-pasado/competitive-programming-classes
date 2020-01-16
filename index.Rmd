@@ -10,4 +10,11 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 - Victor Racsó Galván Oyola  
 - Sergio Sanchez Rojas  
 
-[Clases](./clases.html)
+## Semana 1
+
+- [Introducción](./class-01.html)
+- [Complejidades + STL](./class-02.html)
+
+## Semana 2
+
+- [Contest 1](./contest-01.html)

@@ -9,11 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### [UNI] team contest 1
+### [UNI] Team contest 1
 
-- [link del contest](https://vjudge.net/contest/352051)
+- [Link del contest](https://vjudge.net/contest/352051)
  
-### upsolving
+### Upsolving
 
 - [A. Fafa and his Company | dificultad: 600](https://codeforces.com/problemset/problem/935/A)
 

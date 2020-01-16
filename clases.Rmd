@@ -1,8 +1,0 @@
----
-title: "Clases"
----
-
-## Semana 1
-
-- [Introducción](./class-01.html)
-- [Complejidades + STL](./class-02.html)
