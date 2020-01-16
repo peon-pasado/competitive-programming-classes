@@ -14,6 +14,9 @@ navbar:
         - text: Semana 2
         - text: Contest 1
           href: contest-01.html
+        - text: Number Theory
+          href: class-03.html
+
 output_dir: "web"
 output:
   html_document:

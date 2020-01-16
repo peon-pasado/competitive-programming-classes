@@ -18,3 +18,5 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 2
 
 - [Contest 1](./contest-01.html)
+- [Number Theory](./class-03.html)
+

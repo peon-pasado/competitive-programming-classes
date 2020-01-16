@@ -1,5 +1,5 @@
 ---
-title: "number theory"
+title: "Number Theory"
 author: "Miguel Miní"
 date: "1/16/2020"
 output: html_document
@@ -23,7 +23,7 @@ considerada como:
 
 $$a \equiv b ~(mod ~n)$$
 
-### propiedades:
+### Propiedades:
 
 - Reflexibidad: $a \equiv a ~(mod ~n)$
 - Simetría: $a \equiv b ~(mod ~n)$ si $b \equiv a ~(mod ~n)$, para todo a, b, n.
@@ -60,7 +60,7 @@ aplique una función asociativa sobre $a$, $b$ veces. Esto nos deja la
 puerta abierta para poder hacer $a b$, $a^b$, $A^b$ donde $A$ puede
 ser una matriz.
 
-### descripción:
+### Descripción:
 
 En este caso nosotros estamos implementando $a ^ b ~(mod ~m)$, para 
 ello podemos pensar $b$ como una secuencia de bits: $b_k, b_{k-1}, \dots, b0$,
@@ -83,7 +83,7 @@ int ex(int a, int b, int m) {
 Euclides describe este algoritmo en sus Elementos, c. 300 BC, este es basado 
 en usar recursivamente el algoritmo de la división. 
 
-### descripción:
+### Descripción:
 
 hacemos $x_0 = a$, $x_1 = b$, entonces en cada paso $i$, tenemos:
 
@@ -91,7 +91,7 @@ $x_{i-1} = q_i x_i + x_{i+1}$ para $0 \le i \le k$
 
 así hasta que $x_k = 0$, en ese caso $x_{k-1}$ es la respueta a nuestro problema.
 
-### propiedades del Algoritmo de Euclides:
+### Propiedades del Algoritmo de Euclides:
 
 para $0 < i \le k$, $q_i >= 1$ luego $x_{i-1} >= x_i + x_{i+1}$ y $x_i > x_{i+1}$
 con lo cuál $x_{i-1} > 2 * x_{i+1}$, por tanto, la secuencia $x_i$ decrece para
@@ -146,7 +146,7 @@ Con lo cual tenemos una función recursiva para $x$ e $y$:
 
 $$(x_i, y_i) = (y_{i+1}, x_{i+1} - (a//b)y_{i+1})$$
 
-### implementación:
+### Implementación:
 
 ```cpp
 int bezout(int a, int b, int& x_0, int& y_0) {
@@ -306,7 +306,7 @@ else {
 Lamentablemente si queremos verificar que los n primeros numeros
 sean primos, esto nos demoraria $O(n\sqrt n)$
 
-### criba de eratostenes
+### Criba de eratostenes
 
 La criba de Eratostenes nos presenta un metodo simple para saber si los primeros
 n números y corre en un tiempo $O(n\log\log n)$, la idea es eliminando de
