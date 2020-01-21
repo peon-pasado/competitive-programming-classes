@@ -137,7 +137,7 @@ int solution3 (int n) {
 }
 ```
 
-![Full code](./code/class-05/pythagorean-triple.cpp)
+[Full code](./code/class-05/pythagorean-triple.cpp)
 
 Como hemos visto, un problema se puede resolver de distintas formas. Eso es
 algo interesante, especialmente de los problemas de búsqueda completa, pues con
