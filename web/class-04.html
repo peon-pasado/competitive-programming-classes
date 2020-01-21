@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Miguel Miní" />
+
+
+<title>Clase 04: Number Theory</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li class="dropdown-header">Semana 2</li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Number Theory</a>
+    </li>
+    <li class="dropdown-header">Semana 3</li>
+    <li>
+      <a href="class-05.html">Brute Force I</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 04: Number Theory</h1>
+<h4 class="author">Miguel Miní</h4>
+<h4 class="date">16-01-2020</h4>
+
+</div>
+
+
+<div id="number-theory" class="section level1">
+<h1>Number Theory</h1>
+<p>En esta sección veremos herramientas de teoría de números indispensables, muchos de los problemas en programación competitiva necesitan el entendimiento de estos problemas:</p>
+<div id="relación-de-congruencia" class="section level2">
+<h2>Relación de congruencia</h2>
+<p>Para un entero positivo <span class="math inline">\(n\)</span>, dos números <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> se dicen congruentes módulo <span class="math inline">\(n\)</span>. Si la diferencia <span class="math inline">\(a - b\)</span> es un entero múltiplo de <span class="math inline">\(n\)</span>. Y es considerada como:</p>
+<p><span class="math display">\[a \equiv b ~(mod ~n)\]</span></p>
+<div id="propiedades" class="section level3">
+<h3>Propiedades:</h3>
+<ul>
+<li>Reflexibidad: <span class="math inline">\(a \equiv a ~(mod ~n)\)</span></li>
+<li>Simetría: <span class="math inline">\(a \equiv b ~(mod ~n)\)</span> si <span class="math inline">\(b \equiv a ~(mod ~n)\)</span>, para todo a, b, n.</li>
+<li>Transitividad: si <span class="math inline">\(a \equiv b ~(mod ~n)\)</span> y <span class="math inline">\(b \equiv c ~(mod ~n)\)</span>, entonces <span class="math inline">\(a \equiv c ~(mod ~n)\)</span></li>
+</ul>
+<p>Si <span class="math inline">\(a = p n + r\)</span> y <span class="math inline">\(b = q n + r\)</span> <a href="https://en.wikipedia.org/wiki/Division_algorithm">(1)</a>, entonces <span class="math inline">\(a \sim r\)</span>, <span class="math inline">\(b \sim r\)</span> y <span class="math inline">\(a \sim b\)</span> al mínimo <span class="math inline">\(r\)</span> positivo se le denomina el característico de la clase y denotamos <span class="math display">\[[a] = [b] = r\]</span>.</p>
+</div>
+</div>
+<div id="aritmética-modular" class="section level2">
+<h2>Aritmética modular</h2>
+<ul>
+<li>Las relaciones de congruencia funcionan bien bajo operaciones aritméticas, esto quiere decir que <span class="math inline">\([a] + [b] = [a+b]\)</span> y <span class="math inline">\([a] . [b] = [a . b]\)</span>.</li>
+</ul>
+<p>nota: esto quiere decir que si yo hago operaciones modulares sobre <span class="math inline">\(n\)</span>, entonces yo puedo realizarlas en cualquier orden, además, si la respuesta es menor a n, la respuesta final será igual aplicando aritmética usual o aritmética modular.</p>
+<p>Puede encontrar más información aquí:</p>
+<ul>
+<li><a href="https://codeforces.com/blog/entry/72527">Modular Arithmetic for Beginners</a></li>
+</ul>
+</div>
+<div id="máximo-común-divisor" class="section level2">
+<h2>Máximo Común Divisor</h2>
+<p>Dados a y b, el máximo común divisor es el máximo entero <span class="math inline">\(g\)</span> menor a min(<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>), tal que <span class="math inline">\(a \equiv 0 ~(mod ~g)\)</span> y <span class="math inline">\(b \equiv 0 ~(mod ~g)\)</span>.</p>
+<p>Si <span class="math inline">\(d\)</span> divide a <span class="math inline">\(g\)</span>, además, se cumple que <span class="math inline">\(g = d ~gcd(a / d, b / d)\)</span>.</p>
+</div>
+<div id="exponenciación-rápida" class="section level2">
+<h2>Exponenciación Rápida:</h2>
+<p>Este algoritmo solo necesita que <span class="math inline">\(b\)</span> sea un entero en base 2, y que se aplique una función asociativa sobre <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> veces. Esto nos deja la puerta abierta para poder hacer <span class="math inline">\(a b\)</span>, <span class="math inline">\(a^b\)</span>, <span class="math inline">\(A^b\)</span> donde <span class="math inline">\(A\)</span> puede ser una matriz.</p>
+<div id="descripción" class="section level3">
+<h3>Descripción:</h3>
+<p>En este caso nosotros estamos implementando <span class="math inline">\(a ^ b ~(mod ~m)\)</span>, para ello podemos pensar <span class="math inline">\(b\)</span> como una secuencia de bits: <span class="math inline">\(b_k, b_{k-1}, \dots, b0\)</span>, entonces por propiedad de la exponenciación: <span class="math inline">\(a ^ b = (a^{b_k 2^k}) (a^{b_{k-1} 2^{k-1}})\dots(a^{b_0 2^0})\)</span>, esto nos dice que podemos hallar la secuencia <span class="math inline">\(a^{2^0}, a^{2^1}, \dots, a^{2^k}\)</span> y elegir cual conviene respecto a la secuencia de <span class="math inline">\(b\)</span>.</p>
+<pre class="cpp"><code>int ex(int a, int b, int m) {
+  int r = 1;
+  while (b &gt; 0) {
+    if (b&amp;1) r = r * 1ll * a % m; //aca aplicas la funcion
+    a = a * 1ll * a % m; //aca aplicas la funcion
+    b &gt;&gt;= 1;
+  }
+  return r;
+} </code></pre>
+</div>
+</div>
+<div id="algoritmo-de-euclides" class="section level2">
+<h2>Algoritmo de Euclides:</h2>
+<p>Euclides describe este algoritmo en sus Elementos, c. 300 BC, este es basado en usar recursivamente el algoritmo de la división.</p>
+<div id="descripción-1" class="section level3">
+<h3>Descripción:</h3>
+<p>hacemos <span class="math inline">\(x_0 = a\)</span>, <span class="math inline">\(x_1 = b\)</span>, entonces en cada paso <span class="math inline">\(i\)</span>, tenemos:</p>
+<p><span class="math inline">\(x_{i-1} = q_i x_i + x_{i+1}\)</span> para <span class="math inline">\(0 \le i \le k\)</span></p>
+<p>así hasta que <span class="math inline">\(x_k = 0\)</span>, en ese caso <span class="math inline">\(x_{k-1}\)</span> es la respueta a nuestro problema.</p>
+</div>
+<div id="propiedades-del-algoritmo-de-euclides" class="section level3">
+<h3>Propiedades del Algoritmo de Euclides:</h3>
+<p>para <span class="math inline">\(0 &lt; i \le k\)</span>, <span class="math inline">\(q_i &gt;= 1\)</span> luego <span class="math inline">\(x_{i-1} &gt;= x_i + x_{i+1}\)</span> y <span class="math inline">\(x_i &gt; x_{i+1}\)</span> con lo cuál <span class="math inline">\(x_{i-1} &gt; 2 * x_{i+1}\)</span>, por tanto, la secuencia <span class="math inline">\(x_i\)</span> decrece para elementos consecutivos con la misma paridad en forma exponencial.</p>
+<p>Por otro lado, si <span class="math inline">\(d\)</span> divide a <span class="math inline">\(x_{i-1}\)</span> y <span class="math inline">\(x_i\)</span>, entonces <span class="math inline">\(d\)</span> divide a <span class="math inline">\(x_{i+1}\)</span>, por tanto, el máximo común divisor divide a <span class="math inline">\(x_{k-1}\)</span>. En el mismo sentido, todos los <span class="math inline">\(x_i\)</span> con <span class="math inline">\(0 \le i &lt; k-1\)</span> son divisibles por <span class="math inline">\(x_{k-1}\)</span>. Concluimos <span class="math inline">\(x_{k-1}\)</span> es el máximo común divisor de <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span>.</p>
+<pre class="cpp"><code>int gcd(int a, int b) {
+  if (b == 0) return a;
+  return gcd(b, a%b);
+}
+
+int gcd(int a, int b) {
+  while (b != 0) {
+    int r = a % b;
+    a = b;
+    b = r;
+  }
+  return a;
+}</code></pre>
+</div>
+<div id="identidad-de-bézout" class="section level3">
+<h3>Identidad de Bézout</h3>
+<p>La Identidad de Bézout <a href="https://brilliant.org/wiki/bezouts-identity/">(2)</a> nos dice que dados <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> enteros positivos, existen <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> que cumplen:</p>
+<p><span class="math display">\[a x + by = gcd(a, b)\]</span></p>
+<p>No probaremos que la identidad se cumple, pero esta sale facilmente manipulando el algoritmo de <span class="math inline">\(Euclides\)</span></p>
+<p>Sin embargo, la identidad junto con el algoritmo de euclides nos dicen como hallar dichos <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>.</p>
+<p><span class="math display">\[ax + by = gcd(a, b)\]</span> <span class="math display">\[bx + (a\%b)y = gcd(b, a\%b)\]</span></p>
+<p>La última ecuación se puede reescribir como:</p>
+<p><span class="math display">\[bx + (a - (a//b) b)y = gcd(b, a\%b)\]</span> Pero además sabemos que gcd(<span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>) <span class="math inline">\(=\)</span> gcd(<span class="math inline">\(b\)</span>, <span class="math inline">\(a\%b\)</span>). Si reacomodamos la segunda ecuación modificada tenemos:</p>
+<p><span class="math display">\[ay + b(x - (a//b)y) = gcd(a, b)\]</span></p>
+<p>Con lo cual tenemos una función recursiva para <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>:</p>
+<p><span class="math display">\[(x_i, y_i) = (y_{i+1}, x_{i+1} - (a//b)y_{i+1})\]</span></p>
+</div>
+<div id="implementación" class="section level3">
+<h3>Implementación:</h3>
+<pre class="cpp"><code>int bezout(int a, int b, int&amp; x_0, int&amp; y_0) {
+  if (b == 0) { //solucion base a 1 + b 0 = a
+    x_0 = 1;
+    y_0 = 0;
+    return a;
+  }  
+  int x_1, y_1;
+  int g = bezout(b, a%b, x_1, y_1);
+  x_0 = y_1;
+  y_0 = x_1 - (a/b) * y_1;
+  return g;
+}</code></pre>
+<p>Como una nota final, luego de que yo ya halle una solución a este problmea, puedo hallar todas:</p>
+<p><span class="math display">\[\frac{abt}{g} - \frac{abt}{g} + ax + by = g\]</span> <span class="math display">\[a (x + \frac{bt}{g}) + b (y - \frac{at}{g}) = g\]</span></p>
+<p>tenga presente que al agregar un valor a <span class="math inline">\(x\)</span>, entonces <span class="math inline">\(y\)</span> deberia variar, por otro lado el valor que agrego debe ser múltiplo de <span class="math inline">\(a\)</span> y múltiplo de <span class="math inline">\(b\)</span>, por tanto debería ser el mínimo común múltiplo.</p>
+<p>Como sería la solución para:</p>
+<p><span class="math display">\[ax + by = c\]</span></p>
+</div>
+</div>
+<div id="pequeño-teorema-de-fermat" class="section level2">
+<h2>Pequeño Teorema de Fermat</h2>
+<p>El pequeño teorema de Fermat nos dice que cuando <span class="math inline">\(n\)</span> es primo y <span class="math inline">\(0 &lt; a &lt; n\)</span>, entonces:</p>
+<p><span class="math display">\[a^{n-1} \equiv 1 ~(mod ~n)\]</span></p>
+<p>Para llegar a esto primero debemos definir la inversa de <span class="math inline">\(a\)</span> módulo <span class="math inline">\(n\)</span>, como un entero <span class="math inline">\(b\)</span> tal que:</p>
+<p><span class="math inline">\(a b \equiv 1 ~(mod ~n)\)</span></p>
+<p>vemos fácilmente que para <span class="math inline">\(n\)</span> primo, y <span class="math inline">\(0 &lt; a &lt; n\)</span> se cumple por el Teorema de Bézout:</p>
+<p><span class="math inline">\(ax + ny = 1\)</span></p>
+<p>entonces, <span class="math inline">\(ax \sim_n 1\)</span></p>
+<p>ahora, debido a que esto se cumple:</p>
+<p>afirmación: <span class="math inline">\(a i \equiv a j ~(mod ~n)\)</span> si y solo si [<span class="math inline">\(i\)</span>] <span class="math inline">\(=\)</span> [<span class="math inline">\(j\)</span>].</p>
+<p>para ver esto, solo debemos multiplicar por la inversa de <span class="math inline">\(a\)</span> a ambos lados.</p>
+<p>por tanto, esto quiere decir que <span class="math inline">\(a (1, 2, \dots, n-1)\)</span> es una permutación!</p>
+<p>lo que implica que: <span class="math display">\[\prod\limits_{i=1}^{n} a i \equiv \prod\limits_{i=1}^n i\]</span>,</p>
+<p>por tanto <span class="math display">\[a^{n-1} \prod\limits_{i=1}^{n} i \equiv \prod\limits_{i=1}^n i\]</span></p>
+</div>
+<div id="teorema-de-euler" class="section level2">
+<h2>Teorema de Euler</h2>
+<p>De la misma forma que en el caso anterior, podemos hacer el mismo proceso con los números copŕimos a <span class="math inline">\(n\)</span>, dandonos la fórmula:</p>
+<p><span class="math display">\[a^{\phi (n)} \equiv 1 ~(mod ~n)\]</span></p>
+<p>Puede ver más información en: <a href="https://cp-algorithms.com/algebra/phi-function.html">Euler’s totient function</a></p>
+</div>
+<div id="teorema-chino-del-resto" class="section level2">
+<h2>Teorema Chino del Resto</h2>
+<p>El teorema chino del resto se presenta en algunos problemas de teoría de números, donde debo resolver lo siguiente:</p>
+<p><span class="math display">\[x = a_1 ~(mod ~b_1)\]</span> <span class="math display">\[x = a_2 ~(mod ~b_2)\]</span> <span class="math display">\[\vdots\]</span></p>
+<p><span class="math display">\[x = a_n ~(mod ~b_n)\]</span></p>
+<p>Para resolver este tipo de sistemas (que no necesariamente tiene solución) podemos reducirlo a resolver para dos ecuaciones.</p>
+<p><span class="math display">\[x \equiv a_1 ~(mod ~b_1)\]</span> <span class="math display">\[x \equiv a_2 ~(mod ~b_2)\]</span> cuyo sistema es equivalente al siguiente:</p>
+<p><span class="math display">\[x = a_1 + k_1 b_1\]</span> <span class="math display">\[x = a_2 + k_2 b_2\]</span></p>
+<p>que es lo mismo:</p>
+<p><span class="math display">\[a_2 + k_2 b_2 = a_1 + k_1 b_1\]</span> <span class="math display">\[a_2 - a_1 = x^{&#39;}b_1 - y^{&#39;}b_2\]</span></p>
+<p>ahora supongamos que hallamos <span class="math inline">\(x^{&#39;}\)</span>, entonces</p>
+<p><span class="math display">\[x = a_1 + x^{&#39;} b_1\]</span></p>
+<p>Como sabemos que todas las solciones tiene la forma: <span class="math inline">\(\frac{x^{&#39;}(a_2 - a_1) + b_2t}{g}\)</span></p>
+<p>entonces:</p>
+<p><span class="math display">\[x = \frac{x^{&#39;}(a_2 - a_1) b_1 + b_1 b_2 t}{g}\]</span></p>
+<p>por tanto:</p>
+<p><span class="math display">\[x \equiv \frac{x^{&#39;} (a_2 - a_1) b_1}{g} ~(mod ~\frac{b_1 b_1}{g})\]</span></p>
+<p>lo que quiere decir que hemos comprimido dos ecuaciones!</p>
+<p>Puedes ver más en: <a href="https://codeforces.com/blog/entry/61290">(Tutorial) Chinese Remainder Theorem</a></p>
+<div id="hallando-divisores" class="section level3">
+<h3>Hallando Divisores:</h3>
+<p>Para hallar los divisores de un número n, tenemos por ejemplo un enfoque sencillo:</p>
+<pre class="cpp"><code>for (int d = 1; d &lt;= n; ++d) {
+  if (n % d == 0) {
+    cout &lt;&lt; d &lt;&lt; &quot; es un divisor&quot; &lt;&lt; endl;
+  }
+}</code></pre>
+<p>Pero se puede hacer en mejor tiempo:</p>
+<pre class="cpp"><code>for (int d = 1; d*d &lt;= n; ++d) {
+  if (n % d == 0) {
+    cout &lt;&lt; d &lt;&lt; &quot; es un divisor&quot; &lt;&lt; endl;
+    if (d != n/d) {
+      cout &lt;&lt; n/d &lt;&lt; &quot;es un divisor&quot; &lt;&lt; endl;
+    }
+  }
+}</code></pre>
+<p>La gran diferencia es que el segundo corre en un tiempo <span class="math inline">\(O(\sqrt n)\)</span></p>
+<p>Esto se puede debido a la observación que si <span class="math inline">\(a b = n\)</span>, entonces <span class="math inline">\(a\)</span> o <span class="math inline">\(b\)</span> es menor a <span class="math inline">\(\sqrt(n)\)</span>.</p>
+</div>
+<div id="hallando-numeros-primos" class="section level3">
+<h3>Hallando Numeros Primos</h3>
+<p>Primero debemos darnos cuenta que un número es primo si realizando la solución anterior, el número solo debe ser divisible por 1, y por defecto por n.</p>
+<pre class="cpp"><code>if (n == 1) cout &lt;&lt; &quot;No es un numero primo&quot; &lt;&lt; endl;
+else {
+  bool is_prime = 1;
+  for (int d = 2; d*d &lt;= n; ++d) {
+    if (n % d == 0) {
+      is_prime = 0;
+    }
+  }
+  if (is_prime) cout &lt;&lt; &quot;Es un numero primo&quot; &lt;&lt; endl;
+  else cout &lt;&lt; &quot;No es un numero primo&quot; &lt;&lt; endl;
+}</code></pre>
+<p>Lamentablemente si queremos verificar que los n primeros numeros sean primos, esto nos demoraria <span class="math inline">\(O(n\sqrt n)\)</span></p>
+</div>
+<div id="criba-de-eratostenes" class="section level3">
+<h3>Criba de eratostenes</h3>
+<p>La criba de Eratostenes nos presenta un metodo simple para saber si los primeros n números y corre en un tiempo <span class="math inline">\(O(n\log\log n)\)</span>, la idea es eliminando de menor a mayor todos los números que son múltiplos de algún primo.</p>
+<pre class="cpp"><code>int n;
+vector&lt;char&gt; is_prime(n+1, true);
+is_prime[0] = is_prime[1] = false;
+for (int i = 2; i &lt;= n; i++) {
+    if (is_prime[i] &amp;&amp; (long long)i * i &lt;= n) {
+        for (int j = i * i; j &lt;= n; j += i)
+            is_prime[j] = false;
+    }
+}</code></pre>
+<p>Puede ver más en: <a href="https://cp-algorithms.com/algebra/sieve-of-eratosthenes.html">Sieve of Eratosthenes</a></p>
+<p>Además se puede reducir su tiempo a <span class="math inline">\(O(n)\)</span> con algunas más observaciones:</p>
+<p>Puede ver más en: <a href="https://codeforces.com/blog/entry/54090">(Tutorial) Math note — linear sieve</a></p>
+<p>Con una criba además podemos verificar que un número es primo en <span class="math inline">\(O(\frac{\sqrt n}{\log n})\)</span>.</p>
+<p>Debido al <a href="https://en.wikipedia.org/wiki/Prime_number_theorem">teorema de los números primos</a> que nos asegura que en el rango <span class="math inline">\(1\)</span> hasta <span class="math inline">\(m\)</span> solo hay <span class="math inline">\(O(\frac{m}{\log m})\)</span> (por qué solo nos importan solo los primos? porque si un número <span class="math inline">\(d\)</span> divide a <span class="math inline">\(n\)</span>, entonces <span class="math inline">\(d\)</span> debe tener un divisor primo menor o igual a el, que debe dividir a n también)</p>
+</div>
+<div id="hallando-divisores-primos-más-rapido" class="section level3">
+<h3>Hallando divisores primos más rapido</h3>
+<p>Según el proceso que describe Eratostenes, yo puedo construir la criba manteniendo cuál es el menor divisor primo que divide a cada número i.</p>
+<p>criba modificada para hallar menor divisor primo de un número:</p>
+<pre class="cpp"><code>std::vector &lt;int&gt; prime;
+bool is_composite[MAXN];
+int min_prime[MAXN];
+
+void sieve (int n) {
+    std::fill (is_composite, is_composite + n, false);
+    for (int i = 2; i &lt; n; ++i) {
+        if (!is_composite[i]) {
+          prime.push_back (i);
+          min_prime[i] = i;
+        }
+        for (int j = 0; j &lt; prime.size () &amp;&amp; i * prime[j] &lt; n; ++j) {
+            is_composite[i * prime[j]] = true;
+            min_prime[i * prime[j]] = prime[j];
+            if (i % prime[j] == 0) break;
+        }
+    }
+}</code></pre>
+<p>función para hallar los divisores primos de un número:</p>
+<pre class="cpp"><code>vector&lt;pair&lt;int, int&gt;&gt; t; //aca guardare la descomposicion en primos y sus exponentes
+while (n != 1) {
+  int p = min_prime[n];
+  int e = 0;
+  while (n%p == 0) {
+    e += 1;
+    n /= p;
+  }
+  t.push_back({p, e});
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

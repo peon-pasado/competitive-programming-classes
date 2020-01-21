@@ -13,9 +13,12 @@ navbar:
           href: class-02.html
         - text: Semana 2
         - text: Contest 1
-          href: contest-01.html
-        - text: Number Theory
           href: class-03.html
+        - text: Number Theory
+          href: class-04.html
+        - text: Semana 3
+        - text: Brute Force I
+          href: class-05.html
 
 output_dir: "web"
 output:

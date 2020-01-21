@@ -1,6 +1,6 @@
 ---
 title: "Clase 02: Complejidades + STL"
-author: "GPC-UNI Resto del Mundo"
+author: "Leonidas"
 date: "09-01-2020"
 output: html_document
 ---

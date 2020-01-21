@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Leonidas" />
+
+
+<title>Clase 05: Fuerza Bruta I</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li class="dropdown-header">Semana 2</li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Number Theory</a>
+    </li>
+    <li class="dropdown-header">Semana 3</li>
+    <li>
+      <a href="class-05.html">Brute Force I</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 05: Fuerza Bruta I</h1>
+<h4 class="author">Leonidas</h4>
+<h4 class="date">21-01-2020</h4>
+
+</div>
+
+
+<p><strong>Nota:</strong> Algunos términos se dejarán en Inglés por simplicidad en esta y siguientes clases</p>
+<div class="topic">
+Paradigmas de problem solving
+</div>
+<p>Un paradigma es una manera de resolver problemas. En competitiva hay 4 paradigmas de problem solving fundamentales:</p>
+<p><img src="images/class-05/programming-paradigms.png" /></p>
+<p>Búsqueda completa es un método general que puede ser usado para resolver casi cualquier problema computacional. Básicamente se trata de generar todas las posibles soluciones de un problema para hacer algo con estas soluciones (contar la cantidad de elementos, encontrar una solución en particular, etc).</p>
+<p>Soluciones de búsqueda completa pueden ser encontradas de dos maneras: iterativas o recursivas. Cuando es iterativo lo puedes encontrar como un solo loop, dos loops, tres o más loops, usando two pointers, etc. Cuando es recursivo lo puedes encontrar como una función recursiva simple, como una función recursiva que busca distintos estados mediante <code>trial and error</code> (backtracking), puede tener prunning para no visitar todos los estados, etc.</p>
+<p>Cuando resuelvas un problema de búsqueda completa usarás alguna combinación de estas estructuras. Sin embargo, cada problema es distinto y deberá atacarse de manera distinta. No existe una método mágico que funcione para todos los problemas de búsqueda completa, por eso en clases se irá mostrando técnicas conocidas para atacar una gran variedad de problemas. El dominar estas técnicas te ayudará a resolver cada vez una mayor cantidad de problemas y cada vez más dificiles.</p>
+<p>Cuando un problema de búsqueda completa se resuelva de manera iterativa diremos que tenemos una solución fuerza bruta. Comenzaremos estudiando este paradigma mostrando distintas técnicas para atacar problemas de fuerza bruta.</p>
+<div class="topic">
+Pythagorean triples
+</div>
+<p>Comencemos resolviendo un problema simple.</p>
+<p>Una tripleta pitagótica es una tripleta <span class="math inline">\((x, y, z)\)</span> que satisface la equación <span class="math inline">\(x^2 + y^2 = z^2\)</span>.</p>
+<p><strong>Problem:</strong> Recibirás un entero <span class="math inline">\(n\)</span>. Encuentra la cantidad de tripletas pitagóricas tal que <span class="math inline">\(1 \leq x, y, z \leq n\)</span>.</p>
+<p><span class="math display">\[1 \leq n \leq 10^3\]</span></p>
+<div id="primera-solución" class="section level3">
+<h3>Primera solución</h3>
+<p>Podemos fijar <span class="math inline">\(x, y, z\)</span> usando tres <span class="math inline">\(fors\)</span> y verificar la ecuación en <span class="math inline">\(O(n^3)\)</span>.</p>
+<pre class="cpp"><code>int solution1 (int n) {
+  int cnt = 0;
+  for (int x = 1; x &lt;= n; x++) {
+    for (int y = 1; y &lt;= n; y++) {
+      for (int z = 1; z &lt;= n; z++) {
+        if (x * x + y * y == z * z) {
+          cnt++;
+        }
+      }
+    }
+  }
+  return cnt;
+}</code></pre>
+</div>
+<div id="segunda-solución" class="section level3">
+<h3>Segunda solución</h3>
+<p>Podemos fijar <span class="math inline">\(x, y\)</span> y determinar si <span class="math inline">\(\exists \, 1 \leq z \leq n\)</span> que satisface la equación en <span class="math inline">\(O(n^2).\)</span></p>
+<pre class="cpp"><code>int solution2 (int n) {
+  vector &lt;bool&gt; is_sq(n * n + 1, false);
+  for (int z = 1; z &lt;= n; z++) {
+    is_sq[z * z] = true;
+  }
+  int cnt = 0;
+  for (int x = 1; x &lt;= n; x++) {
+    for (int y = 1; y &lt;= n; y++) {
+      if (x * x + y * y &lt;= n * n and is_sq[x * x + y * y]) {
+        cnt++;
+      }
+    }
+  }
+  return cnt;
+}</code></pre>
+</div>
+<div id="tercera-solución" class="section level3">
+<h3>Tercera solución</h3>
+<p>Si <span class="math inline">\((x, y, z)\)</span> es una tripleta pitagórica, entonces <span class="math inline">\((kx, ky, kz), k \in \mathbb{N}\)</span> también es una tripleta pitagórica.</p>
+<p>Entonces, si encontramos <span class="math inline">\((x, y, z) \mid gcd(x, y, z) = 1\)</span>, la cantidad de tripletas <span class="math inline">\((kx, ky, kz) : 1 \leq kx, ky, kz \leq n\)</span> es <span class="math inline">\(\min(\lfloor n / x \rfloor, \lfloor n / y \rfloor, \lfloor n / z \rfloor)\)</span>.</p>
+<p>Además, si <span class="math inline">\((x, y, z)\)</span> es una tripleta pitagórica y <span class="math inline">\(gcd(x, y, z) = 1\)</span>, entonces <span class="math inline">\((x, y, z)\)</span> es llamada una tripleta pitagórica primitiva.</p>
+<p>Y existe una propiedad (fórmula de Euclides) que nos dice que toda tripleta pitagórica puede ser representada por un par <span class="math inline">\((a, b) : 0 &lt; b &lt; a \land gcd(a, b) = 1,\)</span> <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> no ambos impares. Esta representación es de la siguiente manera:</p>
+<p><span class="math display">\[x = a^2 - b^2\]</span> <span class="math display">\[y = 2 * a * b\]</span> <span class="math display">\[z = a * a + b * b\]</span></p>
+<p>Entonces podemos generar primitivas <span class="math inline">\((x, y, z), (y, x, z)\)</span> y contar cuantos de sus múltiplos cumplen la condición en <span class="math inline">\(O(n^2 \log n)\)</span>.</p>
+<pre class="cpp"><code>int solution3 (int n) {
+  int cnt = 0;
+  for (int a = 1; a &lt; n / 2; a++) {
+    for (int b = 1; b &lt; a; b++) {
+      if (__gcd(a, b) != 1) continue;
+      if (a % 2 and b % 2) continue;
+      int x = a * a - b * b;
+      int y = 2 * a * b;
+      int z = a * a + b * b;
+      int add = min({n / x, n / y, n / z});
+      cnt += 2 * add;
+    }
+  }
+  return cnt;
+}</code></pre>
+<div class="figure">
+<embed src="./code/class-05/pythagorean-triple.cpp" />
+<p class="caption">Full code</p>
+</div>
+<p>Como hemos visto, un problema se puede resolver de distintas formas. Eso es algo interesante, especialmente de los problemas de búsqueda completa, pues con el conocimiento de algunas técnicas y algo de creatidad se pueden crear soluciones interesantes. Ahora, discutiremos algunas técnicas conocidas para atacar problemas de fuerza bruta:</p>
+<ul>
+<li>Fijando variables</li>
+<li>Simulación</li>
+<li>Weak constraints</li>
+<li>Análisis por casos</li>
+</ul>
+<p>Y también describiremos brevemente de que trata <code>prefix sums</code></p>
+<div class="topic">
+Fijando variables
+</div>
+<p>Hay una clase de problemas donde tienes algunas equaciones en <span class="math inline">\(m\)</span> variables. En esas ocaciones, una primera buena idea es intentar una solución fuerza bruta. Para ello se encuentra el rango de valores que puede tomar cada variable, se hace un loop for cada una de ellas, se comprueba si las ecuaciones se satisfacen y se va almacenando las m-tuplas que satisfacen las condiciones. También, cuando estamos haciendo un <code>for</code> sobre una variable, estamos fijando su valor, asi dentro de cada <code>for</code> su valor se vuelve una constante, es decir, estamos reduciendo el número de variables. Por eso, usualmente <span class="math inline">\(m - 1\)</span> <code>for</code> serán suficientes, pues la última variable suele ser fácil de calcular cuando las demás ya son constantes.</p>
+<p>Por ejemplo, intentemos <a href="https://codeforces.com/contest/44/problem/B">este problema</a>.</p>
+<p><strong>Problemia:</strong> Recibirás <span class="math inline">\(n, a, b, c\)</span> enteros. Debes encontrar</p>
+<p><span class="math display">\[|\{(x, y, z) \mid 0 \leq x \leq a \land 0 \leq y \leq b \land 0 \leq z \leq
+c \land \frac{x}{2} + y + 2 z = n \}|\]</span></p>
+<p><span class="math display">\[1 \leq n \leq 10^4\]</span> <span class="math display">\[0 \leq a, b, c \leq 5000\]</span></p>
+<p>Podemos identificar que las variables del problema son <span class="math inline">\(x, y, z\)</span> y que si fijamos dos de estas variables podemos obtener la tercera de la equación, entonces una solución fuerza bruta con 2 <code>for</code> puede resolver el problema. Ahora, para determinar que variables fijar, siempre prefiere trabajar con enteros (se entenderá mejor esto en próximas clases), así fijaremos <span class="math inline">\(y, z\)</span> en <span class="math inline">\(O(b * c)\)</span>.</p>
+<!-- Begins problem example01 -->
+<div id="example01" class="card">
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemexample01" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemexample01" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+using namespace std;
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+typedef vector &lt;int&gt; vi;
+typedef vector &lt;ll&gt; vll;
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n, a, b, c;
+  cin &gt;&gt; n &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+  int ans = 0;
+  for (int z = 0; z &lt;= c; z++) {
+    for (int y = 0; y &lt;= b; y++) {
+      int left = n - z * 2 - y;
+      if (left &lt; 0) continue;
+      int x = left * 2;
+      if (x &lt;= a) ans++;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+<!-- ends problem example01 -->
+<p>Puedes practicar con estos problemas:</p>
+<ul>
+<li><a href="https://codeforces.com/problemset/problem/189/A">Cut Ribbon</a></li>
+<li><a href="https://codeforces.com/contest/681/problem/B">Economy Game</a></li>
+<li><a href="https://codeforces.com/contest/1278/problem/C">Berry Jam</a></li>
+<li><a href="https://codeforces.com/contest/126/problem/A">Hot Bath</a> (<strong>Challenge</strong>)</li>
+</ul>
+<div class="topic">
+Simulación con fuerza bruta
+</div>
+<p>En esta clase de problema se suele describir un patrón, fórmula de recurencia or situación que es relativamente sencillo de computar. La clave para estos problemas suele ser darse cuenta como generar tu espacio de búsqueda y saber implementar tus ideas.</p>
+<p>Por ejemplo, comencemos con <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=24&amp;page=show_problem&amp;problem=384">este problema</a></p>
+<p><strong>Problem:</strong> Un <em>humble number</em> es un número cuyos únicos factores primos son <span class="math inline">\(2, 3, 5, 7\)</span>. Recibirás un número <span class="math inline">\(n\)</span> y deberás imprimir el <span class="math inline">\(n-th\)</span> humble number.</p>
+<p><span class="math display">\[1 \leq n \leq 5842\]</span></p>
+<p>Necesitamos calcular <span class="math inline">\(S = \{2^i \cdot 3 ^j \cdot 5^k \cdot 7 ^l, \quad 0 \leq i, j, k, l \}\)</span>. Digamos que el máximo valores que computamos es <span class="math inline">\(L\)</span>, entonces <span class="math inline">\(i, j, k, l = O(\log L)\)</span>.</p>
+<p>Así, si fijamos <span class="math inline">\(L\)</span> podemos obtener los elementos de <span class="math inline">\(S\)</span> que son menores a <span class="math inline">\(L\)</span> en <span class="math inline">\(O((\log^4 L))\)</span>. Así, podemos probar distintos valores de <span class="math inline">\(L\)</span> hasta que obtengamos más números que el máximo <span class="math inline">\(n\)</span> que recibimos en nuestra entrada. Ten cuidado con el overflow.</p>
+<!-- Begins problem example02 -->
+<div id="example02" class="card">
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemexample02" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemexample02" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+int main () {
+  const ll L = 1e10;
+  vector &lt;ll&gt; arr;
+  for (ll two = 1; two &lt; L; two *= 2) {
+    for (ll three = 1; three &lt; L; three *= 3) {
+      for (ll five = 1; five &lt; L; five *= 5) {
+        for (ll seven = 1; seven &lt; L; seven *= 7) {
+          if (two &gt;= L / three) break;
+          ll cur = two * three;
+          if (cur &gt;= L / five) break;
+          cur *= five;
+          if (cur &gt;= L / seven) break;
+          cur *= seven;
+          arr.push_back(cur);
+        }
+      }
+    }
+  }
+  sort(begin(arr), end(arr));
+  int n;
+  while (cin &gt;&gt; n) {
+    if (n == 0) break;
+    string pos;
+    if (n % 10 == 1 and (n / 10) % 10 != 1) pos = &quot;st&quot;;
+    else if (n % 10 == 2 and (n / 10) % 10 != 1) pos = &quot;nd&quot;;
+    else if (n % 10 == 3 and (n / 10) % 10 != 1) pos = &quot;rd&quot;;
+    else pos = &quot;th&quot;;
+    cout &lt;&lt; &quot;The &quot; &lt;&lt; n &lt;&lt; pos &lt;&lt; &quot; humble number is &quot; &lt;&lt; arr[n - 1] &lt;&lt; &quot;.\n&quot;;
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+<!-- ends problem example02 -->
+<p>Puedes practicar con estos problemas:</p>
+<ul>
+<li><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=24&amp;page=show_problem&amp;problem=976">Primary Arithmetic</a></li>
+<li><a href="https://codeforces.com/contest/271/problem/A">Beautiful Year</a></li>
+<li><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=24&amp;page=show_problem&amp;problem=36">3n + 1 problem</a></li>
+<li><a href="https://codeforces.com/contest/614/problem/A">Link/Cut Tree</a></li>
+<li><a href="https://codeforces.com/contest/239/problem/B">Easy Type Programming</a></li>
+</ul>
+<div class="topic">
+Weak constraints
+</div>
+<p>En esta clase de problemas el enunciado usualemente luce dificil, pero una vez que identificas el espacio de búsqueda te daras cuenta que el número de posibles soluciones es pequeño.</p>
+<p>For ejemplo, resolvamos <a href="https://codeforces.com/contest/817/problem/C">este problema</a>.</p>
+<p><strong>Problema:</strong> Encuentra</p>
+<p><span class="math display">\[|\{x \leq n \mid x - f(x) \geq s\}|\]</span></p>
+<p>Donde <span class="math inline">\(f(x) =\)</span> suma de dígitos de <span class="math inline">\(x\)</span>.</p>
+<p><span class="math display">\[1 \leq n, s \leq 10^{18}\]</span></p>
+<p>A primera vista el problema luce dificil, pero tenemos:</p>
+<p><span class="math display">\[0 \leq f(x) \leq 9 * 18\]</span> <span class="math display">\[\to x - 9 * 18 \leq x - f(x) \leq 9 * 18\]</span></p>
+<p>Encontes, solo necesitamos buscar la respuesta en <span class="math inline">\([s, s + 9 * 18]\)</span>. ¿Qué pasa si un número es mayor que <span class="math inline">\(s + 9 * 18\)</span>?</p>
+<!-- Begins problem example03 -->
+<div id="example03" class="card">
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemexample03" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemexample03" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+const int MX_SUM = 9 * 18;
+int sumOfDigits (ll num) {
+  int ret = 0;
+  while (num) ret += (num % 10), num /= 10;
+  return ret;
+}
+int main () {
+  ll n, s;
+  cin &gt;&gt; n &gt;&gt; s;
+  ll ans = 0, k;
+  for (k = s; k &lt;= min(n, s + MX_SUM); k++) {
+    if (k - sumOfDigits(k) &gt;= s) ans++;
+  }
+  ans += max(0LL, n - k + 1);
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+<!-- ends problem example05 -->
+<p>La clave para resolver este tipo de problemas es identificar que el espacio de búsqueda es pequeño debido a alguna propiedad o que una de las variables de la entrada es pequeña y que podemos intentar una solución fuera bruta sobre ella.</p>
+<div class="topic">
+Análisis por casos
+</div>
+<p>Este tipo de problemas suelen parecer complicados, pero cuando analizar los casos que pueden ocurrir te das cuenta que el problema se reduce a algo mucho más simple.</p>
+<p>Por ejemplo, analicemos <a href="https://codeforces.com/problemset/problem/252/B">este problema</a>.</p>
+<p><strong>Problema:</strong> Te dan un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos. Imprime dos números <span class="math inline">\(i, j \mid a_i \not = a_j \land i &lt; j\)</span> tal que cuando intercambiamos <span class="math inline">\(a_i, a_j\)</span> el array no esta ordenado (de forma ascendente ni descendente) o imprime -1 si tal par de números no existe.</p>
+<p><span class="math display">\[1 \leq n \leq 10^5\]</span></p>
+<p>Una primera idea sería fijar <span class="math inline">\(i, j\)</span> con dos <span class="math inline">\(for\)</span> y verificar si las condiciones se cumplen. Esta solución es <span class="math inline">\(O(n^3)\)</span>, por eso así obtendriamos un TLE. Necesitamos algo mejor.</p>
+<p>Analicemos el problema por casos de acuerdo a la cantidad de elementos distintos que tiene el array.</p>
+<ul>
+<li>Caseo 1: Todos los elementos son iguales</li>
+</ul>
+<p>Entonces, la respues es -1.</p>
+<ul>
+<li>Caso 2: Hay más de 2 elementos diferentes.</li>
+</ul>
+<p>Puedes tomar 3 elementos distintos cualquiera y encontrarás una respuesta en ellos (¿puedes probarlo?).</p>
+<ul>
+<li><p>Caso 3: Hay exactamente 2 elementos diferentes.</p>
+<p>Fijemos <span class="math inline">\(x = a_i\)</span> y <span class="math inline">\(y = a_j\)</span>.</p>
+<ul>
+<li>Caso 3.1: <span class="math inline">\(a_i &lt; a_j\)</span></li>
+</ul>
+<p>Si los intercambiamos el array no puede estar en orden creciente. Si el array no está en orden decreciente, entonces tenemos una respuesta, sino el array tiene la forma:</p>
+<p><span class="math display">\[a_1 = y \geq a_2 = y \geq \dots \geq a_i = y \geq \dots \geq a_j = x \geq \dots \geq a_n =x\]</span></p>
+<p>Entonces, si existe una respuesta, esta debe estar en <span class="math inline">\([i, j)\)</span> o <span class="math inline">\((i, j]\)</span>. Así, solo necesitamos verificar un par de enteros <span class="math inline">\((i, i - 1) \mid a_i &lt; a_{i+ 1}\)</span>.</p>
+<ul>
+<li>Caso 3.2: <span class="math inline">\(a_i &gt; a_j\)</span></li>
+</ul>
+<p>Si los intercambiamos el array no puede estar en orden decreciente. Si el array no está en orden creciente, entonces tenemos una respuesta, sino el array tiene la forma:</p>
+<p><span class="math display">\[a_1 = x \leq a_2 = x \leq \dots \leq a_i = x \leq \dots \leq a_j = y \leq \dots \leq a_n =y\]</span></p>
+<p>Entonces, si existe una respuesta, esta debe estar en <span class="math inline">\([i, j)\)</span> o <span class="math inline">\((i, j]\)</span>. Así, solo necesitamos verificar un par de enteros <span class="math inline">\((i, i - 1) \mid a_i &gt; a_{i+ 1}\)</span>.</p>
+<p>Usando todos estos casos podemos implementar una solución en <span class="math inline">\(O(n \log n)\)</span>.</p></li>
+</ul>
+<!-- Begins problem example05 -->
+<div id="example05" class="card">
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemexample05" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemexample05" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int main () {
+  int n;
+  cin &gt;&gt; n;
+  set &lt;int&gt; values;
+  map &lt;int, int&gt; pos;
+  vector &lt;int&gt; a(n);
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; a[i];
+    pos[a[i]] = i;
+    values.insert(a[i]);
+  }
+  if (values.size() == 1) {
+    cout &lt;&lt; -1 &lt;&lt; &#39;\n&#39;;
+    return (0);
+  }
+  vector &lt;int&gt; a_inc = a;
+  vector &lt;int&gt; a_dec = a;
+  sort(begin(a_inc), end(a_inc));
+  sort(begin(a_dec), end(a_dec));
+  reverse(begin(a_dec), end(a_dec));
+  if (values.size() &gt; 2) {
+    vector &lt;int&gt; arr;
+    for (auto pp: pos) {
+      arr.push_back(pp.second);
+    }
+    for (int i = 0; i &lt; 3; i++) {
+      for (int j = i + 1; j &lt; 3; j++) {
+        int x = arr[i];
+        int y = arr[j];
+        swap(a[x], a[y]);
+        if (a != a_inc and a != a_dec) {
+          cout &lt;&lt; 1 + min(x, y) &lt;&lt; &#39; &#39; &lt;&lt; 1 + max(x, y) &lt;&lt; &#39;\n&#39;;
+          return (0);
+        }
+        swap(a[x], a[y]);
+      }
+    }
+  }
+  for (int i = 0; i + 1 &lt; n; i++) {
+    if (a[i] &lt; a[i + 1]) {
+      swap(a[i], a[i + 1]);
+      if (a != a_dec) {
+        cout &lt;&lt; 1 + i &lt;&lt; &#39; &#39; &lt;&lt; 1 + i + 1 &lt;&lt; &#39;\n&#39;;
+        return (0);
+      }
+      swap(a[i], a[i + 1]);
+      break;
+    }
+  }
+  for (int i = 0; i + 1 &lt; n; i++) {
+    if (a[i] &gt; a[i + 1]) {
+      swap(a[i], a[i + 1]);
+      if (a != a_inc) {
+        cout &lt;&lt; 1 + i &lt;&lt; &#39; &#39; &lt;&lt; 1 + i + 1 &lt;&lt; &#39;\n&#39;;
+        return (0);
+      }
+      swap(a[i], a[i + 1]);
+      break;
+    }
+  }
+  cout &lt;&lt; -1 &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+<!-- ends problem example05 -->
+<p>Puedes practicar con estos problemas:</p>
+<ul>
+<li><a href="https://codeforces.com/contest/1271/problem/C">Shawarma Tent</a></li>
+<li><a href="https://codeforces.com/contest/1270/problem/B">Interesting Subarray</a></li>
+<li><a href="https://codeforces.com/contest/792/problem/C">Divide by Three</a> (<strong>Challenge</strong>)</li>
+</ul>
+<div class="topic">
+Extra: Prefix sums
+</div>
+<p><code>Prefix sums</code> es una técnica simple, pero poderosa.</p>
+<p>Veamosla en <a href="https://www.spoj.com/problems/CSUMQ/">este problema</a>.</p>
+<p><strong>Problema:</strong> Recibirás un array de <span class="math inline">\(N\)</span> elementos y <span class="math inline">\(Q\)</span> consultas. Cada consulta es un rango <span class="math inline">\(l, r\)</span>. Por cada consulta imprime the suma de elementos del array en las posiciones <span class="math inline">\([l, r]\)</span>.</p>
+<p>Sea <span class="math inline">\(prefix(x) = a_0 + a_1 + a_2 + \dots + a_x\)</span> y <span class="math inline">\(prefix(-1) = 0\)</span>. Entonces:</p>
+<p><span class="math inline">\(\displaystyle\sum_{i=l}^{r}a_i = prefix(r) - prefix(l - 1)\)</span>.</p>
+<p>Entonces, podemos calcular <span class="math inline">\(prefix\)</span> usando un array en <span class="math inline">\(O(n)\)</span> y responder cada consulta en <span class="math inline">\(O(1)\)</span> resolviendo así el problema en <span class="math inline">\(O(n + q)\)</span>.</p>
+<!-- Begins problem exampleextra -->
+<div id="exampleextra" class="card">
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemexampleextra" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemexampleextra" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+typedef long long ll;
+int n;
+vector &lt;ll&gt; prefix;
+ll get (int pos) {
+  if (pos == -1) return 0;
+  return prefix[pos];
+}
+int main () {
+  cin &gt;&gt; n;
+  prefix.resize(n);
+  for (int i = 0; i &lt; n; i++) {
+    int a;
+    cin &gt;&gt; a;
+    prefix[i] = a + get(i - 1);
+  }
+  int q;
+  cin &gt;&gt; q;
+  while (q--) {
+    int l, r;
+    cin &gt;&gt; l &gt;&gt; r;
+    cout &lt;&lt; get(r) - get(l - 1) &lt;&lt; &#39;\n&#39;;
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+<!-- ends problem exampleextra -->
+<p>Puedes practicar con estos problemas:</p>
+<ul>
+<li><a href="https://codeforces.com/contest/877/problem/B">Nikita and string</a></li>
+<li><a href="https://codeforces.com/contest/1003/problem/C">Intense Heat</a></li>
+</ul>
+<p>Lecturas recomendadas:</p>
+<ul>
+<li><a href="https://gist.github.com/miguelAlessandro/f588d159a768dc43cc1ec9b81b27bd57">Notas de fuerza bruta</a></li>
+<li><a href="https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-05/clase-05.ipynb">PCUNI-2019 Clase 05</a></li>
+<li><a href="https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-1/">Topcoder - Representation of integers and reals section 1</a></li>
+<li><a href="https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-2/">Topcoder - Representation of integers and reals section 2</a></li>
+</ul>
+<div class="topic">
+<a href="https://vjudge.net/contest/353302">Contest</a>
+</div>
+<p>Las soluciones se subirán cuando termine el contest.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
