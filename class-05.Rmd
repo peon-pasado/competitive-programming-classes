@@ -117,12 +117,12 @@ $$y = 2 * a * b$$
 $$z = a * a + b * b$$
 
 Entonces podemos generar primitivas $(x, y, z), (y, x, z)$ y contar cuantos de
-sus múltiplos cumplen la condición en $O(n^2 \log n)$.
+sus múltiplos cumplen la condición en $O(n \log n)$.
 
 ```c++
 int solution3 (int n) {
   int cnt = 0;
-  for (int a = 1; a < n / 2; a++) {
+  for (int a = 1; a * a < n; a++) {
     for (int b = 1; b < a; b++) {
       if (__gcd(a, b) != 1) continue;
       if (a % 2 and b % 2) continue;
@@ -196,16 +196,20 @@ $O(b * c)$.
 
 ```c++
 #include <bits/stdc++.h>
+
 #define all(A) begin(A), end(A)
 #define rall(A) rbegin(A), rend(A)
 #define sz(A) int(A.size())
 #define pb push_back
 #define mp make_pair
+
 using namespace std;
+
 typedef long long ll;
 typedef pair <int, int> pii;
 typedef vector <int> vi;
 typedef vector <ll> vll;
+
 int main () {
   ios::sync_with_stdio(false); cin.tie(0);
   int n, a, b, c;
@@ -272,8 +276,11 @@ cuidado con el overflow.
 
 ```c++
 #include <bits/stdc++.h>
+
 using namespace std;
+
 typedef long long ll;
+
 int main () {
   const ll L = 1e10;
   vector <ll> arr;
@@ -353,14 +360,19 @@ si un número es mayor que $s + 9 * 18$?
   <div id="codeProblemexample03" class="collapse">
 ```c++
 #include <bits/stdc++.h>
+
 using namespace std;
+
 typedef long long ll;
+
 const int MX_SUM = 9 * 18;
+
 int sumOfDigits (ll num) {
   int ret = 0;
   while (num) ret += (num % 10), num /= 10;
   return ret;
 }
+
 int main () {
   ll n, s;
   cin >> n >> s;
@@ -450,7 +462,9 @@ ellos (¿puedes probarlo?).
   <div id="codeProblemexample05" class="collapse">
 ```c++
 #include <bits/stdc++.h>
+
 using namespace std;
+
 int main () {
   int n;
   cin >> n;
@@ -554,14 +568,19 @@ consulta en $O(1)$ resolviendo así el problema en $O(n + q)$.
   <div id="codeProblemexampleextra" class="collapse">
 ```c++
 #include <bits/stdc++.h>
+ 
 using namespace std;
+ 
 typedef long long ll;
+ 
 int n;
 vector <ll> prefix;
+ 
 ll get (int pos) {
   if (pos == -1) return 0;
   return prefix[pos];
 }
+ 
 int main () {
   cin >> n;
   prefix.resize(n);

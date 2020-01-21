@@ -385,10 +385,10 @@ Pythagorean triples
 <p>Además, si <span class="math inline">\((x, y, z)\)</span> es una tripleta pitagórica y <span class="math inline">\(gcd(x, y, z) = 1\)</span>, entonces <span class="math inline">\((x, y, z)\)</span> es llamada una tripleta pitagórica primitiva.</p>
 <p>Y existe una propiedad (fórmula de Euclides) que nos dice que toda tripleta pitagórica puede ser representada por un par <span class="math inline">\((a, b) : 0 &lt; b &lt; a \land gcd(a, b) = 1,\)</span> <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> no ambos impares. Esta representación es de la siguiente manera:</p>
 <p><span class="math display">\[x = a^2 - b^2\]</span> <span class="math display">\[y = 2 * a * b\]</span> <span class="math display">\[z = a * a + b * b\]</span></p>
-<p>Entonces podemos generar primitivas <span class="math inline">\((x, y, z), (y, x, z)\)</span> y contar cuantos de sus múltiplos cumplen la condición en <span class="math inline">\(O(n^2 \log n)\)</span>.</p>
+<p>Entonces podemos generar primitivas <span class="math inline">\((x, y, z), (y, x, z)\)</span> y contar cuantos de sus múltiplos cumplen la condición en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <pre class="cpp"><code>int solution3 (int n) {
   int cnt = 0;
-  for (int a = 1; a &lt; n / 2; a++) {
+  for (int a = 1; a * a &lt; n; a++) {
     for (int b = 1; b &lt; a; b++) {
       if (__gcd(a, b) != 1) continue;
       if (a % 2 and b % 2) continue;
@@ -431,16 +431,20 @@ Code
 </div>
 <div id="codeProblemexample01" class="collapse">
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
 #define all(A) begin(A), end(A)
 #define rall(A) rbegin(A), rend(A)
 #define sz(A) int(A.size())
 #define pb push_back
 #define mp make_pair
+
 using namespace std;
+
 typedef long long ll;
 typedef pair &lt;int, int&gt; pii;
 typedef vector &lt;int&gt; vi;
 typedef vector &lt;ll&gt; vll;
+
 int main () {
   ios::sync_with_stdio(false); cin.tie(0);
   int n, a, b, c;
@@ -488,8 +492,11 @@ Code
 </div>
 <div id="codeProblemexample02" class="collapse">
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
 using namespace std;
+
 typedef long long ll;
+
 int main () {
   const ll L = 1e10;
   vector &lt;ll&gt; arr;
@@ -556,14 +563,19 @@ Code
 </div>
 <div id="codeProblemexample03" class="collapse">
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
 using namespace std;
+
 typedef long long ll;
+
 const int MX_SUM = 9 * 18;
+
 int sumOfDigits (ll num) {
   int ret = 0;
   while (num) ret += (num % 10), num /= 10;
   return ret;
 }
+
 int main () {
   ll n, s;
   cin &gt;&gt; n &gt;&gt; s;
@@ -625,7 +637,9 @@ Code
 </div>
 <div id="codeProblemexample05" class="collapse">
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
 using namespace std;
+
 int main () {
   int n;
   cin &gt;&gt; n;
@@ -719,14 +733,19 @@ Code
 </div>
 <div id="codeProblemexampleextra" class="collapse">
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+ 
 using namespace std;
+ 
 typedef long long ll;
+ 
 int n;
 vector &lt;ll&gt; prefix;
+ 
 ll get (int pos) {
   if (pos == -1) return 0;
   return prefix[pos];
 }
+ 
 int main () {
   cin &gt;&gt; n;
   prefix.resize(n);
