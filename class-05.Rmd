@@ -43,7 +43,7 @@ Cuando un problema de búsqueda completa se resuelva de manera iterativa diremos
 que tenemos una solución fuerza bruta. Comenzaremos estudiando este paradigma
 mostrando distintas técnicas para atacar problemas de fuerza bruta.
 
-<div class="topic">Pythagorean triples</div>
+<div class="topic">Tripletas pitagóricas</div>
 
 Comencemos resolviendo un problema simple.
 
@@ -616,6 +616,8 @@ Lecturas recomendadas:
 * [Topcoder - Representation of integers and reals section 1](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-1/)
 * [Topcoder - Representation of integers and reals section 2](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-2/)
 
-<div class=topic><a href="https://vjudge.net/contest/353302">Contest</a></div>
+<div class=topic>Contest</div>
+
+El contest lo puedes encontrar [aquí](https://vjudge.net/contest/353302).
 
 Las soluciones se subirán cuando termine el contest.

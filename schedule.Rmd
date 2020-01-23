@@ -21,30 +21,39 @@ title: "Plan semanal"
   * set
   * map
 
-2da semana:
+### Semana 2
 
-- team contest: implementacion + stl: Miguel
-  * 1:40 de contest
-  * 20 descanso
-  * 1 hora de upsolving
+- Team contest: Implementacion + STL: Miguel
 
-- matematica basica: Miguel
-  
-  - gcd, lcm, inversa, bezout, pequeño teorema de fermat,
-  euler, combinatoria, criba.
+- Teoría de números: Miguel
+  * Relaciones de congruencia
+  * Aritmética modular
+  * Máximo común divisor
+  * Exponenciación rápida
+  * Algoritmo de Euclides
+  * Identidad de Bézout
+  * Pequeño teorema de Fermat
+  * Teorema de Euler
+  * Teorema chino del resto
+  * Hallando divisores
+  * Hallando números primos
+  * Criba de Eratóstenes
 
-3ra semana:
+### Semana 3
 
-- fuerza bruta 1: Leonidas
-  - weak constraints
-  * Identificar las variables por las que es mejor atacar el problema
-  * Cantidad de divisores es cbrt(3)
-  * Problemas cuando fijas una variable
+- Fuerza bruta 1: Leonidas
+  * Paradigmas de problem solving
+  * Tripletas pitagóricas
+  * Fijando variables
+  * Simulación con fuerza bruta
+  * Weak constraints
+  * Análisis por casos
+  * Extra: Prefix sums
 
-- fuerza bruta 2: Leonidas
-  * Fijar la respuesta
-  * Reducir de variables
-  * Mini va a ayudar a buscar problemas
+- Fuerza bruta 2: Leonidas
+  * Two pointers
+  * Contribution technique
+  * Búsqueda en todas las permutaciones
 
 4ta semana
 

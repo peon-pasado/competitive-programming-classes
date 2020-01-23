@@ -14,11 +14,17 @@ navbar:
         - text: Semana 2
         - text: Contest 1
           href: class-03.html
-        - text: Number Theory
+        - text: Teoría de números
           href: class-04.html
         - text: Semana 3
-        - text: Brute Force I
+        - text: Fuerza bruta I
           href: class-05.html
+        - text: Fuerza bruta II
+          href: class-06.html
+
+  right:
+    - text: "Problema del día"
+      href: daily-problem.html
 
 output_dir: "web"
 output:

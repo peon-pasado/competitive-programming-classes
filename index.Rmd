@@ -18,7 +18,8 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 2
 
 - [Contest 1](./class-03.html)
-- [Number Theory](./class-04.html)
+- [Teoría de números](./class-04.html)
 
 ## Semana 3
 - [Fuerza Bruta I](./class-05.html)
+- [Fuerza Bruta II](./class-05.html)

@@ -306,7 +306,7 @@ else {
 Lamentablemente si queremos verificar que los n primeros numeros
 sean primos, esto nos demoraria $O(n\sqrt n)$
 
-### Criba de eratostenes
+### Criba de Eratostenes
 
 La criba de Eratostenes nos presenta un metodo simple para saber si los primeros
 n números y corre en un tiempo $O(n\log\log n)$, la idea es eliminando de
@@ -381,4 +381,7 @@ while (n != 1) {
 ```
 
 
+<div class=topic>Contest</div>
+
+El contest lo puedes encontrar [aquí](https://vjudge.net/contest/352567).
 

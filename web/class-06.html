@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Leonidas" />
+
+
+<title>Clase 06: Fuerza Bruta II</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li class="dropdown-header">Semana 2</li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li class="dropdown-header">Semana 3</li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 06: Fuerza Bruta II</h1>
+<h4 class="author">Leonidas</h4>
+<h4 class="date">21-01-2020</h4>
+
+</div>
+
+
+<div class="topic">
+Two Pointers
+</div>
+<p>Esta técnica es usualmente usada en un array. Mantenemos un puntero al primer elemento y uno al elemento final. El primer puntero se incrementará y el segundo disminuirá (también encontrarás variantes de esta idea). En la práctica, en lugar de usar un puntero se suele usar dos enteros que indican los indices del array al que actualmente estamos apuntado.</p>
+<p>Veamos esta técnica con un ejemplo:</p>
+<p><strong>Problema:</strong> Recibirás un array <span class="math inline">\(n\)</span> de <span class="math inline">\(n\)</span> elementos. Debes imprimir la menor cantidad de intervalos <span class="math inline">\([l_i, r_i] \mid a_i = a_j \forall \, i, j \in [l_i, r_i]\)</span> <span class="math inline">\([l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n]\)</span>.</p>
+<p><span class="math display">\[1 \leq n \leq 10^5\]</span></p>
+<p><strong>Ejemplo:</strong></p>
+<p><strong>Entrada:</strong></p>
+<p><span class="math inline">\(n = 7\)</span></p>
+<p><span class="math inline">\(a = 1\ 1\ 1\ 2\ 2\ 3\ 3\)</span></p>
+<p><strong>Salida:</strong></p>
+<p><span class="math inline">\(1\ 3\)</span></p>
+<p><span class="math inline">\(4\ 5\)</span></p>
+<p><span class="math inline">\(6\ 7\)</span></p>
+<div id="primera-implementación" class="section level3">
+<h3>Primera implementación</h3>
+<pre class="cpp"><code>vector &lt;pair &lt;int, int&gt;&gt; solution1 (const vector &lt;int&gt;&amp; arr) {
+  int n = arr.size();
+  vector &lt;bool&gt; vis(n, false);
+  vector &lt;pair &lt;int, int&gt;&gt; ret;
+  for (int l = 0; l &lt; n; l++) {
+    if (vis[l]) continue;
+    int L = l;
+    int R = l;
+    for (int r = l; r &lt; n and arr[l] == arr[r]; r++) {
+      vis[r] = true;
+      R = r;
+    }
+    ret.push_back({1 + L, 1 + R});
+  }
+  return ret;  
+}</code></pre>
+</div>
+<div id="segunda-implementación" class="section level3">
+<h3>Segunda implementación</h3>
+<pre class="cpp"><code>vector &lt;pair &lt;int, int&gt;&gt; solution2 (const vector &lt;int&gt;&amp; arr) {
+  int n = arr.size();
+  vector &lt;pair &lt;int, int&gt;&gt; ret;
+  int l = 0;
+  while (l &lt; n) {
+    int r = l;
+    while (r + 1 &lt; n and arr[l] == arr[r + 1]) r++;
+    ret.push_back({1 + l, 1 + r});
+    l = r + 1;
+  }
+  return ret;  
+}</code></pre>
+<p><a href="./code/class-06/intervals.cpp">Full code</a></p>
+<p>La complejidad de ambas implementaciones es <span class="math inline">\(O(n)\)</span>.</p>
+<p>Ahora, veamos esta técnica en <a href="https://leetcode.com/problems/two-sum/">este problema</a>.</p>
+<p><strong>Problema (2 sum problem):</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos positivos y un entero <span class="math inline">\(x\)</span>. Debes imprimir dos números <span class="math inline">\(i, j \mid i \not = j \land a_i + a_j = target\)</span>. Esta garantizado que una solución siempre existe.</p>
+<p>Para este problema podemos usar la técnica two pointers + sorting y tener una solución en <span class="math inline">\(O(n \log n)\)</span>.</p>
+<p>Primero ordenamos el array e inicializamos <span class="math inline">\(l = 0, r = n - 1\)</span>. <span class="math inline">\(l\)</span> solo podrá incrementar y <span class="math inline">\(r\)</span> solo podrá disminuir. Ahora, por la propiedad de tricotomía solo hay 3 casos:</p>
+<ul>
+<li><p><span class="math inline">\(a[l] + a[r] = target\)</span></p>
+<p>Entonces, ya tenemos una repuesta y nuestro programa termina.</p></li>
+<li><p><span class="math inline">\(a[l] + a[r] &lt; target\)</span></p>
+<p>En este caso necesitamos obtener una suma menor. Disminuir <span class="math inline">\(r\)</span> solo hará que la suma se mantenga igual o que disminuya. Aumentar <span class="math inline">\(l\)</span> hará que la suma siga igual o aumente. Entonces, incrementamos <span class="math inline">\(l\)</span>.</p></li>
+<li><p><span class="math inline">\(a[l] + a[r] &gt; target\)</span></p>
+<p>Necesitamos obtener una suma menor. Analizando como el caso anterior determinamos que debemos disminuir a <span class="math inline">\(r\)</span>.</p></li>
+</ul>
+<pre class="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        vector &lt;pair &lt;int, int&gt;&gt; arr;
+        int index = 0;
+        for (int elem: nums) {
+            arr.push_back({elem, index});
+            index++;
+        }
+        sort(begin(arr), end(arr));
+        int n = nums.size();
+        int l = 0, r = n - 1;
+        vector &lt;int&gt; ans;
+        while (l &lt; r) {
+            if (arr[l].first + arr[r].first == target) {
+                ans = {arr[l].second, arr[r].second};
+                break;
+            }
+            if (arr[l].first + arr[r].first &lt; target) l++;
+            else r--;
+        }
+        return ans;
+    }
+};</code></pre>
+<p>¿ Como podríamos resolver el problema si ahora necesitaramos encontrar tres números <span class="math inline">\(x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target\)</span> ?</p>
+<div class="topic">
+Contribution technique
+</div>
+<p>Esta técnica nos puede ayudar a redicir cálculos con muchas variables a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria y conteo.</p>
+<p><strong>Problema:</strong> Recibirás <span class="math inline">\(n\)</span> puntos en el plano. Hallar cuántos triángulos no degenerados se pueden formar usando los puntos como vértices.</p>
+<p><span class="math display">\[1 \leq n \leq 2000\]</span></p>
+<p>Notamos que necesitamos algo menor que una solución <span class="math inline">\(O(n^3)\)</span>. Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por ese punto, si <span class="math inline">\(x\)</span> de los puntos que nos dieron están en esta recta, entonces <span class="math inline">\(n - x\)</span> puntos están fuera de esta. Así, ya tenemos un vertice del triángulo (el vértice fijo), el segundo vertice puede ser cualquiera de los otros puntos de la recta (<span class="math inline">\(x - 1\)</span>) y el tercer vértice cualquier punto fuera de la recta (<span class="math inline">\(n - x\)</span>). De manera que fijando un punto y una recta que pase por este, estamos obteniendo <span class="math inline">\((x - 1) \cdot (n - x)\)</span> triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.</p>
+<p>La recta se mapea usando su vector dirección. Ver la implementación para más detalles:</p>
+<pre class="cpp"><code>map&lt;pair&lt;int, int&gt;, int&gt; tri[maxN];
+
+int main() {
+  cin &gt;&gt; n;
+  for (int i = 1; i &lt;= n; ++i) {
+    cin &gt;&gt; x[i] &gt;&gt; y[i];
+  }
+  for (int i = 1; i &lt;= n; ++i) {
+    for (int j = 1; j &lt;= n; ++j) {
+      if (i == j) {
+        continue;
+      }
+      int vx = x[i] - x[j];
+      int vy = y[i] - y[j];
+      int g = __gcd(abs(vx), abs(vy));
+      vx /= g;
+      vy /= g;
+      if (vx &lt; 0 or vx == 0 and vy &lt; 0) {
+        vx = -vx;
+        vy = -vy;
+      }
+      tri[i][{vx, vy}] += 1;
+    }
+  }
+  long long ans = 0;
+  for (int i = 1; i &lt;= n; ++i) {
+    for (auto v : tri[i]) {
+      ans += (n-1 - v.second) * v.second; 
+    }
+  }
+  cout &lt;&lt; ans / 6 &lt;&lt; endl;
+  return 0;
+}</code></pre>
+<p>Así, hemos solucionado el problema en <span class="math inline">\(O(n^2 \log n)\)</span>.</p>
+<div class="topic">
+Búsqueda en todas las permutaciones
+</div>
+<p>Hay problemas donde necesitamos buscar todas las permutaciones de <span class="math inline">\([1, 2, 3, \dots, n]\)</span> para encontrar una solución. Por suerte, para generar todas las permutaciones de un vector podemos hacer uso de la STL. Ejemplo:</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main () {
+  int n = 4;
+  vector &lt;int&gt; arr(n);
+  iota(begin(arr), end(arr), 1);
+  // the array must be sorted or you won&#39;t get all the permutations
+  do {
+    for (int arr_i: arr) {
+      cout &lt;&lt; arr_i &lt;&lt; &#39; &#39;;
+    }
+    cout &lt;&lt; &#39;\n&#39;;
+  } while (next_permutation(begin(arr), end(arr)));
+  return (0);
+}</code></pre>
+<p>El anterior código tiene una complejidad de <span class="math inline">\(O(n! n)\)</span>.</p>
+<p>Ahora, veamos como podemos usar esta idea en <a href="https://codeforces.com/problemset/problem/910/C">este problema</a>.</p>
+<p><strong>Solución:</strong></p>
+<p>Notemos que <span class="math inline">\(abcdefghij\)</span> será una permutación de <span class="math inline">\(0123456789\)</span>. Luego, podemos buscar una respuesta en <span class="math inline">\(O(\Sigma !n)\)</span> con <span class="math inline">\(\Sigma = 10\)</span>. Pero <span class="math inline">\(1 \leq n \leq 1000\)</span> así que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un contador de frecuencia por posiciones y luego simular la suma con ello. Así lograriamos una solución en <span class="math inline">\(O(\Sigma!LS)\)</span> donde <span class="math inline">\(S = 10 \land L \leq 6\)</span>. L es la cantidad máximo de dígitos de los números.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+const int LEN = 6, SIGMA = 10;
+
+int cnt[LEN + 1][SIGMA + 1], val[SIGMA + 1];
+bool invalid[SIGMA + 1];
+
+int main () {
+  int n;
+  cin &gt;&gt; n;
+  for (int i = 0; i &lt; n; i++) {
+    string number;
+    cin &gt;&gt; number;
+    invalid[number[0] - &#39;a&#39;] = true;
+    int sz = number.size();
+    for (int j = 0; j &lt; sz; j++) {
+      cnt[LEN - sz + j][number[j] - &#39;a&#39;]++;
+    }
+  }
+  string sigma = &quot;abcdefghij&quot;;
+  int ans = INT_MAX;
+  do {
+    if (invalid[sigma[0] - &#39;a&#39;]) continue;
+    int p = 0;
+    for (const char ch: sigma) val[ch - &#39;a&#39;] = p++;
+    int sum = 0, carry = 0, power = 1;
+    for (int i = LEN - 1; i &gt;= 0; i--) {
+      int ac = 0;
+      for (int j = 0; j &lt; SIGMA; j++) {
+        ac += cnt[i][j] * val[j];
+      }
+      ac += carry;
+      sum = sum + power * (ac % 10);
+      power *= 10;
+      carry = ac / 10;
+    }
+    while (carry) {
+      sum = sum + power * (carry % 10);
+      power *= 10;
+      carry /= 10;
+    }
+    ans = min(ans, sum);
+  } while (next_permutation(begin(sigma), end(sigma)));
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+<div class="topic">
+Más ejemplos
+</div>
+<ul>
+<li><a href="https://codeforces.com/problemset/problem/633/D">Fibonacci-ish</a></li>
+</ul>
+<p><strong>Problema:</strong> Dado un array de <span class="math inline">\(n\)</span> números. Encontrar el tamaño de la secuencia más grande que se puede formar con los elementos del array (cada elemento es tomado a lo más una vez) donde la secuencia es de la forma.</p>
+<p><span class="math display">\[f_0 = a\]</span> <span class="math display">\[f_1 = b\]</span> <span class="math display">\[f_k = f_{k - 1} + f_{k - 2} \quad k \geq 2 \land f_k \text{ aún no ha sido tomado}\]</span></p>
+<p><span class="math display">\[1 \leq n \leq 10^3\]</span> <span class="math display">\[-10^9 \leq arr[i] \leq 10^9\]</span></p>
+<p><strong>Solución:</strong></p>
+<p>Si fijamos <span class="math inline">\(f_0, f_1\)</span> podemos simular ir formando la secuencia deseada (notemos que <span class="math inline">\(f_0 = f_1 = 0\)</span> se puede tratar como un caso especial). Así, podemos lograr una solución en <span class="math inline">\(O(n * n * k)\)</span> donde <span class="math inline">\(k\)</span> es el tamaño de la secuencia más larga. Sin embargo, <span class="math inline">\(k\)</span> tomará valores pequeños, pues <span class="math inline">\(f\)</span> crece muy rápido. Por ejemplo, cuando <span class="math inline">\(f_0 = 0, f_1 = 1, f_{95} &gt; 10^{18}\)</span>. De manera que nuestra solución es lo suficientemente rápida para los límites del problema.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main () {
+  int n;
+  cin &gt;&gt; n;
+  vector &lt;int&gt; arr(n);
+  map &lt;int, int&gt; frec;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; arr[i];
+    frec[arr[i]]++;
+  }
+  int ans = 0;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      if (i == j) continue;
+      vector &lt;int&gt; deleted = {arr[i], arr[j]};
+      frec[arr[i]]--;
+      frec[arr[j]]--;
+      int a = arr[i], b = arr[j];
+      if (a == 0 and b == 0) {
+        ans = max(ans, 2 + frec[0]);
+        frec[0] += 2;
+        continue;
+      }
+      int cnt = 2;
+      while (true) {
+        int c = (a + b);
+        if (frec[c] == 0) break;
+        frec[c]--;
+        deleted.push_back(c);
+        a = b;
+        b = c;
+        cnt++;
+      }
+      for (int elem: deleted) {
+        frec[elem]++;
+      }
+      ans = max(ans, cnt);
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+<ul>
+<li><a href="https://gist.github.com/miguelAlessandro/f588d159a768dc43cc1ec9b81b27bd57i">Notas de fuerza bruta</a></li>
+<li><a href="https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-07/clase-07.ipynb">PCUNI-2019. Clase 7</a></li>
+<li><a href="https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf">Competitive Programmer’s Handbook, chapters 5, 8</a></li>
+</ul>
+<div class="topic">
+Contest
+</div>
+<p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/353529">aquí</a>.</p>
+<p>Las soluciones se subirán cuando termine el contest.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

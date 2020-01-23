@@ -296,17 +296,22 @@ $(document).ready(function () {
       <a href="class-03.html">Contest 1</a>
     </li>
     <li>
-      <a href="class-04.html">Number Theory</a>
+      <a href="class-04.html">Teoría de números</a>
     </li>
     <li class="dropdown-header">Semana 3</li>
     <li>
-      <a href="class-05.html">Brute Force I</a>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -512,7 +517,7 @@ else {
 <p>Lamentablemente si queremos verificar que los n primeros numeros sean primos, esto nos demoraria <span class="math inline">\(O(n\sqrt n)\)</span></p>
 </div>
 <div id="criba-de-eratostenes" class="section level3">
-<h3>Criba de eratostenes</h3>
+<h3>Criba de Eratostenes</h3>
 <p>La criba de Eratostenes nos presenta un metodo simple para saber si los primeros n números y corre en un tiempo <span class="math inline">\(O(n\log\log n)\)</span>, la idea es eliminando de menor a mayor todos los números que son múltiplos de algún primo.</p>
 <pre class="cpp"><code>int n;
 vector&lt;char&gt; is_prime(n+1, true);
@@ -562,6 +567,10 @@ while (n != 1) {
   }
   t.push_back({p, e});
 }</code></pre>
+<div class="topic">
+Contest
+</div>
+<p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/352567">aquí</a>.</p>
 </div>
 </div>
 </div>

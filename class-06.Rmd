@@ -1,0 +1,372 @@
+---
+title: "Clase 06: Fuerza Bruta II"
+author: "Leonidas"
+date: "21-01-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+<div class="topic">Two Pointers</div>
+
+Esta técnica es usualmente usada en un array. Mantenemos un puntero al primer
+elemento y uno al elemento final. El primer puntero se incrementará y el
+segundo disminuirá (también encontrarás variantes de esta idea). En la
+práctica, en lugar de usar un puntero se suele usar dos enteros que indican los
+indices del array al que actualmente estamos apuntado.
+
+Veamos esta técnica con un ejemplo:
+
+**Problema:** Recibirás un array $n$ de $n$ elementos. Debes imprimir la menor
+cantidad de intervalos $[l_i, r_i] \mid a_i = a_j \forall \, i, j \in [l_i,
+r_i]$ \land $[l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n]$.
+
+
+$$1 \leq n \leq 10^5$$
+
+**Ejemplo:**
+
+**Entrada:**
+
+$n = 7$
+
+$a = 1\ 1\ 1\ 2\ 2\ 3\ 3$
+
+**Salida:**
+
+$1\ 3$
+
+$4\ 5$
+
+$6\ 7$
+
+### Primera implementación
+
+```c++
+vector <pair <int, int>> solution1 (const vector <int>& arr) {
+  int n = arr.size();
+  vector <bool> vis(n, false);
+  vector <pair <int, int>> ret;
+  for (int l = 0; l < n; l++) {
+    if (vis[l]) continue;
+    int L = l;
+    int R = l;
+    for (int r = l; r < n and arr[l] == arr[r]; r++) {
+      vis[r] = true;
+      R = r;
+    }
+    ret.push_back({1 + L, 1 + R});
+  }
+  return ret;  
+}
+```
+
+### Segunda implementación
+
+```c++
+vector <pair <int, int>> solution2 (const vector <int>& arr) {
+  int n = arr.size();
+  vector <pair <int, int>> ret;
+  int l = 0;
+  while (l < n) {
+    int r = l;
+    while (r + 1 < n and arr[l] == arr[r + 1]) r++;
+    ret.push_back({1 + l, 1 + r});
+    l = r + 1;
+  }
+  return ret;  
+}
+```
+
+[Full code](./code/class-06/intervals.cpp)
+
+La complejidad de ambas implementaciones es $O(n)$.
+
+Ahora, veamos esta técnica en [este problema](https://leetcode.com/problems/two-sum/).
+
+**Problema (2 sum problem):** Recibirás un array $a$ de $n$ elementos positivos
+y un entero $x$. Debes imprimir dos números $i, j \mid i \not = j \land a_i
++ a_j = target$. Esta garantizado que una solución siempre existe.
+
+Para este problema podemos usar la técnica two pointers + sorting y tener una
+solución en $O(n \log n)$.
+
+Primero ordenamos el array e inicializamos $l = 0, r = n - 1$. $l$ solo podrá
+incrementar y $r$ solo podrá disminuir. Ahora, por la propiedad de tricotomía
+solo hay 3 casos:
+
+* $a[l] + a[r] = target$
+  
+  Entonces, ya tenemos una repuesta y nuestro programa termina.
+
+* $a[l] + a[r] < target$
+
+  En este caso necesitamos obtener una suma menor. Disminuir $r$ solo hará que
+  la suma se mantenga igual o que disminuya. Aumentar $l$ hará que la suma siga
+  igual o aumente. Entonces, incrementamos $l$.
+
+* $a[l] + a[r] > target$
+
+  Necesitamos obtener una suma menor. Analizando como el caso anterior
+  determinamos que debemos disminuir a $r$.
+
+```c++
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector <pair <int, int>> arr;
+        int index = 0;
+        for (int elem: nums) {
+            arr.push_back({elem, index});
+            index++;
+        }
+        sort(begin(arr), end(arr));
+        int n = nums.size();
+        int l = 0, r = n - 1;
+        vector <int> ans;
+        while (l < r) {
+            if (arr[l].first + arr[r].first == target) {
+                ans = {arr[l].second, arr[r].second};
+                break;
+            }
+            if (arr[l].first + arr[r].first < target) l++;
+            else r--;
+        }
+        return ans;
+    }
+};
+```
+
+¿ Como podríamos resolver el problema si ahora necesitaramos encontrar tres
+números $x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target$ ?
+
+<div class="topic">Contribution technique</div>
+
+Esta técnica nos puede ayudar a redicir cálculos con muchas variables
+a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria
+y conteo.
+
+**Problema:** Recibirás $n$ puntos en el plano. Hallar cuántos triángulos no
+degenerados se pueden formar usando los puntos como vértices.
+
+$$1 \leq n \leq 2000$$
+
+Notamos que necesitamos algo menor que una solución $O(n^3)$.
+Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un
+triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por
+ese punto, si $x$ de los puntos que nos dieron están en esta recta, entonces $n - x$ puntos están fuera de esta. Así, ya tenemos un vertice del triángulo (el vértice fijo), el segundo vertice puede ser cualquiera de los otros puntos de la recta ($x - 1$) y el tercer vértice cualquier punto fuera de la recta ($n - x$). De manera que fijando un punto y una recta que pase por este, estamos obteniendo $(x - 1) \cdot (n - x)$ triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.
+
+La recta se mapea usando su vector dirección. Ver la implementación para más
+detalles:
+
+```c++
+map<pair<int, int>, int> tri[maxN];
+
+int main() {
+  cin >> n;
+  for (int i = 1; i <= n; ++i) {
+    cin >> x[i] >> y[i];
+  }
+  for (int i = 1; i <= n; ++i) {
+    for (int j = 1; j <= n; ++j) {
+      if (i == j) {
+        continue;
+      }
+      int vx = x[i] - x[j];
+      int vy = y[i] - y[j];
+      int g = __gcd(abs(vx), abs(vy));
+      vx /= g;
+      vy /= g;
+      if (vx < 0 or vx == 0 and vy < 0) {
+        vx = -vx;
+        vy = -vy;
+      }
+      tri[i][{vx, vy}] += 1;
+    }
+  }
+  long long ans = 0;
+  for (int i = 1; i <= n; ++i) {
+    for (auto v : tri[i]) {
+      ans += (n-1 - v.second) * v.second; 
+    }
+  }
+  cout << ans / 6 << endl;
+  return 0;
+}
+```
+
+Así, hemos solucionado el problema en $O(n^2 \log n)$.
+
+<div class="topic">Búsqueda en todas las permutaciones</div>
+
+Hay problemas donde necesitamos buscar todas las permutaciones de $[1, 2, 3,
+\dots, n]$ para encontrar una solución. Por suerte, para generar todas las permutaciones de
+un vector podemos hacer uso de la STL. Ejemplo:
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main () {
+  int n = 4;
+  vector <int> arr(n);
+  iota(begin(arr), end(arr), 1);
+  // the array must be sorted or you won't get all the permutations
+  do {
+    for (int arr_i: arr) {
+      cout << arr_i << ' ';
+    }
+    cout << '\n';
+  } while (next_permutation(begin(arr), end(arr)));
+  return (0);
+}
+```
+
+El anterior código tiene una complejidad de $O(n! n)$.
+
+Ahora, veamos como podemos usar esta idea en [este problema](https://codeforces.com/problemset/problem/910/C). 
+
+**Solución:**
+
+Notemos que $abcdefghij$ será una permutación de $0123456789$. Luego, podemos
+buscar una respuesta en $O(\Sigma !n)$ con $\Sigma = 10$. Pero $1 \leq n \leq 1000$ así
+que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un
+contador de frecuencia por posiciones y luego simular la suma con ello. Así
+lograriamos una solución en $O(\Sigma!LS)$ donde $S = 10 \land L \leq 6$.
+L es la cantidad máximo de dígitos de los números.
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int LEN = 6, SIGMA = 10;
+
+int cnt[LEN + 1][SIGMA + 1], val[SIGMA + 1];
+bool invalid[SIGMA + 1];
+
+int main () {
+  int n;
+  cin >> n;
+  for (int i = 0; i < n; i++) {
+    string number;
+    cin >> number;
+    invalid[number[0] - 'a'] = true;
+    int sz = number.size();
+    for (int j = 0; j < sz; j++) {
+      cnt[LEN - sz + j][number[j] - 'a']++;
+    }
+  }
+  string sigma = "abcdefghij";
+  int ans = INT_MAX;
+  do {
+    if (invalid[sigma[0] - 'a']) continue;
+    int p = 0;
+    for (const char ch: sigma) val[ch - 'a'] = p++;
+    int sum = 0, carry = 0, power = 1;
+    for (int i = LEN - 1; i >= 0; i--) {
+      int ac = 0;
+      for (int j = 0; j < SIGMA; j++) {
+        ac += cnt[i][j] * val[j];
+      }
+      ac += carry;
+      sum = sum + power * (ac % 10);
+      power *= 10;
+      carry = ac / 10;
+    }
+    while (carry) {
+      sum = sum + power * (carry % 10);
+      power *= 10;
+      carry /= 10;
+    }
+    ans = min(ans, sum);
+  } while (next_permutation(begin(sigma), end(sigma)));
+  cout << ans << endl;
+  return (0);
+}
+```
+
+<div class="topic">Más ejemplos</div>
+
+- [Fibonacci-ish](https://codeforces.com/problemset/problem/633/D)
+
+**Problema:** Dado un array de $n$ números. Encontrar el tamaño de la secuencia
+más grande que se puede formar con los elementos del array (cada elemento es
+tomado a lo más una vez) donde la secuencia es de la forma.
+
+$$f_0 = a$$
+$$f_1 = b$$
+$$f_k = f_{k - 1} + f_{k - 2} \quad k \geq 2 \land f_k \text{ aún no ha sido tomado}$$
+
+$$1 \leq n \leq 10^3$$
+$$-10^9 \leq arr[i] \leq 10^9$$
+
+**Solución:**
+
+Si fijamos $f_0, f_1$ podemos simular ir formando la secuencia deseada (notemos
+que $f_0 = f_1 = 0$ se puede tratar como un caso especial). Así, podemos lograr
+una solución en $O(n * n * k)$ donde $k$ es el tamaño de la secuencia más
+larga. Sin embargo, $k$ tomará valores pequeños, pues $f$ crece muy rápido. Por
+ejemplo, cuando $f_0 = 0, f_1 = 1, f_{95} > 10^{18}$. De manera que nuestra
+solución es lo suficientemente rápida para los límites del problema.
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main () {
+  int n;
+  cin >> n;
+  vector <int> arr(n);
+  map <int, int> frec;
+  for (int i = 0; i < n; i++) {
+    cin >> arr[i];
+    frec[arr[i]]++;
+  }
+  int ans = 0;
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      if (i == j) continue;
+      vector <int> deleted = {arr[i], arr[j]};
+      frec[arr[i]]--;
+      frec[arr[j]]--;
+      int a = arr[i], b = arr[j];
+      if (a == 0 and b == 0) {
+        ans = max(ans, 2 + frec[0]);
+        frec[0] += 2;
+        continue;
+      }
+      int cnt = 2;
+      while (true) {
+        int c = (a + b);
+        if (frec[c] == 0) break;
+        frec[c]--;
+        deleted.push_back(c);
+        a = b;
+        b = c;
+        cnt++;
+      }
+      for (int elem: deleted) {
+        frec[elem]++;
+      }
+      ans = max(ans, cnt);
+    }
+  }
+  cout << ans << endl;
+  return (0);
+}
+```
+
+* [Notas de fuerza bruta](https://gist.github.com/miguelAlessandro/f588d159a768dc43cc1ec9b81b27bd57i)
+* [PCUNI-2019. Clase 7](https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-07/clase-07.ipynb)
+* [Competitive Programmer’s Handbook, chapters 5, 8](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf)
+
+<div class=topic>Contest</div>
+
+El contest lo puedes encontrar [aquí](https://vjudge.net/contest/353529).
+
+Las soluciones se subirán cuando termine el contest.
