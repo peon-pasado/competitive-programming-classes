@@ -19,9 +19,10 @@ indices del array al que actualmente estamos apuntado.
 
 Veamos esta técnica con un ejemplo:
 
-**Problema:** Recibirás un array $n$ de $n$ elementos. Debes imprimir la menor
+**Problema:** Recibirás un array $a$ de $n$ elementos. Debes imprimir la menor
 cantidad de intervalos $[l_i, r_i] \mid a_i = a_j \forall \, i, j \in [l_i,
-r_i]$ \land $[l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n]$.
+r_i]$ \land $[l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n]
+\land$ todos los intervalos son disjuntos.
 
 
 $$1 \leq n \leq 10^5$$
@@ -87,7 +88,7 @@ La complejidad de ambas implementaciones es $O(n)$.
 Ahora, veamos esta técnica en [este problema](https://leetcode.com/problems/two-sum/).
 
 **Problema (2 sum problem):** Recibirás un array $a$ de $n$ elementos positivos
-y un entero $x$. Debes imprimir dos números $i, j \mid i \not = j \land a_i
+y un entero $target$. Debes imprimir dos números $i, j \mid i \not = j \land a_i
 + a_j = target$. Esta garantizado que una solución siempre existe.
 
 Para este problema podemos usar la técnica two pointers + sorting y tener una
@@ -103,7 +104,7 @@ solo hay 3 casos:
 
 * $a[l] + a[r] < target$
 
-  En este caso necesitamos obtener una suma menor. Disminuir $r$ solo hará que
+  En este caso necesitamos obtener una suma mayor. Disminuir $r$ solo hará que
   la suma se mantenga igual o que disminuya. Aumentar $l$ hará que la suma siga
   igual o aumente. Entonces, incrementamos $l$.
 
@@ -144,7 +145,7 @@ números $x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target$ ?
 
 <div class="topic">Contribution technique</div>
 
-Esta técnica nos puede ayudar a redicir cálculos con muchas variables
+Esta técnica nos puede ayudar a reducir cálculos con muchas variables
 a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria
 y conteo.
 

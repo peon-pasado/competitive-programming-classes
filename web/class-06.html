@@ -335,7 +335,7 @@ Two Pointers
 </div>
 <p>Esta técnica es usualmente usada en un array. Mantenemos un puntero al primer elemento y uno al elemento final. El primer puntero se incrementará y el segundo disminuirá (también encontrarás variantes de esta idea). En la práctica, en lugar de usar un puntero se suele usar dos enteros que indican los indices del array al que actualmente estamos apuntado.</p>
 <p>Veamos esta técnica con un ejemplo:</p>
-<p><strong>Problema:</strong> Recibirás un array <span class="math inline">\(n\)</span> de <span class="math inline">\(n\)</span> elementos. Debes imprimir la menor cantidad de intervalos <span class="math inline">\([l_i, r_i] \mid a_i = a_j \forall \, i, j \in [l_i, r_i]\)</span> <span class="math inline">\([l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n]\)</span>.</p>
+<p><strong>Problema:</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos. Debes imprimir la menor cantidad de intervalos <span class="math inline">\([l_i, r_i] \mid a_i = a_j \forall \, i, j \in [l_i, r_i]\)</span> <span class="math inline">\([l_1, r_1] \cup [l_2, r_2] \cup \dots \cup [l_m, r_m] = [1, n] \land\)</span> todos los intervalos son disjuntos.</p>
 <p><span class="math display">\[1 \leq n \leq 10^5\]</span></p>
 <p><strong>Ejemplo:</strong></p>
 <p><strong>Entrada:</strong></p>
@@ -381,14 +381,14 @@ Two Pointers
 <p><a href="./code/class-06/intervals.cpp">Full code</a></p>
 <p>La complejidad de ambas implementaciones es <span class="math inline">\(O(n)\)</span>.</p>
 <p>Ahora, veamos esta técnica en <a href="https://leetcode.com/problems/two-sum/">este problema</a>.</p>
-<p><strong>Problema (2 sum problem):</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos positivos y un entero <span class="math inline">\(x\)</span>. Debes imprimir dos números <span class="math inline">\(i, j \mid i \not = j \land a_i + a_j = target\)</span>. Esta garantizado que una solución siempre existe.</p>
+<p><strong>Problema (2 sum problem):</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos positivos y un entero <span class="math inline">\(target\)</span>. Debes imprimir dos números <span class="math inline">\(i, j \mid i \not = j \land a_i + a_j = target\)</span>. Esta garantizado que una solución siempre existe.</p>
 <p>Para este problema podemos usar la técnica two pointers + sorting y tener una solución en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <p>Primero ordenamos el array e inicializamos <span class="math inline">\(l = 0, r = n - 1\)</span>. <span class="math inline">\(l\)</span> solo podrá incrementar y <span class="math inline">\(r\)</span> solo podrá disminuir. Ahora, por la propiedad de tricotomía solo hay 3 casos:</p>
 <ul>
 <li><p><span class="math inline">\(a[l] + a[r] = target\)</span></p>
 <p>Entonces, ya tenemos una repuesta y nuestro programa termina.</p></li>
 <li><p><span class="math inline">\(a[l] + a[r] &lt; target\)</span></p>
-<p>En este caso necesitamos obtener una suma menor. Disminuir <span class="math inline">\(r\)</span> solo hará que la suma se mantenga igual o que disminuya. Aumentar <span class="math inline">\(l\)</span> hará que la suma siga igual o aumente. Entonces, incrementamos <span class="math inline">\(l\)</span>.</p></li>
+<p>En este caso necesitamos obtener una suma mayor. Disminuir <span class="math inline">\(r\)</span> solo hará que la suma se mantenga igual o que disminuya. Aumentar <span class="math inline">\(l\)</span> hará que la suma siga igual o aumente. Entonces, incrementamos <span class="math inline">\(l\)</span>.</p></li>
 <li><p><span class="math inline">\(a[l] + a[r] &gt; target\)</span></p>
 <p>Necesitamos obtener una suma menor. Analizando como el caso anterior determinamos que debemos disminuir a <span class="math inline">\(r\)</span>.</p></li>
 </ul>
@@ -420,7 +420,7 @@ public:
 <div class="topic">
 Contribution technique
 </div>
-<p>Esta técnica nos puede ayudar a redicir cálculos con muchas variables a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria y conteo.</p>
+<p>Esta técnica nos puede ayudar a reducir cálculos con muchas variables a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria y conteo.</p>
 <p><strong>Problema:</strong> Recibirás <span class="math inline">\(n\)</span> puntos en el plano. Hallar cuántos triángulos no degenerados se pueden formar usando los puntos como vértices.</p>
 <p><span class="math display">\[1 \leq n \leq 2000\]</span></p>
 <p>Notamos que necesitamos algo menor que una solución <span class="math inline">\(O(n^3)\)</span>. Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por ese punto, si <span class="math inline">\(x\)</span> de los puntos que nos dieron están en esta recta, entonces <span class="math inline">\(n - x\)</span> puntos están fuera de esta. Así, ya tenemos un vertice del triángulo (el vértice fijo), el segundo vertice puede ser cualquiera de los otros puntos de la recta (<span class="math inline">\(x - 1\)</span>) y el tercer vértice cualquier punto fuera de la recta (<span class="math inline">\(n - x\)</span>). De manera que fijando un punto y una recta que pase por este, estamos obteniendo <span class="math inline">\((x - 1) \cdot (n - x)\)</span> triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.</p>
