@@ -87,7 +87,7 @@ La complejidad de ambas implementaciones es $O(n)$.
 
 Ahora, veamos esta técnica en [este problema](https://leetcode.com/problems/two-sum/).
 
-**Problema (2 sum problem):** Recibirás un array $a$ de $n$ elementos positivos
+**Problema (2 sum problem):** Recibirás un array $a$ de $n$ elementos **positivos**
 y un entero $target$. Debes imprimir dos números $i, j \mid i \not = j \land a_i
 + a_j = target$. Esta garantizado que una solución siempre existe.
 
@@ -140,8 +140,39 @@ public:
 };
 ```
 
-¿ Como podríamos resolver el problema si ahora necesitaramos encontrar tres
-números $x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target$ ?
+**Extra:** Esta es otra solución usando STL + fijar una variable en $O(n \log n)$:
+
+```c++
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector <int> ans;
+        map <int, vector <int>> pos;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            pos[nums[i]].push_back(i);
+        }
+        for (int x = 0; x < n; x++) {
+            int k = target - nums[x];
+            if (pos.count(k)) {
+                int cnt = 0;
+                for (int y: pos[k]) {
+                    if (y != x) {
+                        ans = {x, y};
+                    }
+                    cnt++;
+                    if (cnt == 2) break;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
+
+¿ Cómo podríamos resolver el mismo problema si ahora necesitaramos encontrar tres
+números $x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target$
+? (Puedes obtener una solución en $O(n^2)$ usando two pointer y fijando una variable)
 
 <div class="topic">Contribution technique</div>
 
@@ -154,15 +185,17 @@ degenerados se pueden formar usando los puntos como vértices.
 
 $$1 \leq n \leq 2000$$
 
-Notamos que necesitamos algo menor que una solución $O(n^3)$.
+Notamos que necesitamos algo mejor que una solución $O(n^3)$.
 Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un
 triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por
-ese punto, si $x$ de los puntos que nos dieron están en esta recta, entonces $n - x$ puntos están fuera de esta. Así, ya tenemos un vertice del triángulo (el vértice fijo), el segundo vertice puede ser cualquiera de los otros puntos de la recta ($x - 1$) y el tercer vértice cualquier punto fuera de la recta ($n - x$). De manera que fijando un punto y una recta que pase por este, estamos obteniendo $(x - 1) \cdot (n - x)$ triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.
+ese punto, si $x$ de los puntos que nos dieron están en esta recta, entonces $n - x$ puntos están fuera de esta. Así, ya tenemos un vértice del triángulo (el vértice fijo), el segundo vértice puede ser cualquiera de los otros puntos de la recta ($x - 1$) y el tercer vértice cualquier punto fuera de la recta ($n - x$). De manera que fijando un punto y una recta que pase por este, estamos obteniendo $(x - 1) \cdot (n - x)$ triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.
 
 La recta se mapea usando su vector dirección. Ver la implementación para más
 detalles:
 
 ```c++
+#include <bits/stdc++.h>
+
 map<pair<int, int>, int> tri[maxN];
 
 int main() {
@@ -189,8 +222,8 @@ int main() {
   }
   long long ans = 0;
   for (int i = 1; i <= n; ++i) {
-    for (auto v : tri[i]) {
-      ans += (n-1 - v.second) * v.second; 
+    for (auto v: tri[i]) {
+      ans += (n - 1 - v.second) * v.second; 
     }
   }
   cout << ans / 6 << endl;
@@ -235,9 +268,9 @@ Ahora, veamos como podemos usar esta idea en [este problema](https://codeforces.
 Notemos que $abcdefghij$ será una permutación de $0123456789$. Luego, podemos
 buscar una respuesta en $O(\Sigma !n)$ con $\Sigma = 10$. Pero $1 \leq n \leq 1000$ así
 que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un
-contador de frecuencia por posiciones y luego simular la suma con ello. Así
+contador de frecuencia por posiciones y luego simular la suma con ello. Así, 
 lograriamos una solución en $O(\Sigma!LS)$ donde $S = 10 \land L \leq 6$.
-L es la cantidad máximo de dígitos de los números.
+L es la cantidad máxima de dígitos de los números.
 
 ```c++
 #include <bits/stdc++.h>
@@ -309,7 +342,7 @@ $$-10^9 \leq arr[i] \leq 10^9$$
 
 Si fijamos $f_0, f_1$ podemos simular ir formando la secuencia deseada (notemos
 que $f_0 = f_1 = 0$ se puede tratar como un caso especial). Así, podemos lograr
-una solución en $O(n * n * k)$ donde $k$ es el tamaño de la secuencia más
+una solución en $O(n * n * k * \log n)$ donde $k$ es el tamaño de la secuencia más
 larga. Sin embargo, $k$ tomará valores pequeños, pues $f$ crece muy rápido. Por
 ejemplo, cuando $f_0 = 0, f_1 = 1, f_{95} > 10^{18}$. De manera que nuestra
 solución es lo suficientemente rápida para los límites del problema.
@@ -364,7 +397,7 @@ int main () {
 
 * [Notas de fuerza bruta](https://gist.github.com/miguelAlessandro/f588d159a768dc43cc1ec9b81b27bd57i)
 * [PCUNI-2019. Clase 7](https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-07/clase-07.ipynb)
-* [Competitive Programmer’s Handbook, chapters 5, 8](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf)
+* [Competitive Programmer’s Handbook, capítulos 5, 8](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf)
 
 <div class=topic>Contest</div>
 

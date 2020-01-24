@@ -381,7 +381,7 @@ Two Pointers
 <p><a href="./code/class-06/intervals.cpp">Full code</a></p>
 <p>La complejidad de ambas implementaciones es <span class="math inline">\(O(n)\)</span>.</p>
 <p>Ahora, veamos esta técnica en <a href="https://leetcode.com/problems/two-sum/">este problema</a>.</p>
-<p><strong>Problema (2 sum problem):</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos positivos y un entero <span class="math inline">\(target\)</span>. Debes imprimir dos números <span class="math inline">\(i, j \mid i \not = j \land a_i + a_j = target\)</span>. Esta garantizado que una solución siempre existe.</p>
+<p><strong>Problema (2 sum problem):</strong> Recibirás un array <span class="math inline">\(a\)</span> de <span class="math inline">\(n\)</span> elementos <strong>positivos</strong> y un entero <span class="math inline">\(target\)</span>. Debes imprimir dos números <span class="math inline">\(i, j \mid i \not = j \land a_i + a_j = target\)</span>. Esta garantizado que una solución siempre existe.</p>
 <p>Para este problema podemos usar la técnica two pointers + sorting y tener una solución en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <p>Primero ordenamos el array e inicializamos <span class="math inline">\(l = 0, r = n - 1\)</span>. <span class="math inline">\(l\)</span> solo podrá incrementar y <span class="math inline">\(r\)</span> solo podrá disminuir. Ahora, por la propiedad de tricotomía solo hay 3 casos:</p>
 <ul>
@@ -416,16 +416,44 @@ public:
         return ans;
     }
 };</code></pre>
-<p>¿ Como podríamos resolver el problema si ahora necesitaramos encontrar tres números <span class="math inline">\(x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target\)</span> ?</p>
+<p><strong>Extra:</strong> Esta es otra solución usando STL + fijar una variable en <span class="math inline">\(O(n \log n)\)</span>:</p>
+<pre class="cpp"><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        vector &lt;int&gt; ans;
+        map &lt;int, vector &lt;int&gt;&gt; pos;
+        int n = nums.size();
+        for (int i = 0; i &lt; n; i++) {
+            pos[nums[i]].push_back(i);
+        }
+        for (int x = 0; x &lt; n; x++) {
+            int k = target - nums[x];
+            if (pos.count(k)) {
+                int cnt = 0;
+                for (int y: pos[k]) {
+                    if (y != x) {
+                        ans = {x, y};
+                    }
+                    cnt++;
+                    if (cnt == 2) break;
+                }
+            }
+        }
+        return ans;
+    }
+};</code></pre>
+<p>¿ Cómo podríamos resolver el mismo problema si ahora necesitaramos encontrar tres números <span class="math inline">\(x, y, z \mid x \not = y \not = z \land a_x + a_y + a_z = target\)</span> ? (Puedes obtener una solución en <span class="math inline">\(O(n^2)\)</span> usando two pointer y fijando una variable)</p>
 <div class="topic">
 Contribution technique
 </div>
 <p>Esta técnica nos puede ayudar a reducir cálculos con muchas variables a cálculos con una sola. Los problemas de este tipo suelen ser de combinatoria y conteo.</p>
 <p><strong>Problema:</strong> Recibirás <span class="math inline">\(n\)</span> puntos en el plano. Hallar cuántos triángulos no degenerados se pueden formar usando los puntos como vértices.</p>
 <p><span class="math display">\[1 \leq n \leq 2000\]</span></p>
-<p>Notamos que necesitamos algo menor que una solución <span class="math inline">\(O(n^3)\)</span>. Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por ese punto, si <span class="math inline">\(x\)</span> de los puntos que nos dieron están en esta recta, entonces <span class="math inline">\(n - x\)</span> puntos están fuera de esta. Así, ya tenemos un vertice del triángulo (el vértice fijo), el segundo vertice puede ser cualquiera de los otros puntos de la recta (<span class="math inline">\(x - 1\)</span>) y el tercer vértice cualquier punto fuera de la recta (<span class="math inline">\(n - x\)</span>). De manera que fijando un punto y una recta que pase por este, estamos obteniendo <span class="math inline">\((x - 1) \cdot (n - x)\)</span> triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.</p>
+<p>Notamos que necesitamos algo mejor que una solución <span class="math inline">\(O(n^3)\)</span>. Entonces, recordamos que si tenemos 3 puntos no colineales, tenemos un triángulo no degenerado. Así, si tomamos un punto fijo y una recta que pase por ese punto, si <span class="math inline">\(x\)</span> de los puntos que nos dieron están en esta recta, entonces <span class="math inline">\(n - x\)</span> puntos están fuera de esta. Así, ya tenemos un vértice del triángulo (el vértice fijo), el segundo vértice puede ser cualquiera de los otros puntos de la recta (<span class="math inline">\(x - 1\)</span>) y el tercer vértice cualquier punto fuera de la recta (<span class="math inline">\(n - x\)</span>). De manera que fijando un punto y una recta que pase por este, estamos obteniendo <span class="math inline">\((x - 1) \cdot (n - x)\)</span> triángulos no degenerados. Así, podriamos hacer fuerza bruta para fijar cada punto y una recta y ver en cuanto contribuye eso a la respuesta. Sin embargo, estaríamos haciendo doble conteo (cada punto se contaría 3 veces y en 2 direcciones). Por ello, la respuesta final se debe dividir por 6.</p>
 <p>La recta se mapea usando su vector dirección. Ver la implementación para más detalles:</p>
-<pre class="cpp"><code>map&lt;pair&lt;int, int&gt;, int&gt; tri[maxN];
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+map&lt;pair&lt;int, int&gt;, int&gt; tri[maxN];
 
 int main() {
   cin &gt;&gt; n;
@@ -451,8 +479,8 @@ int main() {
   }
   long long ans = 0;
   for (int i = 1; i &lt;= n; ++i) {
-    for (auto v : tri[i]) {
-      ans += (n-1 - v.second) * v.second; 
+    for (auto v: tri[i]) {
+      ans += (n - 1 - v.second) * v.second; 
     }
   }
   cout &lt;&lt; ans / 6 &lt;&lt; endl;
@@ -483,7 +511,7 @@ int main () {
 <p>El anterior código tiene una complejidad de <span class="math inline">\(O(n! n)\)</span>.</p>
 <p>Ahora, veamos como podemos usar esta idea en <a href="https://codeforces.com/problemset/problem/910/C">este problema</a>.</p>
 <p><strong>Solución:</strong></p>
-<p>Notemos que <span class="math inline">\(abcdefghij\)</span> será una permutación de <span class="math inline">\(0123456789\)</span>. Luego, podemos buscar una respuesta en <span class="math inline">\(O(\Sigma !n)\)</span> con <span class="math inline">\(\Sigma = 10\)</span>. Pero <span class="math inline">\(1 \leq n \leq 1000\)</span> así que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un contador de frecuencia por posiciones y luego simular la suma con ello. Así lograriamos una solución en <span class="math inline">\(O(\Sigma!LS)\)</span> donde <span class="math inline">\(S = 10 \land L \leq 6\)</span>. L es la cantidad máximo de dígitos de los números.</p>
+<p>Notemos que <span class="math inline">\(abcdefghij\)</span> será una permutación de <span class="math inline">\(0123456789\)</span>. Luego, podemos buscar una respuesta en <span class="math inline">\(O(\Sigma !n)\)</span> con <span class="math inline">\(\Sigma = 10\)</span>. Pero <span class="math inline">\(1 \leq n \leq 1000\)</span> así que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un contador de frecuencia por posiciones y luego simular la suma con ello. Así, lograriamos una solución en <span class="math inline">\(O(\Sigma!LS)\)</span> donde <span class="math inline">\(S = 10 \land L \leq 6\)</span>. L es la cantidad máxima de dígitos de los números.</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
 
 using namespace std;
@@ -542,7 +570,7 @@ Más ejemplos
 <p><span class="math display">\[f_0 = a\]</span> <span class="math display">\[f_1 = b\]</span> <span class="math display">\[f_k = f_{k - 1} + f_{k - 2} \quad k \geq 2 \land f_k \text{ aún no ha sido tomado}\]</span></p>
 <p><span class="math display">\[1 \leq n \leq 10^3\]</span> <span class="math display">\[-10^9 \leq arr[i] \leq 10^9\]</span></p>
 <p><strong>Solución:</strong></p>
-<p>Si fijamos <span class="math inline">\(f_0, f_1\)</span> podemos simular ir formando la secuencia deseada (notemos que <span class="math inline">\(f_0 = f_1 = 0\)</span> se puede tratar como un caso especial). Así, podemos lograr una solución en <span class="math inline">\(O(n * n * k)\)</span> donde <span class="math inline">\(k\)</span> es el tamaño de la secuencia más larga. Sin embargo, <span class="math inline">\(k\)</span> tomará valores pequeños, pues <span class="math inline">\(f\)</span> crece muy rápido. Por ejemplo, cuando <span class="math inline">\(f_0 = 0, f_1 = 1, f_{95} &gt; 10^{18}\)</span>. De manera que nuestra solución es lo suficientemente rápida para los límites del problema.</p>
+<p>Si fijamos <span class="math inline">\(f_0, f_1\)</span> podemos simular ir formando la secuencia deseada (notemos que <span class="math inline">\(f_0 = f_1 = 0\)</span> se puede tratar como un caso especial). Así, podemos lograr una solución en <span class="math inline">\(O(n * n * k * \log n)\)</span> donde <span class="math inline">\(k\)</span> es el tamaño de la secuencia más larga. Sin embargo, <span class="math inline">\(k\)</span> tomará valores pequeños, pues <span class="math inline">\(f\)</span> crece muy rápido. Por ejemplo, cuando <span class="math inline">\(f_0 = 0, f_1 = 1, f_{95} &gt; 10^{18}\)</span>. De manera que nuestra solución es lo suficientemente rápida para los límites del problema.</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
 
 using namespace std;
@@ -591,7 +619,7 @@ int main () {
 <ul>
 <li><a href="https://gist.github.com/miguelAlessandro/f588d159a768dc43cc1ec9b81b27bd57i">Notas de fuerza bruta</a></li>
 <li><a href="https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-07/clase-07.ipynb">PCUNI-2019. Clase 7</a></li>
-<li><a href="https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf">Competitive Programmer’s Handbook, chapters 5, 8</a></li>
+<li><a href="https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf">Competitive Programmer’s Handbook, capítulos 5, 8</a></li>
 </ul>
 <div class="topic">
 Contest
