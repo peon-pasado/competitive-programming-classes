@@ -22,4 +22,4 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 3
 - [Fuerza Bruta I](./class-05.html)
-- [Fuerza Bruta II](./class-05.html)
+- [Fuerza Bruta II](./class-06.html)
