@@ -338,7 +338,423 @@ $(document).ready(function () {
 Contest
 </div>
 <p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/354182">aquí</a>.</p>
-<p>Las soluciones se subirán cuando termine el contest.</p>
+<!-- Begins problem A -->
+<div id="A" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+A: Fifty-Fifty
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemA" class="collapse">
+<div id="a-fifty-fifty" class="section level3 card-body solution-body">
+<h3><a href="https://abc132.contest.atcoder.jp/tasks/abc132_a" target="_blank">A: Fifty-Fifty</a></h3>
+<p>Si ordenas las letras del string solo necesitas chequear que las primeras dos letras son iguales, que las últimas dos letras son iguales y que la segunda y tercera letra son distintas. Así, tenemos una solución en <span class="math inline">\(O(1)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemA" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  string s;
+  cin &gt;&gt; s;
+  sort(all(s));
+  if (s[0] == s[1] and s[2] == s[3] and s[1] != s[2]) cout &lt;&lt; &quot;Yes\n&quot;;
+  else cout &lt;&lt; &quot;No\n&quot;;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem A -->
+<!-- Begins problem B -->
+<div id="B" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+B: Gathering Children
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemB" class="collapse">
+<div id="b-gathering-children" class="section level3 card-body solution-body">
+<h3><a href="https://abc136.contest.atcoder.jp/tasks/abc136_d?lang=en" target="_blank">B: Gathering Children</a></h3>
+<p>Primero resuelve el problema si solo hubiera strings de la forma <span class="math inline">\(RRR \dots RLLLL \dots L\)</span>. Es sencillo determinar cuántos elementos quedaran en cada posición si la cantidad de movimientos es muy grande. Ahora, cada string lo podemos poder como la unión de strings de la anterior forma y así podemos saber la respuesta en todo el segmento en <span class="math inline">\(O(|s|)\)</span>. Ver el código para más detalles.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemB" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  string s;
+  cin &gt;&gt; s;
+  vector &lt;int&gt; arr;
+  for (int l = 0; l &lt; sz(s);) {
+    int r = l;
+    while (r + 1 &lt; sz(s) and s[l] == s[r + 1]) r++;
+    arr.push_back(r - l + 1);
+    l = r + 1;
+  }
+  vector &lt;int&gt; ans(sz(s));
+  int cur = 0;
+  for (int pos = 0; pos &lt; sz(arr); pos += 2) {
+    cur = cur + arr[pos];
+    int l = cur - 1;
+    int r = cur;
+    ans[l] += (arr[pos] + 1) / 2;
+    ans[r] += arr[pos] / 2;
+    ans[r] += (arr[pos + 1] + 1) / 2;
+    ans[l] += arr[pos + 1] / 2;
+    cur += arr[pos + 1];
+  }
+  for (int i = 0; i &lt; sz(s); i++) cout &lt;&lt; ans[i] &lt;&lt; &quot; \n&quot;[i == sz(s) - 1];
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem B -->
+<!-- Begins problem C -->
+<div id="C" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+C: DivRem Number
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemC" class="collapse">
+<div id="c-divrem-number" class="section level3 card-body solution-body">
+<h3><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_d?lang=en" target="_blank">C: DivRem Number</a></h3>
+<p><span class="math display">\[\text{Sea }k = \lfloor \frac{N}{m} \rfloor = N \mod m\]</span></p>
+<p>Sabemos que:</p>
+<p><span class="math display">\[N = \lfloor \frac{N}{m} \rfloor \cdot m + N \mod m\]</span></p>
+<p><span class="math display">\[\to N = k m + k\]</span> <span class="math display">\[\to N = (k + 1) * m\]</span></p>
+<p>Esto es <span class="math inline">\(k + 1\)</span> debe ser un divisor de N. Así, podemos generar todos los divisores de <span class="math inline">\(N\)</span> y comprobar si se cumple la condición del problema en <span class="math inline">\(O(\sqrt{N})\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemC" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define sz(A) int(A.size())
+
+using namespace std;
+
+typedef long long ll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  ll n;
+  cin &gt;&gt; n;
+  vector &lt;ll&gt; div;
+  for (ll d = 1; d * d &lt;= n; d++) {
+    if (n % d == 0) {
+      if (d != 1) div.push_back(d);
+      if (d != n / d) div.push_back(n / d);
+    }
+  }
+  ll ans = 0;
+  for (ll d: div) {
+    ll m = d - 1;
+    if (n % m == n / m) {
+      ans += m;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem C -->
+<!-- Begins problem D -->
+<div id="D" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+D: Takahashi Calendar
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemD" class="collapse">
+<div id="d-takahashi-calendar" class="section level3 card-body solution-body">
+<h3><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_a?lang=en" target="_blank">D: Takahashi Calendar</a></h3>
+<p>Solo busca todas las opciones con fuerza bruta en <span class="math inline">\(O(MD)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemD" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int M, D;
+  cin &gt;&gt; M &gt;&gt; D;
+  int ans = 0;
+  for (int m = 1; m &lt;= M; m++) {
+    for (int d = 20; d &lt;= D; d++) {
+      int d1 = d / 10;
+      int d2 = d % 10;
+      if (d1 &gt;= 2 and d2 &gt;= 2 and d1 * d2 == m) ans++;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem D -->
+<!-- Begins problem E -->
+<div id="E" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemE" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+E: Kleene Inversion
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemE" class="collapse">
+<div id="e-kleene-inversion" class="section level3 card-body solution-body">
+<h3><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_b?lang=en" target="_blank">E: Kleene Inversion</a></h3>
+<p>Puedes hacer fuerza bruta para fijar <span class="math inline">\(B_j\)</span>. Si ya tienes fijo <span class="math inline">\(B_j\)</span> solo necesitas saber cuantos elementos en <span class="math inline">\([0, j)\)</span> son mayores a <span class="math inline">\(B_j\)</span>, llamemos <span class="math inline">\(x\)</span> a este valor. Luego, sea <span class="math inline">\(gt\)</span> la cantidad de elementos mayores a <span class="math inline">\(B_j\)</span> en <span class="math inline">\([0, n)\)</span>. Entonces <span class="math inline">\(B_{n + j}\)</span> aporta a la respuesta <span class="math inline">\(x + gt\)</span>. <span class="math inline">\(B_{2 * n + j}\)</span> aporta a la respuesta <span class="math inline">\(x + 2 * gt\)</span>. Y así seguimos hasta <span class="math inline">\(B_{2 * (k - 1) + j}\)</span>. De este modo, <span class="math inline">\(B_j, B_{n + j},  B_{2 * n + j}, \dots, B_{(k - 1) * n + j}\)</span> aporta a la respuesta: <span class="math inline">\(k \cdot  x + \frac{(k - 1) * k}{2} \cdot gt\)</span>. Esta solución podemos implementarla en <span class="math inline">\(O(N \cdot \max{A_i})\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemE" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  ll n, k;
+  cin &gt;&gt; n &gt;&gt; k;
+  const ll MOD = 1e9 + 7;
+  vector &lt;ll&gt; arr(n);
+  const int MX = 2010;
+  vector &lt;int&gt; cnt(MX, 0);
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; arr[i];
+    cnt[arr[i]]++;
+  }
+  vector &lt;int&gt; vis(MX, 0);
+  ll ans = 0;
+  for (int j = 0; j &lt; n; j++) {
+    ll x = 0;
+    ll gt = 0;
+    for (int i = arr[j] + 1; i &lt; MX; i++) {
+      x += vis[i];
+      gt += cnt[i];
+    }
+    ll add1 = (k * x) % MOD;
+    ll add2 = ((k - 1) * k / 2) % MOD;
+    ll add = (add1 + gt * add2) % MOD;
+    ans = (ans + add) % MOD;
+    vis[arr[j]]++;
+  }
+  cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+  return (0);
+}
+</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem E -->
+<!-- Begins problem F -->
+<div id="F" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemF" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+F: GCD on Blackboard
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemF" class="collapse">
+<div id="f-gcd-on-blackboard" class="section level3 card-body solution-body">
+<h3><a href="https://abc125.contest.atcoder.jp/tasks/abc125_c?lang=en" target="_blank">F: GCD on Blackboard</a></h3>
+<p>Supongamos que cambiaremos el elemento <span class="math inline">\(A_i\)</span>. Entonces</p>
+<p><span class="math display">\[g = \gcd(\gcd(A_1, A_2, \dots, A_{i - 1}), \gcd(A_{i + 1}, A_{i + 2}, \dots, A_{n}))\]</span></p>
+<p>Sabemos que:</p>
+<p><span class="math display">\[\gcd(a, b) \leq \min\{a, b\}\]</span> <span class="math display">\[gcd(a, a) = a\]</span></p>
+<p>Entonces, podemos escoger que <span class="math inline">\(A_i = g\)</span> y tenemos que <span class="math inline">\(g = \gcd(g, A_i)\)</span> sería el máximo divisor de todos los elementos. Entonces, podemos probar que valor sale iterando por cada <span class="math inline">\(i\)</span> y tomando el máximo <span class="math inline">\(g\)</span>. Además, usando la idea de prefix sums conseguimos una solución en <span class="math inline">\(O(N \log N)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemF" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemF" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define sz(A) int(A.size())
+
+using namespace std;
+
+typedef long long ll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n;
+  cin &gt;&gt; n;
+  vector &lt;int&gt; arr(n);
+  vector &lt;int&gt; l(n), r(n);
+  for (int i = 0; i &lt; n; i++) cin &gt;&gt; arr[i];
+  l[0] = arr[0];
+  for (int i = 1; i &lt; n; i++) l[i] = __gcd(l[i - 1], arr[i]);
+  r[n - 1] = arr[n - 1];
+  for (int i = n - 2; i &gt;= 0; i--) r[i] = __gcd(r[i + 1], arr[i]);
+  int ans = max(l[n - 2], r[1]);
+  for (int i = 1; i + 1 &lt; n; i++) ans = max(ans, __gcd(l[i - 1], r[i + 1]));
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem F -->
+<!-- Begins problem G -->
+<div id="G" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemG" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+G: RGB Boxes
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemG" class="collapse">
+<div id="g-rgb-boxes" class="section level3 card-body solution-body">
+<h3><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_b?lang=en" target="_blank">G: RGB Boxes</a></h3>
+<p>Reconoce el espacio de búsqueda. Obtendrás una equación con 3 variables, itera sobre dos de ellas, obtén la tercera despejando y comprueba si cumple las condiciones. Así tienes una solución en <span class="math inline">\(O(N^2)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemG" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemG" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define sz(A) int(A.size())
+
+using namespace std;
+
+typedef long long ll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int r, g, b, n;
+  cin &gt;&gt; r &gt;&gt; g &gt;&gt; b &gt;&gt; n;
+  int ans = 0;
+  for (int i = 0; i &lt;= n / r + 1; i++) {
+    for (int j = 0; j &lt;= n / g + 1; j++) {
+      int k = n - i * r - j * g;
+      if (k &gt;= 0 and k % b == 0) {
+        ans++;
+      }
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem G -->
 
 
 
