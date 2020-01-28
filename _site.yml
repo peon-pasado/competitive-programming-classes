@@ -21,6 +21,9 @@ navbar:
           href: class-05.html
         - text: Fuerza bruta II
           href: class-06.html
+        - text: Semana 4
+        - text: Contest 2
+          href: class-07.html
 
   right:
     - text: "Problema del día"

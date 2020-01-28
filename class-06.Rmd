@@ -265,7 +265,7 @@ Ahora, veamos como podemos usar esta idea en [este problema](https://codeforces.
 
 **Solución:**
 
-Notemos que $abcdefghij$ será una permutación de $0123456789$. Luego, podemos
+Notemos que $abcdefghij$ puede ser mapeado a $0123456789$. Luego, podemos
 buscar una respuesta en $O(\Sigma !n)$ con $\Sigma = 10$. Pero $1 \leq n \leq 1000$ así
 que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un
 contador de frecuencia por posiciones y luego simular la suma con ello. Así, 

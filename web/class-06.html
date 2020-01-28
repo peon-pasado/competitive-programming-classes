@@ -307,6 +307,10 @@ $(document).ready(function () {
     <li>
       <a href="class-06.html">Fuerza bruta II</a>
     </li>
+    <li class="dropdown-header">Semana 4</li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -511,7 +515,7 @@ int main () {
 <p>El anterior código tiene una complejidad de <span class="math inline">\(O(n! n)\)</span>.</p>
 <p>Ahora, veamos como podemos usar esta idea en <a href="https://codeforces.com/problemset/problem/910/C">este problema</a>.</p>
 <p><strong>Solución:</strong></p>
-<p>Notemos que <span class="math inline">\(abcdefghij\)</span> será una permutación de <span class="math inline">\(0123456789\)</span>. Luego, podemos buscar una respuesta en <span class="math inline">\(O(\Sigma !n)\)</span> con <span class="math inline">\(\Sigma = 10\)</span>. Pero <span class="math inline">\(1 \leq n \leq 1000\)</span> así que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un contador de frecuencia por posiciones y luego simular la suma con ello. Así, lograriamos una solución en <span class="math inline">\(O(\Sigma!LS)\)</span> donde <span class="math inline">\(S = 10 \land L \leq 6\)</span>. L es la cantidad máxima de dígitos de los números.</p>
+<p>Notemos que <span class="math inline">\(abcdefghij\)</span> puede ser mapeado a <span class="math inline">\(0123456789\)</span>. Luego, podemos buscar una respuesta en <span class="math inline">\(O(\Sigma !n)\)</span> con <span class="math inline">\(\Sigma = 10\)</span>. Pero <span class="math inline">\(1 \leq n \leq 1000\)</span> así que este enfoque daría TLE. Sin embargo, notamos que podemos guardar un contador de frecuencia por posiciones y luego simular la suma con ello. Así, lograriamos una solución en <span class="math inline">\(O(\Sigma!LS)\)</span> donde <span class="math inline">\(S = 10 \land L \leq 6\)</span>. L es la cantidad máxima de dígitos de los números.</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
 
 using namespace std;
