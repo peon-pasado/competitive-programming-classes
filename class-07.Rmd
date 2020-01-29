@@ -172,9 +172,9 @@ Sabemos que:
 $$N = \lfloor \frac{N}{m} \rfloor \cdot m + N \mod m$$
 
 $$\to N = k m + k$$
-$$\to N = (k + 1) * m$$
+$$\to N = k * (m + 1)$$
 
-Esto es $k + 1$ debe ser un divisor de N. Así, podemos generar todos los
+Esto es $m + 1$ debe ser un divisor de N. Así, podemos generar todos los
 divisores de $N$ y comprobar si se cumple la condición del problema en
 $O(\sqrt{N})$.
 

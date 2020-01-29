@@ -471,8 +471,8 @@ C: DivRem Number
 <p><span class="math display">\[\text{Sea }k = \lfloor \frac{N}{m} \rfloor = N \mod m\]</span></p>
 <p>Sabemos que:</p>
 <p><span class="math display">\[N = \lfloor \frac{N}{m} \rfloor \cdot m + N \mod m\]</span></p>
-<p><span class="math display">\[\to N = k m + k\]</span> <span class="math display">\[\to N = (k + 1) * m\]</span></p>
-<p>Esto es <span class="math inline">\(k + 1\)</span> debe ser un divisor de N. Así, podemos generar todos los divisores de <span class="math inline">\(N\)</span> y comprobar si se cumple la condición del problema en <span class="math inline">\(O(\sqrt{N})\)</span>.</p>
+<p><span class="math display">\[\to N = k m + k\]</span> <span class="math display">\[\to N = k * (m + 1)\]</span></p>
+<p>Esto es <span class="math inline">\(m + 1\)</span> debe ser un divisor de N. Así, podemos generar todos los divisores de <span class="math inline">\(N\)</span> y comprobar si se cumple la condición del problema en <span class="math inline">\(O(\sqrt{N})\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
