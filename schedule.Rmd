@@ -55,18 +55,19 @@ title: "Plan semanal"
   * Contribution technique
   * Búsqueda en todas las permutaciones
 
-4ta semana
+### Semana 4
 
-- team contest: mate basica + fuerza bruta 1 y fuerza bruta 2: Leonidas
-  * 1:40 de contest
-  * 20 descanso
-  * 1 hora de upsolving
+- Team contest: Leonidas
+  * Teoría de números
+  * Fuerza bruta 1
+  * Fuerza bruta 2
 
-- recursion: Leonidas
-  * torres de hanoi
-  * modelar problemas (pensar en recursivo)
-  * subestructura
-  * induccion.
+- Recursion: Leonidas
+  * Nociones básicas
+  * Las torres de Hanoi
+  * Ejercicios
+  * Aritmética y recursión
+  * Fractales
   
 5ta semana
 
