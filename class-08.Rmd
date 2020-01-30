@@ -71,7 +71,7 @@ T f(state):
 
 <div class="topic">Las torres de Hanoi</div>
 
-Veamos como podemos resolver un problema aparentemente dificil usando
+Veamos como podemos resolver un problema aparentemente difícil usando
 recursión.
 
 ![](./images/class-08/Hanoi.jpeg)
@@ -82,11 +82,11 @@ La imagen fue extraída de [Wikipedia](https://en.wikipedia.org/wiki/Tower_of_Ha
 disco tiene diferente diámetro, los discos están en orden puestos uno encima de
 otro, el más gran en el fondo y el más pequeño en la cima. Queremos mover todos
 los discos de un poste a otro. Solo podemos mover el disco que está primero en
-un poste a otro poste que este vacío o uno done el diámetro del disco que esta
+un poste a otro poste que este vacío o a uno donde el diámetro del disco que está
 en su cima es mayor del diámetro del disco que estamos moviendo. 
 
 Digamos que tenemos la función $f$ tal que $f(source, target, pivot, n)$ mueve
-los $n$ discos que estan en el poste `source` al poste `target`. Entoces,
+los $n$ discos que están en el poste `source` al poste `target`. Entoces,
 podemos decir:
 
 Si yo quiero mover los $n$ discos del poste `source` al poste `target`, primero
@@ -133,7 +133,7 @@ Implementa soluciones recursivas para los siguientes ejercicios:
   <!-- ends code -->
 
 
-  * Suma of digitos de un número
+  * Suma de dígitos de un número
 
 
   <!-- begin code -->
@@ -190,7 +190,7 @@ Implementa soluciones recursivas para los siguientes ejercicios:
 <div class="topic">Aritmética y recursión</div>
 
 Hay cierto tipo de problema donde nos darán una propiedad matemática y nos
-pedirán encontrar cuantos números en un rango $[l, r]$ la cumplen o variaciones
+pedirán encontrar cuántos números en un rango $[l, r]$ la cumplen o variaciones
 de esta idea. Para atacar este tipo de problemas suele ser útil utilizar
 propiedades básicas de Aritmética y conseguir recursión que nos resuelva
 el problema. Veamos un ejemplo.
@@ -202,9 +202,7 @@ Básicamente nos piden:
 $$\sum_{k = a}^{b}sumaDeDigitos(k)$$
 $$0 \leq a \leq b \leq 1e9$$
 
-Luego, la solucion trivial de iterar en el rango $[a, b]$ nos daría una complejidad $(b \log b)$ lo cual obviamente daría TLE.
-
-Entonces, busquemos una solución más eficiente.
+Luego, la solucion trivial de iterar en el rango $[a, b]$ nos daría una complejidad $(b \log b)$ lo cual daría TLE. Entonces, busquemos una solución más eficiente.
 
 Primero, definamos:
 
@@ -212,20 +210,20 @@ $$S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)$$
 
 Luego, nuestro problema se reduce a calcular $S(b) - S(a - 1)$
 
-Ahora, centremonos en calcular eficientemente $S(x)$
+Ahora, centrémonos en calcular eficientemente $S(x)$
 
 Sea $x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}$
 
 Definamos
-$$cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo digito de } i$$
+$$cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo dígito de } i$$
 
 Luego $$S(x) = \sum_{k = 0} ^ {n} cnt(x, k)$$
 
 Así, como n es $O(log x)$, todo se reduce a calcular eficientemente $cnt(x, k)$
 
-Ahora, para calcular $cnt(x, k)$ notemos que estaremos sumando los k-esimos digitos de los números $num \in [0, x]$.
+Ahora, para calcular $cnt(x, k)$ notemos que estaremos sumando los k-esimos dígitos de los números $num \in [0, x]$.
 
-Sea $num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}$ (podemos considerar que $num$ siempre tiene `n` digitos por simplicidad - si tiene menos de `n` digitos simplemente podemos agregarle ceros al inicio y no afectara la respuesta -)
+Sea $num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}$ (podemos considerar que $num$ siempre tiene `n` dígitos por simplicidad - si tiene menos de `n` dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)
 
 Ahora analicemos por casos:
 
@@ -233,11 +231,11 @@ Ahora analicemos por casos:
 
     Entonces
     
-    $\overline{p_np_{n-1}\dots p_{k+1}} \in [0, \overline{x_nx_{n-1}\dots x_{k+1}} - 1] \to $ este numeral puede tomar $\overline{x_nx_{n-1}\dots x_{k+1}}$ valores
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [0, \overline{x_nx_{n-1}\dots x_{k+1}} - 1] \to$ este numeral puede tomar $\overline{x_nx_{n-1}\dots x_{k+1}}$ valores
     
     $\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to$ este numeral puede tomar $10 ^ {k - 1}$ valores
     
-    Ahora, notamos ademas que $p_k \in [0, 9]$
+    Además, notamos que $p_k \in [0, 9]$
     
     Luego, en este caso, la suma de los k-esimos dígitos sería:
     
@@ -247,11 +245,11 @@ Ahora analicemos por casos:
 
     Entonces
     
-    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to $ este numeral puede tomar 1 valor
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to$ este numeral puede tomar 1 valor
     
     $\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to$ este numeral puede tomar $10 ^ {k - 1}$ valores
     
-    Ahora, notamos ademas que $p_k \in [0, max(0, x_k - 1)]$
+    Ahora, notamos que $p_k \in [0, max(0, x_k - 1)]$
     
     Luego, en este caso, la suma de los k-esimos dígitos sería:
     
@@ -262,11 +260,11 @@ Ahora analicemos por casos:
 
     Entonces
     
-    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to $ este numeral puede tomar 1 valor
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}]\to$ este numeral puede tomar 1 valor
     
     $\overline{p_{k-1}\dots p_{1}} \in [0, \overline{x_{k - 1}\dots x_1}] \to$ este numeral puede tomar $\overline{x_{k + 1} \dots x_1} + 1$ valores
     
-    Ahora, notamos ademas que $p_k \in [x_k, x_k]$
+    Y tenemos que $p_k \in [x_k, x_k]$
     
     Luego, en este caso, la suma de los k-esimos dígitos sería:
     
@@ -277,9 +275,9 @@ Notamos que ya no hay mas casos para analizar, luego $cnt(x, k)$ sería la suma 
 
 $$cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)$$
 
-Ahora, con ello ya podemos calcular $S(x)$ lo cual nos permitirá resolver nuestro problema original. 
+Ahora, con ello ya podemos calcular $S(x)$, lo cual nos permitirá resolver nuestro problema original. 
 
-Con ello solo quedaría implementar lo anteriormente descrito.
+Esta es la implementación:
 
 ```c++
 #include <bits/stdc++.h>

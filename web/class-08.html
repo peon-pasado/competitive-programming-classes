@@ -372,11 +372,11 @@ Nociones básicas
 <div class="topic">
 Las torres de Hanoi
 </div>
-<p>Veamos como podemos resolver un problema aparentemente dificil usando recursión.</p>
+<p>Veamos como podemos resolver un problema aparentemente difícil usando recursión.</p>
 <p><img src="images/class-08/Hanoi.jpeg" /></p>
 <p>La imagen fue extraída de <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi#/media/File:Tower_of_Hanoi.jpeg">Wikipedia</a>.</p>
-<p><strong>Problema:</strong> Tienes 3 postes fijos y una pila de <span class="math inline">\(n\)</span> discos en un poste. Cada disco tiene diferente diámetro, los discos están en orden puestos uno encima de otro, el más gran en el fondo y el más pequeño en la cima. Queremos mover todos los discos de un poste a otro. Solo podemos mover el disco que está primero en un poste a otro poste que este vacío o uno done el diámetro del disco que esta en su cima es mayor del diámetro del disco que estamos moviendo.</p>
-<p>Digamos que tenemos la función <span class="math inline">\(f\)</span> tal que <span class="math inline">\(f(source, target, pivot, n)\)</span> mueve los <span class="math inline">\(n\)</span> discos que estan en el poste <code>source</code> al poste <code>target</code>. Entoces, podemos decir:</p>
+<p><strong>Problema:</strong> Tienes 3 postes fijos y una pila de <span class="math inline">\(n\)</span> discos en un poste. Cada disco tiene diferente diámetro, los discos están en orden puestos uno encima de otro, el más gran en el fondo y el más pequeño en la cima. Queremos mover todos los discos de un poste a otro. Solo podemos mover el disco que está primero en un poste a otro poste que este vacío o a uno donde el diámetro del disco que está en su cima es mayor del diámetro del disco que estamos moviendo.</p>
+<p>Digamos que tenemos la función <span class="math inline">\(f\)</span> tal que <span class="math inline">\(f(source, target, pivot, n)\)</span> mueve los <span class="math inline">\(n\)</span> discos que están en el poste <code>source</code> al poste <code>target</code>. Entoces, podemos decir:</p>
 <p>Si yo quiero mover los <span class="math inline">\(n\)</span> discos del poste <code>source</code> al poste <code>target</code>, primero yo necesito mover <span class="math inline">\(n - 1\)</span> discos de <code>source</code> a <code>pivot</code>, después moveré el último disco de <code>source</code> a <code>target</code>. Tras ese movimiento moveré los <span class="math inline">\(n - 1\)</span> discos de <code>pivot</code> a <code>target</code> y así ya tendremos el problema resuelto. Además, si solo hay un disco en un poste podemos moverlo directamente a <code>target</code>. De este modo, podemos escribir <span class="math inline">\(f\)</span> de esta manera:</p>
 <pre class="bw"><code>void f(source, target, pivot, n):
   if n == 1:
@@ -408,7 +408,7 @@ Code
 </div>
 <p><!-- ends code --></p>
 <ul>
-<li>Suma of digitos de un número</li>
+<li>Suma de dígitos de un número</li>
 </ul>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemsum-digits" aria-expanded="false" aria-controls="collapseTwo">
@@ -452,50 +452,49 @@ Code
 <div class="topic">
 Aritmética y recursión
 </div>
-<p>Hay cierto tipo de problema donde nos darán una propiedad matemática y nos pedirán encontrar cuantos números en un rango <span class="math inline">\([l, r]\)</span> la cumplen o variaciones de esta idea. Para atacar este tipo de problemas suele ser útil utilizar propiedades básicas de Aritmética y conseguir recursión que nos resuelva el problema. Veamos un ejemplo.</p>
+<p>Hay cierto tipo de problema donde nos darán una propiedad matemática y nos pedirán encontrar cuántos números en un rango <span class="math inline">\([l, r]\)</span> la cumplen o variaciones de esta idea. Para atacar este tipo de problemas suele ser útil utilizar propiedades básicas de Aritmética y conseguir recursión que nos resuelva el problema. Veamos un ejemplo.</p>
 <p><strong>Problema: <a href="https://www.spoj.com/problems/CPCRC1C/">CPCRC1C - Sum of Digits</a></strong></p>
 <p>Básicamente nos piden:</p>
 <p><span class="math display">\[\sum_{k = a}^{b}sumaDeDigitos(k)\]</span> <span class="math display">\[0 \leq a \leq b \leq 1e9\]</span></p>
-<p>Luego, la solucion trivial de iterar en el rango <span class="math inline">\([a, b]\)</span> nos daría una complejidad <span class="math inline">\((b \log b)\)</span> lo cual obviamente daría TLE.</p>
-<p>Entonces, busquemos una solución más eficiente.</p>
+<p>Luego, la solucion trivial de iterar en el rango <span class="math inline">\([a, b]\)</span> nos daría una complejidad <span class="math inline">\((b \log b)\)</span> lo cual daría TLE. Entonces, busquemos una solución más eficiente.</p>
 <p>Primero, definamos:</p>
 <p><span class="math display">\[S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)\]</span></p>
 <p>Luego, nuestro problema se reduce a calcular <span class="math inline">\(S(b) - S(a - 1)\)</span></p>
-<p>Ahora, centremonos en calcular eficientemente <span class="math inline">\(S(x)\)</span></p>
+<p>Ahora, centrémonos en calcular eficientemente <span class="math inline">\(S(x)\)</span></p>
 <p>Sea <span class="math inline">\(x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}\)</span></p>
-<p>Definamos <span class="math display">\[cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo digito de } i\]</span></p>
+<p>Definamos <span class="math display">\[cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo dígito de } i\]</span></p>
 <p>Luego <span class="math display">\[S(x) = \sum_{k = 0} ^ {n} cnt(x, k)\]</span></p>
 <p>Así, como n es <span class="math inline">\(O(log x)\)</span>, todo se reduce a calcular eficientemente <span class="math inline">\(cnt(x, k)\)</span></p>
-<p>Ahora, para calcular <span class="math inline">\(cnt(x, k)\)</span> notemos que estaremos sumando los k-esimos digitos de los números <span class="math inline">\(num \in [0, x]\)</span>.</p>
-<p>Sea <span class="math inline">\(num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}\)</span> (podemos considerar que <span class="math inline">\(num\)</span> siempre tiene <code>n</code> digitos por simplicidad - si tiene menos de <code>n</code> digitos simplemente podemos agregarle ceros al inicio y no afectara la respuesta -)</p>
+<p>Ahora, para calcular <span class="math inline">\(cnt(x, k)\)</span> notemos que estaremos sumando los k-esimos dígitos de los números <span class="math inline">\(num \in [0, x]\)</span>.</p>
+<p>Sea <span class="math inline">\(num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}\)</span> (podemos considerar que <span class="math inline">\(num\)</span> siempre tiene <code>n</code> dígitos por simplicidad - si tiene menos de <code>n</code> dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)</p>
 <p>Ahora analicemos por casos:</p>
 <ul>
 <li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} &lt; \overline{x_nx_{n-1}\dots x_{k+1}}\)</span></p>
 <p>Entonces</p>
-<p>$ $ este numeral puede tomar <span class="math inline">\(\overline{x_nx_{n-1}\dots x_{k+1}}\)</span> valores</p>
+<p><span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} \in [0, \overline{x_nx_{n-1}\dots x_{k+1}} - 1] \to\)</span> este numeral puede tomar <span class="math inline">\(\overline{x_nx_{n-1}\dots x_{k+1}}\)</span> valores</p>
 <p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to\)</span> este numeral puede tomar <span class="math inline">\(10 ^ {k - 1}\)</span> valores</p>
-<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [0, 9]\)</span></p>
+<p>Además, notamos que <span class="math inline">\(p_k \in [0, 9]\)</span></p>
 <p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
 <p><span class="math display">\[10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times (0 + 1 + 2 + \dots + 9) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45\]</span></p></li>
 <li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k &lt; x_k\)</span></p>
 <p>Entonces</p>
-<p>$ $ este numeral puede tomar 1 valor</p>
+<p><span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to\)</span> este numeral puede tomar 1 valor</p>
 <p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to\)</span> este numeral puede tomar <span class="math inline">\(10 ^ {k - 1}\)</span> valores</p>
-<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [0, max(0, x_k - 1)]\)</span></p>
+<p>Ahora, notamos que <span class="math inline">\(p_k \in [0, max(0, x_k - 1)]\)</span></p>
 <p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
 <p><span class="math display">\[10 ^ {k - 1} \times (0 + 1 + \dots + max(0, x_k - 1)) = 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2\]</span></p></li>
 <li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k = x_k\)</span></p>
 <p>Entonces</p>
-<p>$ $ este numeral puede tomar 1 valor</p>
+<p><span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}]\to\)</span> este numeral puede tomar 1 valor</p>
 <p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, \overline{x_{k - 1}\dots x_1}] \to\)</span> este numeral puede tomar <span class="math inline">\(\overline{x_{k + 1} \dots x_1} + 1\)</span> valores</p>
-<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [x_k, x_k]\)</span></p>
+<p>Y tenemos que <span class="math inline">\(p_k \in [x_k, x_k]\)</span></p>
 <p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
 <p><span class="math display">\[p_k \times (\overline{x_{k + 1} \dots x_1} + 1)\]</span></p></li>
 </ul>
 <p>Notamos que ya no hay mas casos para analizar, luego <span class="math inline">\(cnt(x, k)\)</span> sería la suma de los resultados obtenidos en cada caso, obteniendo:</p>
 <p><span class="math display">\[cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)\]</span></p>
-<p>Ahora, con ello ya podemos calcular <span class="math inline">\(S(x)\)</span> lo cual nos permitirá resolver nuestro problema original.</p>
-<p>Con ello solo quedaría implementar lo anteriormente descrito.</p>
+<p>Ahora, con ello ya podemos calcular <span class="math inline">\(S(x)\)</span>, lo cual nos permitirá resolver nuestro problema original.</p>
+<p>Esta es la implementación:</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
  
 using namespace std;

@@ -62,7 +62,7 @@ title: "Plan semanal"
   * Fuerza bruta 1
   * Fuerza bruta 2
 
-- Recursion: Leonidas
+- Recursión: Leonidas
   * Nociones básicas
   * Las torres de Hanoi
   * Ejercicios
