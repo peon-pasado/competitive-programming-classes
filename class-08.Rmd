@@ -1,0 +1,371 @@
+---
+title: "Clase 08: Recursión"
+author: "Leonidas"
+date: "30-01-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+<div class="topic">Nociones básicas</div>
+
+Imagina que tienes una función $f$ que resuelve un problema de esta manera:
+
+* Cuando estas en un estado con una propiedad específica sabemos como resolver
+  el problema sin depender de otros estados.
+
+* Cuando no estamos en un estado con la propiedad específica sabemos como
+  resolver el problema usando otras instancia de $f$.
+
+Por ejemplo:
+
+$$f(n) = 1 * 2 * 3 * \dots * n$$
+
+Queremos calcular $f(n)$ de una manera recursiva. Entonces necesitamos:
+
+* Identificar un estado con una propiedad específica que podamos resolver
+  fácilmente.
+
+  Si $n = 0 \to f(0) = 1$.
+
+* Identifica como resolve $f(n)$ usando diferentes estados de $f$ (estados más
+  'cercanos' a los estados con la propiedad específica).
+
+$$f(n) = \underbrace{1 * 2 * 3 * \dots * (n - 1)}_{\text{f(n - 1)}} * n$$
+$$f(n) = n * f(n - 1)$$
+
+
+Entonces, básicamente estamos diciendo que si $n = 0$ sabemos como resolver el
+problema, sino si sabemos la respuesta de $f(n - 1)$ podemos resolver $f(n)$.
+
+En código esto es así:
+
+```c++
+ll f (int n) {
+  if (n == 0) return 1;
+  return n * f(n - 1);
+}
+```
+
+Lo que es agradable sobre recursión es que podemos llegar a las soluciones
+pensando de manera recursiva. Pensar de esta manera puede facilitar una gran
+variedad de problemas. Para ello puedes decir:
+
+Sea $f$ la función que resuelva el problema que estoy intentando resolver.
+Entonces, podemos decir: No tengo idea como resolver $f(state)$, pero si de
+alguna manera tuviera el resultado de $f(state'), f(state''), f(state'''),
+\dots$ entonces yo podría resolver $f(state)$ y yo se como resolver el problema
+en casos específicos a los que siempre termino llegando.
+
+Así, en código, soluciones recursivas suelen tener esta forma:
+
+```vw
+T f(state):
+  if (state tiene alguna propiedad en específico):
+    resuelve el problema para este estado y retorna algo
+  else:
+    obten la respuesta de f(state'), f(state''), f(state'''), ...
+    y usa estos resultados para calcular f(state) y retorna algo
+```
+
+<div class="topic">Las torres de Hanoi</div>
+
+Veamos como podemos resolver un problema aparentemente dificil usando
+recursión.
+
+![](./images/class-08/Hanoi.jpeg)
+
+La imagen fue extraída de [Wikipedia](https://en.wikipedia.org/wiki/Tower_of_Hanoi#/media/File:Tower_of_Hanoi.jpeg).
+
+**Problema:** Tienes 3 postes fijos y una pila de $n$ discos en un poste. Cada
+disco tiene diferente diámetro, los discos están en orden puestos uno encima de
+otro, el más gran en el fondo y el más pequeño en la cima. Queremos mover todos
+los discos de un poste a otro. Solo podemos mover el disco que está primero en
+un poste a otro poste que este vacío o uno done el diámetro del disco que esta
+en su cima es mayor del diámetro del disco que estamos moviendo. 
+
+Digamos que tenemos la función $f$ tal que $f(source, target, pivot, n)$ mueve
+los $n$ discos que estan en el poste `source` al poste `target`. Entoces,
+podemos decir:
+
+Si yo quiero mover los $n$ discos del poste `source` al poste `target`, primero
+yo necesito mover $n - 1$ discos de `source` a `pivot`, después moveré el
+último disco de `source` a `target`. Tras ese movimiento moveré los $n - 1$
+discos de `pivot` a `target` y así ya tendremos el problema resuelto. Además,
+si solo hay un disco en un poste podemos moverlo directamente a `target`. De
+este modo, podemos escribir $f$ de esta manera:
+
+```bw
+void f(source, target, pivot, n):
+  if n == 1:
+    mueve el disco de source a target
+    return
+  # mueve los primeros n - 1 discos de source a pivot
+  f(source, pivot, target, n - 1)
+  # mueve el último disco de source a target  
+  f(source, target, pivot, 1)
+  # mueve los n - 1 discos de pivot a target
+  f(pivot, target, source, n - 1)
+```
+
+Y eso es todo, esto resuelve el problema.
+
+<div class="topic">Ejercicios</div>
+
+Implementa soluciones recursivas para los siguientes ejercicios:
+
+  * $fib(n)$
+
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemfib" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemfib" class="collapse">
+
+```c++
+// TO DO
+```
+
+  </div>
+  <!-- ends code -->
+
+
+  * Suma of digitos de un número
+
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemsum-digits" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemsum-digits" class="collapse">
+
+```c++
+// TO DO
+```
+
+  </div>
+  <!-- ends code -->
+
+
+  * $\binom{n}{m}$
+
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemcombinatorics" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemcombinatorics" class="collapse">
+
+```c++
+// TO DO
+```
+
+  </div>
+  <!-- ends code -->
+
+
+  * Determinante de una matrix
+
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemdeterminant" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemdeterminant" class="collapse">
+
+```c++
+// TO DO
+```
+
+  </div>
+  <!-- ends code -->
+
+
+<div class="topic">Aritmética y recursión</div>
+
+Hay cierto tipo de problema donde nos darán una propiedad matemática y nos
+pedirán encontrar cuantos números en un rango $[l, r]$ la cumplen o variaciones
+de esta idea. Para atacar este tipo de problemas suele ser útil utilizar
+propiedades básicas de Aritmética y conseguir recursión que nos resuelva
+el problema. Veamos un ejemplo.
+
+**Problema: [CPCRC1C - Sum of Digits](https://www.spoj.com/problems/CPCRC1C/)**
+
+Básicamente nos piden:
+
+$$\sum_{k = a}^{b}sumaDeDigitos(k)$$
+$$0 \leq a \leq b \leq 1e9$$
+
+Luego, la solucion trivial de iterar en el rango $[a, b]$ nos daría una complejidad $(b \log b)$ lo cual obviamente daría TLE.
+
+Entonces, busquemos una solución más eficiente.
+
+Primero, definamos:
+
+$$S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)$$
+
+Luego, nuestro problema se reduce a calcular $S(b) - S(a - 1)$
+
+Ahora, centremonos en calcular eficientemente $S(x)$
+
+Sea $x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}$
+
+Definamos
+$$cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo digito de } i$$
+
+Luego $$S(x) = \sum_{k = 0} ^ {n} cnt(x, k)$$
+
+Así, como n es $O(log x)$, todo se reduce a calcular eficientemente $cnt(x, k)$
+
+Ahora, para calcular $cnt(x, k)$ notemos que estaremos sumando los k-esimos digitos de los números $num \in [0, x]$.
+
+Sea $num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}$ (podemos considerar que $num$ siempre tiene `n` digitos por simplicidad - si tiene menos de `n` digitos simplemente podemos agregarle ceros al inicio y no afectara la respuesta -)
+
+Ahora analicemos por casos:
+
+* Si $\overline{p_np_{n-1}\dots p_{k+1}} < \overline{x_nx_{n-1}\dots x_{k+1}}$
+
+    Entonces
+    
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [0, \overline{x_nx_{n-1}\dots x_{k+1}} - 1] \to $ este numeral puede tomar $\overline{x_nx_{n-1}\dots x_{k+1}}$ valores
+    
+    $\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to$ este numeral puede tomar $10 ^ {k - 1}$ valores
+    
+    Ahora, notamos ademas que $p_k \in [0, 9]$
+    
+    Luego, en este caso, la suma de los k-esimos dígitos sería:
+    
+    $$10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times (0 + 1 + 2 + \dots + 9) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45$$
+    
+* Si $\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k < x_k$
+
+    Entonces
+    
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to $ este numeral puede tomar 1 valor
+    
+    $\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to$ este numeral puede tomar $10 ^ {k - 1}$ valores
+    
+    Ahora, notamos ademas que $p_k \in [0, max(0, x_k - 1)]$
+    
+    Luego, en este caso, la suma de los k-esimos dígitos sería:
+    
+    $$10 ^ {k - 1} \times (0 + 1 + \dots + max(0, x_k - 1)) = 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2$$
+    
+
+* Si $\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k = x_k$
+
+    Entonces
+    
+    $\overline{p_np_{n-1}\dots p_{k+1}} \in [\overline{x_nx_{n-1}\dots x_{k+1}}, \overline{x_nx_{n-1}\dots x_{k+1}}] \to $ este numeral puede tomar 1 valor
+    
+    $\overline{p_{k-1}\dots p_{1}} \in [0, \overline{x_{k - 1}\dots x_1}] \to$ este numeral puede tomar $\overline{x_{k + 1} \dots x_1} + 1$ valores
+    
+    Ahora, notamos ademas que $p_k \in [x_k, x_k]$
+    
+    Luego, en este caso, la suma de los k-esimos dígitos sería:
+    
+    $$p_k \times (\overline{x_{k + 1} \dots x_1} + 1)$$
+    
+    
+Notamos que ya no hay mas casos para analizar, luego $cnt(x, k)$ sería la suma de los resultados obtenidos en cada caso, obteniendo:
+
+$$cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)$$
+
+Ahora, con ello ya podemos calcular $S(x)$ lo cual nos permitirá resolver nuestro problema original. 
+
+Con ello solo quedaría implementar lo anteriormente descrito.
+
+```c++
+#include <bits/stdc++.h>
+ 
+using namespace std;
+ 
+typedef long long ll;
+ 
+ll s (ll num) { return num * (num + 1) / 2; }
+ 
+ll sum (ll num, ll power = 1, ll r = 0) {
+  if (num == 0) return 0;
+  int d = num % 10;
+  return (num / 10) * 45 * power + s(max(0, d - 1)) * power + d * (r + 1) + sum(num / 10, power * 10, r + d * power);
+}
+ 
+int main () {
+  int a, b;
+  while (cin >> a >> b, a != -1 and b != -1) cout << sum(b) - sum(max(0, a - 1)) << endl;
+  return (0);
+}
+```
+
+<div class="topic">Fractales</div>
+
+En las competencias, hay ocasiones donde ponen problemas para dibujar un
+patrón, generalmente algún fractal. Para resolver este tipo de problemas suele ser muy útil pensar en
+términos recursivos. Veamos un ejemplo.
+
+**Problema: [Fractal](http://poj.org/problem?id=2083)**
+
+Notemos como el problema se reduce a definir bien una función recursiva, hacer las transiciones apropiadas y definir como comenzar la recursión.
+
+```c++
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+vector <string> grid;
+int DR[] = {-1, -1, 1, 1, 0};
+int DC[] = {1, -1, 1, -1, 0};
+
+void print () {
+  for (int i = 0; i < grid.size(); i++) {
+    string& row = grid[i];
+    int j = row.size() - 1;
+    while (row[j] == ' ') row.erase(row.begin() + j);
+    cout << row << endl;
+  }
+  cout << '-' << endl;
+}
+
+void rec (int r, int c, int step) {
+  if (step == 0) {
+    grid[r][c] = 'X';
+    return;
+  }
+  for (int d = 0; d < 5; d++) {
+    rec(r + DR[d] * step, c + DC[d] * step, step / 3);
+  }
+}
+
+int main () {
+  int n;
+  while (cin >> n, n != -1) {
+    int gridSize = int(pow(3, n - 1));
+    grid = vector <string> (gridSize, string(gridSize, ' '));
+    int initial = (n == 1) ? 0 : gridSize / 3 + gridSize / 6; 
+    int step = gridSize / 3;
+    rec(initial, initial, step);
+    print();
+  }
+  return (0);
+}
+```
+
+Lecturas recomendadas:
+
+* Concrete Mathematics - Knuth. Chapter 1
+* [GPC-UNI Clase 9](https://nbviewer.jupyter.org/github/GPC-UNI/Programacion-Competitiva/blob/master/uni-no-fiis/clase-09/clase-09.ipynb)
+* [Learn Data Structures and Algorithms, section Basic Recursion](https://www.codechef.com/certification/data-structures-and-algorithms/prepare)
+
+
+<div class=topic>Contest</div>
+
+El contest lo puedes encontrar [aquí](https://vjudge.net/contest/354437).

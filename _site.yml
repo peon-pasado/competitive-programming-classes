@@ -24,6 +24,8 @@ navbar:
         - text: Semana 4
         - text: Contest 2
           href: class-07.html
+        - text: Recursión
+          href: class-08.html
 
   right:
     - text: "Problema del día"

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Leonidas" />
+
+
+<title>Clase 08: Recursión</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Semana 1</li>
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li class="dropdown-header">Semana 2</li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li class="dropdown-header">Semana 3</li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+    <li class="dropdown-header">Semana 4</li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
+    <li>
+      <a href="class-08.html">Recursión</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 08: Recursión</h1>
+<h4 class="author">Leonidas</h4>
+<h4 class="date">30-01-2020</h4>
+
+</div>
+
+
+<div class="topic">
+Nociones básicas
+</div>
+<p>Imagina que tienes una función <span class="math inline">\(f\)</span> que resuelve un problema de esta manera:</p>
+<ul>
+<li><p>Cuando estas en un estado con una propiedad específica sabemos como resolver el problema sin depender de otros estados.</p></li>
+<li><p>Cuando no estamos en un estado con la propiedad específica sabemos como resolver el problema usando otras instancia de <span class="math inline">\(f\)</span>.</p></li>
+</ul>
+<p>Por ejemplo:</p>
+<p><span class="math display">\[f(n) = 1 * 2 * 3 * \dots * n\]</span></p>
+<p>Queremos calcular <span class="math inline">\(f(n)\)</span> de una manera recursiva. Entonces necesitamos:</p>
+<ul>
+<li><p>Identificar un estado con una propiedad específica que podamos resolver fácilmente.</p>
+<p>Si <span class="math inline">\(n = 0 \to f(0) = 1\)</span>.</p></li>
+<li><p>Identifica como resolve <span class="math inline">\(f(n)\)</span> usando diferentes estados de <span class="math inline">\(f\)</span> (estados más ‘cercanos’ a los estados con la propiedad específica).</p></li>
+</ul>
+<p><span class="math display">\[f(n) = \underbrace{1 * 2 * 3 * \dots * (n - 1)}_{\text{f(n - 1)}} * n\]</span> <span class="math display">\[f(n) = n * f(n - 1)\]</span></p>
+<p>Entonces, básicamente estamos diciendo que si <span class="math inline">\(n = 0\)</span> sabemos como resolver el problema, sino si sabemos la respuesta de <span class="math inline">\(f(n - 1)\)</span> podemos resolver <span class="math inline">\(f(n)\)</span>.</p>
+<p>En código esto es así:</p>
+<pre class="cpp"><code>ll f (int n) {
+  if (n == 0) return 1;
+  return n * f(n - 1);
+}</code></pre>
+<p>Lo que es agradable sobre recursión es que podemos llegar a las soluciones pensando de manera recursiva. Pensar de esta manera puede facilitar una gran variedad de problemas. Para ello puedes decir:</p>
+<p>Sea <span class="math inline">\(f\)</span> la función que resuelva el problema que estoy intentando resolver. Entonces, podemos decir: No tengo idea como resolver <span class="math inline">\(f(state)\)</span>, pero si de alguna manera tuviera el resultado de <span class="math inline">\(f(state&#39;), f(state&#39;&#39;), f(state&#39;&#39;&#39;), \dots\)</span> entonces yo podría resolver <span class="math inline">\(f(state)\)</span> y yo se como resolver el problema en casos específicos a los que siempre termino llegando.</p>
+<p>Así, en código, soluciones recursivas suelen tener esta forma:</p>
+<pre class="vw"><code>T f(state):
+  if (state tiene alguna propiedad en específico):
+    resuelve el problema para este estado y retorna algo
+  else:
+    obten la respuesta de f(state&#39;), f(state&#39;&#39;), f(state&#39;&#39;&#39;), ...
+    y usa estos resultados para calcular f(state) y retorna algo</code></pre>
+<div class="topic">
+Las torres de Hanoi
+</div>
+<p>Veamos como podemos resolver un problema aparentemente dificil usando recursión.</p>
+<p><img src="images/class-08/Hanoi.jpeg" /></p>
+<p>La imagen fue extraída de <a href="https://en.wikipedia.org/wiki/Tower_of_Hanoi#/media/File:Tower_of_Hanoi.jpeg">Wikipedia</a>.</p>
+<p><strong>Problema:</strong> Tienes 3 postes fijos y una pila de <span class="math inline">\(n\)</span> discos en un poste. Cada disco tiene diferente diámetro, los discos están en orden puestos uno encima de otro, el más gran en el fondo y el más pequeño en la cima. Queremos mover todos los discos de un poste a otro. Solo podemos mover el disco que está primero en un poste a otro poste que este vacío o uno done el diámetro del disco que esta en su cima es mayor del diámetro del disco que estamos moviendo.</p>
+<p>Digamos que tenemos la función <span class="math inline">\(f\)</span> tal que <span class="math inline">\(f(source, target, pivot, n)\)</span> mueve los <span class="math inline">\(n\)</span> discos que estan en el poste <code>source</code> al poste <code>target</code>. Entoces, podemos decir:</p>
+<p>Si yo quiero mover los <span class="math inline">\(n\)</span> discos del poste <code>source</code> al poste <code>target</code>, primero yo necesito mover <span class="math inline">\(n - 1\)</span> discos de <code>source</code> a <code>pivot</code>, después moveré el último disco de <code>source</code> a <code>target</code>. Tras ese movimiento moveré los <span class="math inline">\(n - 1\)</span> discos de <code>pivot</code> a <code>target</code> y así ya tendremos el problema resuelto. Además, si solo hay un disco en un poste podemos moverlo directamente a <code>target</code>. De este modo, podemos escribir <span class="math inline">\(f\)</span> de esta manera:</p>
+<pre class="bw"><code>void f(source, target, pivot, n):
+  if n == 1:
+    mueve el disco de source a target
+    return
+  # mueve los primeros n - 1 discos de source a pivot
+  f(source, pivot, target, n - 1)
+  # mueve el último disco de source a target  
+  f(source, target, pivot, 1)
+  # mueve los n - 1 discos de pivot a target
+  f(pivot, target, source, n - 1)</code></pre>
+<p>Y eso es todo, esto resuelve el problema.</p>
+<div class="topic">
+Ejercicios
+</div>
+<p>Implementa soluciones recursivas para los siguientes ejercicios:</p>
+<ul>
+<li><span class="math inline">\(fib(n)\)</span></li>
+</ul>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemfib" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemfib" class="collapse">
+<pre class="cpp"><code>// TO DO</code></pre>
+</div>
+<p><!-- ends code --></p>
+<ul>
+<li>Suma of digitos de un número</li>
+</ul>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemsum-digits" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemsum-digits" class="collapse">
+<pre class="cpp"><code>// TO DO</code></pre>
+</div>
+<p><!-- ends code --></p>
+<ul>
+<li><span class="math inline">\(\binom{n}{m}\)</span></li>
+</ul>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemcombinatorics" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemcombinatorics" class="collapse">
+<pre class="cpp"><code>// TO DO</code></pre>
+</div>
+<p><!-- ends code --></p>
+<ul>
+<li>Determinante de una matrix</li>
+</ul>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemdeterminant" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemdeterminant" class="collapse">
+<pre class="cpp"><code>// TO DO</code></pre>
+</div>
+<p><!-- ends code --></p>
+<div class="topic">
+Aritmética y recursión
+</div>
+<p>Hay cierto tipo de problema donde nos darán una propiedad matemática y nos pedirán encontrar cuantos números en un rango <span class="math inline">\([l, r]\)</span> la cumplen o variaciones de esta idea. Para atacar este tipo de problemas suele ser útil utilizar propiedades básicas de Aritmética y conseguir recursión que nos resuelva el problema. Veamos un ejemplo.</p>
+<p><strong>Problema: <a href="https://www.spoj.com/problems/CPCRC1C/">CPCRC1C - Sum of Digits</a></strong></p>
+<p>Básicamente nos piden:</p>
+<p><span class="math display">\[\sum_{k = a}^{b}sumaDeDigitos(k)\]</span> <span class="math display">\[0 \leq a \leq b \leq 1e9\]</span></p>
+<p>Luego, la solucion trivial de iterar en el rango <span class="math inline">\([a, b]\)</span> nos daría una complejidad <span class="math inline">\((b \log b)\)</span> lo cual obviamente daría TLE.</p>
+<p>Entonces, busquemos una solución más eficiente.</p>
+<p>Primero, definamos:</p>
+<p><span class="math display">\[S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)\]</span></p>
+<p>Luego, nuestro problema se reduce a calcular <span class="math inline">\(S(b) - S(a - 1)\)</span></p>
+<p>Ahora, centremonos en calcular eficientemente <span class="math inline">\(S(x)\)</span></p>
+<p>Sea <span class="math inline">\(x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}\)</span></p>
+<p>Definamos <span class="math display">\[cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo digito de } i\]</span></p>
+<p>Luego <span class="math display">\[S(x) = \sum_{k = 0} ^ {n} cnt(x, k)\]</span></p>
+<p>Así, como n es <span class="math inline">\(O(log x)\)</span>, todo se reduce a calcular eficientemente <span class="math inline">\(cnt(x, k)\)</span></p>
+<p>Ahora, para calcular <span class="math inline">\(cnt(x, k)\)</span> notemos que estaremos sumando los k-esimos digitos de los números <span class="math inline">\(num \in [0, x]\)</span>.</p>
+<p>Sea <span class="math inline">\(num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}\)</span> (podemos considerar que <span class="math inline">\(num\)</span> siempre tiene <code>n</code> digitos por simplicidad - si tiene menos de <code>n</code> digitos simplemente podemos agregarle ceros al inicio y no afectara la respuesta -)</p>
+<p>Ahora analicemos por casos:</p>
+<ul>
+<li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} &lt; \overline{x_nx_{n-1}\dots x_{k+1}}\)</span></p>
+<p>Entonces</p>
+<p>$ $ este numeral puede tomar <span class="math inline">\(\overline{x_nx_{n-1}\dots x_{k+1}}\)</span> valores</p>
+<p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to\)</span> este numeral puede tomar <span class="math inline">\(10 ^ {k - 1}\)</span> valores</p>
+<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [0, 9]\)</span></p>
+<p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
+<p><span class="math display">\[10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times (0 + 1 + 2 + \dots + 9) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45\]</span></p></li>
+<li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k &lt; x_k\)</span></p>
+<p>Entonces</p>
+<p>$ $ este numeral puede tomar 1 valor</p>
+<p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, 999 \dots 9999] \to\)</span> este numeral puede tomar <span class="math inline">\(10 ^ {k - 1}\)</span> valores</p>
+<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [0, max(0, x_k - 1)]\)</span></p>
+<p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
+<p><span class="math display">\[10 ^ {k - 1} \times (0 + 1 + \dots + max(0, x_k - 1)) = 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2\]</span></p></li>
+<li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} = \overline{x_nx_{n-1}\dots x_{k+1}} \quad \land \quad p_k = x_k\)</span></p>
+<p>Entonces</p>
+<p>$ $ este numeral puede tomar 1 valor</p>
+<p><span class="math inline">\(\overline{p_{k-1}\dots p_{1}} \in [0, \overline{x_{k - 1}\dots x_1}] \to\)</span> este numeral puede tomar <span class="math inline">\(\overline{x_{k + 1} \dots x_1} + 1\)</span> valores</p>
+<p>Ahora, notamos ademas que <span class="math inline">\(p_k \in [x_k, x_k]\)</span></p>
+<p>Luego, en este caso, la suma de los k-esimos dígitos sería:</p>
+<p><span class="math display">\[p_k \times (\overline{x_{k + 1} \dots x_1} + 1)\]</span></p></li>
+</ul>
+<p>Notamos que ya no hay mas casos para analizar, luego <span class="math inline">\(cnt(x, k)\)</span> sería la suma de los resultados obtenidos en cada caso, obteniendo:</p>
+<p><span class="math display">\[cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)\]</span></p>
+<p>Ahora, con ello ya podemos calcular <span class="math inline">\(S(x)\)</span> lo cual nos permitirá resolver nuestro problema original.</p>
+<p>Con ello solo quedaría implementar lo anteriormente descrito.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+ 
+using namespace std;
+ 
+typedef long long ll;
+ 
+ll s (ll num) { return num * (num + 1) / 2; }
+ 
+ll sum (ll num, ll power = 1, ll r = 0) {
+  if (num == 0) return 0;
+  int d = num % 10;
+  return (num / 10) * 45 * power + s(max(0, d - 1)) * power + d * (r + 1) + sum(num / 10, power * 10, r + d * power);
+}
+ 
+int main () {
+  int a, b;
+  while (cin &gt;&gt; a &gt;&gt; b, a != -1 and b != -1) cout &lt;&lt; sum(b) - sum(max(0, a - 1)) &lt;&lt; endl;
+  return (0);
+}</code></pre>
+<div class="topic">
+Fractales
+</div>
+<p>En las competencias, hay ocasiones donde ponen problemas para dibujar un patrón, generalmente algún fractal. Para resolver este tipo de problemas suele ser muy útil pensar en términos recursivos. Veamos un ejemplo.</p>
+<p><strong>Problema: <a href="http://poj.org/problem?id=2083">Fractal</a></strong></p>
+<p>Notemos como el problema se reduce a definir bien una función recursiva, hacer las transiciones apropiadas y definir como comenzar la recursión.</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+
+using namespace std;
+
+vector &lt;string&gt; grid;
+int DR[] = {-1, -1, 1, 1, 0};
+int DC[] = {1, -1, 1, -1, 0};
+
+void print () {
+  for (int i = 0; i &lt; grid.size(); i++) {
+    string&amp; row = grid[i];
+    int j = row.size() - 1;
+    while (row[j] == &#39; &#39;) row.erase(row.begin() + j);
+    cout &lt;&lt; row &lt;&lt; endl;
+  }
+  cout &lt;&lt; &#39;-&#39; &lt;&lt; endl;
+}
+
+void rec (int r, int c, int step) {
+  if (step == 0) {
+    grid[r][c] = &#39;X&#39;;
+    return;
+  }
+  for (int d = 0; d &lt; 5; d++) {
+    rec(r + DR[d] * step, c + DC[d] * step, step / 3);
+  }
+}
+
+int main () {
+  int n;
+  while (cin &gt;&gt; n, n != -1) {
+    int gridSize = int(pow(3, n - 1));
+    grid = vector &lt;string&gt; (gridSize, string(gridSize, &#39; &#39;));
+    int initial = (n == 1) ? 0 : gridSize / 3 + gridSize / 6; 
+    int step = gridSize / 3;
+    rec(initial, initial, step);
+    print();
+  }
+  return (0);
+}</code></pre>
+<p>Lecturas recomendadas:</p>
+<ul>
+<li>Concrete Mathematics - Knuth. Chapter 1</li>
+<li><a href="https://nbviewer.jupyter.org/github/GPC-UNI/Programacion-Competitiva/blob/master/uni-no-fiis/clase-09/clase-09.ipynb">GPC-UNI Clase 9</a></li>
+<li><a href="https://www.codechef.com/certification/data-structures-and-algorithms/prepare">Learn Data Structures and Algorithms, section Basic Recursion</a></li>
+</ul>
+<div class="topic">
+Contest
+</div>
+<p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/354437">aquí</a>.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
