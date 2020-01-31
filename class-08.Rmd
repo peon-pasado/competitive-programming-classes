@@ -126,7 +126,22 @@ Implementa soluciones recursivas para los siguientes ejercicios:
   <div id="codeProblemfib" class="collapse">
 
 ```c++
-// TO DO
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+
+ll fib (int n) {
+  if (n <= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+int main () {
+  int n = 40;
+  cout << fib(n) << '\n';
+  return (0);
+}
 ```
 
   </div>
@@ -144,7 +159,20 @@ Implementa soluciones recursivas para los siguientes ejercicios:
   <div id="codeProblemsum-digits" class="collapse">
 
 ```c++
-// TO DO
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int sumOfDigits (int n) {
+  if (n == 0) return 0;
+  return (n % 10) + sumOfDigits(n / 10);
+}
+
+int main () {
+  int n = 999;
+  cout << sumOfDigits(n) << endl;
+  return (0);
+}
 ```
 
   </div>
@@ -162,7 +190,22 @@ Implementa soluciones recursivas para los siguientes ejercicios:
   <div id="codeProblemcombinatorics" class="collapse">
 
 ```c++
-// TO DO
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+
+ll comb (int n, int m) {
+  if (m == 0) return 1;
+  if (n == m) return 1;
+  return comb(n - 1, m - 1) + comb(n - 1, m);
+}
+
+int main () {
+  cout << comb(4, 2) << '\n';
+  return (0);
+}
 ```
 
   </div>
@@ -180,7 +223,7 @@ Implementa soluciones recursivas para los siguientes ejercicios:
   <div id="codeProblemdeterminant" class="collapse">
 
 ```c++
-// TO DO
+// TAREA
 ```
 
   </div>
@@ -210,9 +253,9 @@ $$S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)$$
 
 Luego, nuestro problema se reduce a calcular $S(b) - S(a - 1)$
 
-Ahora, centrémonos en calcular eficientemente $S(x)$
+Ahora, centrémonos en calcular eficientemente $S$.
 
-Sea $x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}$
+Sea $x = \overline{x_nx_{n-1} \dots x_k \dots x_2x_1}$
 
 Definamos
 $$cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo dígito de } i$$
@@ -223,7 +266,7 @@ Así, como n es $O(log x)$, todo se reduce a calcular eficientemente $cnt(x, k)$
 
 Ahora, para calcular $cnt(x, k)$ notemos que estaremos sumando los k-esimos dígitos de los números $num \in [0, x]$.
 
-Sea $num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}$ (podemos considerar que $num$ siempre tiene `n` dígitos por simplicidad - si tiene menos de `n` dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)
+Sea $p = \overline{p_np_{n-1}\dots p_{k +1}p_{k}p_{k -1}\dots p_{1}}$ (podemos considerar que $num$ siempre tiene `n` dígitos por simplicidad - si tiene menos de `n` dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)
 
 Ahora analicemos por casos:
 
@@ -275,7 +318,7 @@ Notamos que ya no hay mas casos para analizar, luego $cnt(x, k)$ sería la suma 
 
 $$cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)$$
 
-Ahora, con ello ya podemos calcular $S(x)$, lo cual nos permitirá resolver nuestro problema original. 
+Ahora, con ello ya podemos calcular eficientemente $S(x)$, lo cual nos permitirá resolver nuestro problema original. 
 
 Esta es la implementación:
 

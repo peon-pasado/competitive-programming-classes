@@ -404,7 +404,22 @@ Code
 </p>
 </div>
 <div id="codeProblemfib" class="collapse">
-<pre class="cpp"><code>// TO DO</code></pre>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll fib (int n) {
+  if (n &lt;= 1) return n;
+  return fib(n - 1) + fib(n - 2);
+}
+
+int main () {
+  int n = 40;
+  cout &lt;&lt; fib(n) &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
 </div>
 <p><!-- ends code --></p>
 <ul>
@@ -418,7 +433,20 @@ Code
 </p>
 </div>
 <div id="codeProblemsum-digits" class="collapse">
-<pre class="cpp"><code>// TO DO</code></pre>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int sumOfDigits (int n) {
+  if (n == 0) return 0;
+  return (n % 10) + sumOfDigits(n / 10);
+}
+
+int main () {
+  int n = 999;
+  cout &lt;&lt; sumOfDigits(n) &lt;&lt; endl;
+  return (0);
+}</code></pre>
 </div>
 <p><!-- ends code --></p>
 <ul>
@@ -432,7 +460,22 @@ Code
 </p>
 </div>
 <div id="codeProblemcombinatorics" class="collapse">
-<pre class="cpp"><code>// TO DO</code></pre>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+ll comb (int n, int m) {
+  if (m == 0) return 1;
+  if (n == m) return 1;
+  return comb(n - 1, m - 1) + comb(n - 1, m);
+}
+
+int main () {
+  cout &lt;&lt; comb(4, 2) &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
 </div>
 <p><!-- ends code --></p>
 <ul>
@@ -446,7 +489,7 @@ Code
 </p>
 </div>
 <div id="codeProblemdeterminant" class="collapse">
-<pre class="cpp"><code>// TO DO</code></pre>
+<pre class="cpp"><code>// TAREA</code></pre>
 </div>
 <p><!-- ends code --></p>
 <div class="topic">
@@ -460,13 +503,13 @@ Aritmética y recursión
 <p>Primero, definamos:</p>
 <p><span class="math display">\[S(x) = \sum_{k = 0}^{x}sumaDeDigitos(k)\]</span></p>
 <p>Luego, nuestro problema se reduce a calcular <span class="math inline">\(S(b) - S(a - 1)\)</span></p>
-<p>Ahora, centrémonos en calcular eficientemente <span class="math inline">\(S(x)\)</span></p>
-<p>Sea <span class="math inline">\(x = \overline{a_na_{n-1} \dots a_k \dots a_2a_1}\)</span></p>
+<p>Ahora, centrémonos en calcular eficientemente <span class="math inline">\(S\)</span>.</p>
+<p>Sea <span class="math inline">\(x = \overline{x_nx_{n-1} \dots x_k \dots x_2x_1}\)</span></p>
 <p>Definamos <span class="math display">\[cnt(x, k) = \sum_{i = 0}^{x} \text{el k-esimo dígito de } i\]</span></p>
 <p>Luego <span class="math display">\[S(x) = \sum_{k = 0} ^ {n} cnt(x, k)\]</span></p>
 <p>Así, como n es <span class="math inline">\(O(log x)\)</span>, todo se reduce a calcular eficientemente <span class="math inline">\(cnt(x, k)\)</span></p>
 <p>Ahora, para calcular <span class="math inline">\(cnt(x, k)\)</span> notemos que estaremos sumando los k-esimos dígitos de los números <span class="math inline">\(num \in [0, x]\)</span>.</p>
-<p>Sea <span class="math inline">\(num = \overline{p_np_{n-1}\dots p_{k +1}p_{k}k_{k -1}\dots p_{1}}\)</span> (podemos considerar que <span class="math inline">\(num\)</span> siempre tiene <code>n</code> dígitos por simplicidad - si tiene menos de <code>n</code> dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)</p>
+<p>Sea <span class="math inline">\(p = \overline{p_np_{n-1}\dots p_{k +1}p_{k}p_{k -1}\dots p_{1}}\)</span> (podemos considerar que <span class="math inline">\(num\)</span> siempre tiene <code>n</code> dígitos por simplicidad - si tiene menos de <code>n</code> dígitos simplemente podemos agregarle ceros al inicio y no afectará la respuesta -)</p>
 <p>Ahora analicemos por casos:</p>
 <ul>
 <li><p>Si <span class="math inline">\(\overline{p_np_{n-1}\dots p_{k+1}} &lt; \overline{x_nx_{n-1}\dots x_{k+1}}\)</span></p>
@@ -493,7 +536,7 @@ Aritmética y recursión
 </ul>
 <p>Notamos que ya no hay mas casos para analizar, luego <span class="math inline">\(cnt(x, k)\)</span> sería la suma de los resultados obtenidos en cada caso, obteniendo:</p>
 <p><span class="math display">\[cnt(x, k) = 10 ^ {k - 1} \times (\overline{x_nx_{n-1}\dots x_{k+1}}) \times 45 + 10 ^ {k - 1} \times max(0, x_k - 1) \times (max(0, x_k - 1) + 1) / 2  + p_k \times (\overline{x_{k + 1} \dots x_1} + 1)\]</span></p>
-<p>Ahora, con ello ya podemos calcular <span class="math inline">\(S(x)\)</span>, lo cual nos permitirá resolver nuestro problema original.</p>
+<p>Ahora, con ello ya podemos calcular eficientemente <span class="math inline">\(S(x)\)</span>, lo cual nos permitirá resolver nuestro problema original.</p>
 <p>Esta es la implementación:</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
  
