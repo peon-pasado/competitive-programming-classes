@@ -26,6 +26,9 @@ navbar:
           href: class-07.html
         - text: Recursión
           href: class-08.html
+        - text: Semana 5
+        - text: Backtracking I
+          href: class-09.html
 
   right:
     - text: "Problema del día"

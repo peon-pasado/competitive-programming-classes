@@ -4,14 +4,14 @@ title: "Plan semanal"
 
 ### Semana 1
 
-- Introduccion a la programación competitiva: Racso
+- [Introduccion a la programación competitiva:](./class-01.html) Racso
   * ¿Qué es programación competitiva?
   * Principales competencias
   * Plataformas a usar
   * Conceptos iniciales: competencia, estructura de problemas, veredictos
     y estilos de competencias 
 
-- Complejidades + STL: Leonidas
+- [Complejidades + STL:](./class-02.html) Leonidas
   * Complejidad algorítmica: problema motivacional
   * Notación Big-O
   * Standard template Library (STL): introducción
@@ -23,9 +23,11 @@ title: "Plan semanal"
 
 ### Semana 2
 
-- Team contest: Implementacion + STL: Miguel
+- [Team contest 1:](./class-03.html) Miguel
+  * Implementación
+  * STL
 
-- Teoría de números: Miguel
+- [Teoría de números:](./class-04.html) Miguel
   * Relaciones de congruencia
   * Aritmética modular
   * Máximo común divisor
@@ -41,7 +43,7 @@ title: "Plan semanal"
 
 ### Semana 3
 
-- Fuerza bruta 1: Leonidas
+- [Fuerza bruta 1:](./class-05.html) Leonidas
   * Paradigmas de problem solving
   * Tripletas pitagóricas
   * Fijando variables
@@ -50,35 +52,39 @@ title: "Plan semanal"
   * Análisis por casos
   * Extra: Prefix sums
 
-- Fuerza bruta 2: Leonidas
+- [Fuerza bruta 2:](./class-06.html) Leonidas
   * Two pointers
   * Contribution technique
   * Búsqueda en todas las permutaciones
 
 ### Semana 4
 
-- Team contest: Leonidas
+- [Team contest 2:](./class-07.html) Leonidas
   * Teoría de números
   * Fuerza bruta 1
   * Fuerza bruta 2
 
-- Recursión: Leonidas
+- [Recursión:](./class-08.html) Leonidas
   * Nociones básicas
   * Las torres de Hanoi
   * Ejercicios
   * Aritmética y recursión
   * Fractales
   
-5ta semana
+### Semana 5
 
-- fuerza bruta 3: simulacion
+- [Backtracking 1:](./class-09.html) Leonidas
+  * Conjunto potencia
+  * El problema de la mochila 0-1
+  * Permutaciones
+  * Sudoku
+  * El problema de las N-reinas
+
+- Fuerza bruta 3: (Algún miserable?)
+  - simulación
   - referencias:
       - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics. Capitulo 1.
   - Racso tiene un problema en español de simulación en Polygon
-
-- backtraking 1: de recursion a backtracking: Racso
-  - Conceptos inciales
-  - Problemas típicos (8 reinas, mochila, etc)
 
 6ta semana
 

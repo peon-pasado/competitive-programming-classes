@@ -313,6 +313,10 @@ $(document).ready(function () {
     <li>
       <a href="class-08.html">Recursión</a>
     </li>
+    <li class="dropdown-header">Semana 5</li>
+    <li>
+      <a href="class-09.html">Backtracking I</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -336,6 +340,206 @@ $(document).ready(function () {
 
 <div id="problemas-del-día---parte-i" class="section level3">
 <h3><a href="https://vjudge.net/contest/353445">Problemas del día - Parte I</a></h3>
+<!-- Begins problem problem-03 -->
+<div id="problem-03" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-03" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+Día 03: ConneR and the A.R.C. Markland-N
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-03" class="collapse">
+<div id="día-03-conner-and-the-a.r.c.-markland-n" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/1293/A" target="_blank">Día 03: ConneR and the A.R.C. Markland-N</a></h3>
+<p>Hay <span class="math inline">\(k\)</span> restaurantes cerrados, así encontraremos la respuesta en <span class="math inline">\(O(k)\)</span> estados, por eso una solución fuerza bruta es suficiente.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-03" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemproblem-03" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+typedef vector &lt;int&gt; vi;
+typedef vector &lt;ll&gt; vll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int tc;
+  cin &gt;&gt; tc;
+  while (tc--) {
+    int n, s, k;
+    cin &gt;&gt; n &gt;&gt; s &gt;&gt; k;
+    set &lt;int&gt; st;
+    for (int i = 0; i &lt; k; i++) {
+      int a;
+      cin &gt;&gt; a;
+      st.insert(a);
+    }
+    int ans = INT_MAX;
+    for (int d = 0; ; d++) {
+      for (int sign: {1, -1}) {
+        int cur = s + sign * d;
+        if (1 &lt;= cur and cur &lt;= n and st.count(cur) == 0) {
+          ans = d;
+        }
+      }
+      if (ans != INT_MAX) break;
+    }
+    cout &lt;&lt; ans &lt;&lt; &#39;\n&#39;;
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem problem-03 -->
+<!-- Begins problem problem-02 -->
+<div id="problem-02" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-02" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+Día 02: Number of Triplets
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-02" class="collapse">
+<div id="día-02-number-of-triplets" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/181/B" target="_blank">Día 02: Number of Triplets</a></h3>
+<p>Si fijamos <span class="math inline">\(A, C\)</span> con dos <code>for</code> podemos obtener cuál es el valor de <span class="math inline">\(B\)</span> que necesitamos. Además, como todos los puntos son enteros podemos chequear si <span class="math inline">\(A_x + C_x \land A_y + C_y\)</span> son pares para evitar trabajar con flotantes. Así, hemos fijado <span class="math inline">\(B = ((A_x + C_x) / 2, (A_y + C_y) / 2)\)</span> y necesitamos chequear si este punto está en la entrada. Podemos hacer esto con un set (obtendrás TLE si usas un map) y así resolver el problema en <span class="math inline">\(O(n^2 \log n)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-02" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemproblem-02" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main () {
+  int n;
+  cin &gt;&gt; n;
+  vector &lt;pair &lt;int, int&gt;&gt; point(n);
+  set &lt;pair &lt;int, int&gt;&gt; st;
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; point[i].first &gt;&gt; point[i].second;
+    st.insert(point[i]);
+  }
+  int ans = 0;
+  for (int a = 0; a &lt; n; a++) {
+    for (int c = a + 1; c &lt; n; c++) {
+      pair &lt;int, int&gt; b;
+      int x = point[a].first + point[c].first;
+      int y = point[a].second + point[c].second;
+      if (x % 2 or y % 2) continue;
+      b.first = x / 2;
+      b.second = y / 2;
+      if (st.count(b)) ans++;
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+<p>Además, podemos chequear si un punto está en la entrada en <span class="math inline">\(O(1)\)</span> guardando los puntos en una matriz de booleanos. Pero, como las coordenadas pueden tomar valores negativos en <span class="math inline">\([-1000, 1000]\)</span> podemos asociar a cada punto <span class="math inline">\((x, y) \to (x + 1000, y + 1000)\)</span> (esto es una biyección). Usando esto, cada coordenada es no negativa, así podemos guardarla en nuestra matriz sin problemas.</p>
+</div>
+</div>
+</div>
+<!-- ends problem problem-02 -->
+<!-- Begins problem problem-01 -->
+<div id="problem-01" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-01" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+Día 01: White poison gargle
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-01" class="collapse">
+<div id="día-01-white-poison-gargle" class="section level3 card-body solution-body">
+<h3><a href="https://vjudge.net/problem/Gym-247724E" target="_blank">Día 01: White poison gargle</a></h3>
+<p>Tenemos:</p>
+<p><span class="math display">\[S = 1 + a + a^2 + a^3\dots + a^k\]</span></p>
+<p>Podemos hallar una fórmula condensada de S y obtenemos:</p>
+<p><span class="math display">\[S = \frac{a^{k + 1} - 1}{a - 1}\]</span></p>
+<p>Ahora el problema se reduce a calcular <span class="math inline">\(S \bmod m\)</span>, donde <span class="math inline">\(m = 10^9 + 7\)</span> (primo).</p>
+<p>Para ello recordamos que podemos calcular <span class="math inline">\(a^{k + 1} \bmod m\)</span> en <span class="math inline">\(O(\log k)\)</span> usando exponenciación rápida y que tenemos las siguientes propiedades de aritmética modular:</p>
+<p><span class="math display">\[(a + b) \bmod m = ((a \bmod m) + (a \bmod m)) \bmod m\]</span></p>
+<p><span class="math display">\[(a * b) \bmod m = ((a \bmod m) * (a \bmod m)) \bmod m\]</span></p>
+<p><span class="math display">\[(a - b) \bmod m = (((a \bmod m) - (a \bmod m)) \bmod m + m) \bmod m\]</span></p>
+<p>Además podemos expresar <span class="math inline">\(S\)</span> así:</p>
+<p><span class="math display">\[S = (a^{k + 1} - 1) \cdot (a - 1)^{-1}\]</span></p>
+<p>Y como <span class="math inline">\(m\)</span> es primo, podemos calcular <span class="math inline">\((a - 1)^{-1}\)</span> usando el pequeño teorema de Fermat y exponenciación rápida si <span class="math inline">\((a - 1) \bmod m \not = 0\)</span>. Sino, si <span class="math inline">\((a - 1) \bmod m = 0 \to a \bmod m = 1\)</span> de modo que <span class="math inline">\(S = (k + 1) \bmod m\)</span> en ese caso.</p>
+<p>Lo anterior podemos implementarlo así:</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-01" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemproblem-01" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+typedef long long ll;
+
+const ll m = 1e9 + 7;
+
+ll add (ll a, ll b) { return ((a) % m + (b % m)) % m; }
+ll sub (ll a, ll b) { return (((a) % m - (b % m)) + m) % m; }
+ll mul (ll a, ll b) { return ((a) % m * (b % m)) % m; }
+
+ll binpow (ll a, ll b) {
+  if (b == 0) return 1;
+  a %= m;
+  ll res = binpow(a, b / 2);
+  res = mul(res, res);
+  if (b % 2 == 1) res = mul(a, res);
+  return res;
+}
+
+ll inverse (ll a) { return binpow(a, m - 2); }
+
+int main () {
+  ll a, k;
+  cin &gt;&gt; a &gt;&gt; k;
+  if (sub(a, 1) == 0) {
+    cout &lt;&lt; add(k, 1) &lt;&lt; &#39;\n&#39;;
+  } else {
+    cout &lt;&lt; mul(sub(binpow(a, k + 1), 1), inverse(a - 1)) &lt;&lt; &#39;\n&#39;;
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem problem-01 -->
 </div>
 
 

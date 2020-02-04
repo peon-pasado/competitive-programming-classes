@@ -9,3 +9,251 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ### [Problemas del día - Parte I](https://vjudge.net/contest/353445)
 
 
+<!-- Begins problem problem-03 -->
+<div class="card" id="problem-03">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-03" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Día 03: ConneR and the A.R.C. Markland-N</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-03" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://codeforces.com/problemset/problem/1293/A" target="_blank">Día 03: ConneR and the A.R.C. Markland-N</a>
+
+Hay $k$ restaurantes cerrados, así encontraremos la respuesta en $O(k)$
+estados, por eso una solución fuerza bruta es suficiente.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-03" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemproblem-03" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair <int, int> pii;
+typedef vector <int> vi;
+typedef vector <ll> vll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int tc;
+  cin >> tc;
+  while (tc--) {
+    int n, s, k;
+    cin >> n >> s >> k;
+    set <int> st;
+    for (int i = 0; i < k; i++) {
+      int a;
+      cin >> a;
+      st.insert(a);
+    }
+    int ans = INT_MAX;
+    for (int d = 0; ; d++) {
+      for (int sign: {1, -1}) {
+        int cur = s + sign * d;
+        if (1 <= cur and cur <= n and st.count(cur) == 0) {
+          ans = d;
+        }
+      }
+      if (ans != INT_MAX) break;
+    }
+    cout << ans << '\n';
+  }
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem problem-03 -->
+
+
+
+
+<!-- Begins problem problem-02 -->
+<div class="card" id="problem-02">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-02" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Día 02: Number of
+  Triplets</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-02" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://codeforces.com/problemset/problem/181/B" target="_blank">Día 02: Number of Triplets</a>
+
+Si fijamos $A, C$ con dos `for` podemos obtener cuál es el valor de $B$ que
+necesitamos. Además, como todos los puntos son enteros podemos chequear si
+$A_x + C_x \land A_y + C_y$ son pares para evitar trabajar con flotantes. Así,
+hemos fijado $B = ((A_x + C_x) / 2, (A_y + C_y) / 2)$ y necesitamos chequear si
+este punto está en la entrada. Podemos hacer esto con un set (obtendrás TLE si
+usas un map) y así resolver el problema en $O(n^2 \log n)$.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-02" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemproblem-02" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main () {
+  int n;
+  cin >> n;
+  vector <pair <int, int>> point(n);
+  set <pair <int, int>> st;
+  for (int i = 0; i < n; i++) {
+    cin >> point[i].first >> point[i].second;
+    st.insert(point[i]);
+  }
+  int ans = 0;
+  for (int a = 0; a < n; a++) {
+    for (int c = a + 1; c < n; c++) {
+      pair <int, int> b;
+      int x = point[a].first + point[c].first;
+      int y = point[a].second + point[c].second;
+      if (x % 2 or y % 2) continue;
+      b.first = x / 2;
+      b.second = y / 2;
+      if (st.count(b)) ans++;
+    }
+  }
+  cout << ans << endl;
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+Además, podemos chequear si un punto está en la entrada en $O(1)$ guardando los
+puntos en una matriz de booleanos. Pero, como las coordenadas pueden tomar
+valores negativos en $[-1000, 1000]$ podemos asociar a cada punto $(x, y) \to
+(x + 1000, y + 1000)$ (esto es una biyección). Usando esto, cada coordenada es
+no negativa, así podemos guardarla en nuestra matriz sin problemas.
+
+</div>
+</div>
+</div>
+<!-- ends problem problem-02 -->
+
+
+
+
+<!-- Begins problem problem-01 -->
+<div class="card" id="problem-01">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemproblem-01" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Día 01: White poison gargle</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemproblem-01" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://vjudge.net/problem/Gym-247724E" target="_blank">Día 01: White poison gargle</a>
+
+Tenemos:
+
+$$S = 1 + a + a^2 + a^3\dots + a^k$$
+
+Podemos hallar una fórmula condensada de S y obtenemos:
+
+$$S = \frac{a^{k + 1} - 1}{a - 1}$$
+
+Ahora el problema se reduce a calcular $S \bmod m$, donde $m = 10^9 + 7$ (primo).
+
+Para ello recordamos que podemos calcular $a^{k + 1} \bmod m$ en $O(\log k)$
+usando exponenciación rápida y que tenemos las siguientes propiedades de
+aritmética modular:
+
+$$(a + b) \bmod m = ((a \bmod m) + (a \bmod m)) \bmod m$$
+
+$$(a * b) \bmod m = ((a \bmod m) * (a \bmod m)) \bmod m$$
+
+$$(a - b) \bmod m = (((a \bmod m) - (a \bmod m)) \bmod m + m) \bmod m$$
+
+Además podemos expresar $S$ así:
+
+$$S = (a^{k + 1} - 1) \cdot (a - 1)^{-1}$$
+
+Y como $m$ es primo, podemos calcular $(a - 1)^{-1}$ usando el pequeño teorema
+de Fermat y exponenciación rápida si $(a - 1) \bmod m \not = 0$. Sino, si $(a
+- 1) \bmod m = 0 \to a \bmod m = 1$ de modo que $S = (k + 1) \bmod m$ en ese caso.
+
+Lo anterior podemos implementarlo así:
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-01" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemproblem-01" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+
+const ll m = 1e9 + 7;
+
+ll add (ll a, ll b) { return ((a) % m + (b % m)) % m; }
+ll sub (ll a, ll b) { return (((a) % m - (b % m)) + m) % m; }
+ll mul (ll a, ll b) { return ((a) % m * (b % m)) % m; }
+
+ll binpow (ll a, ll b) {
+  if (b == 0) return 1;
+  a %= m;
+  ll res = binpow(a, b / 2);
+  res = mul(res, res);
+  if (b % 2 == 1) res = mul(a, res);
+  return res;
+}
+
+ll inverse (ll a) { return binpow(a, m - 2); }
+
+int main () {
+  ll a, k;
+  cin >> a >> k;
+  if (sub(a, 1) == 0) {
+    cout << add(k, 1) << '\n';
+  } else {
+    cout << mul(sub(binpow(a, k + 1), 1), inverse(a - 1)) << '\n';
+  }
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem problem-01 -->
+
+
+
