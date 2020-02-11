@@ -31,3 +31,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 5
 - [Backtracking I](./class-09.html)
 - [Recapitulacion I](./class-10.html)
+
+## Semana 6
+- [Contest UNI-UTEC I](./class-11.html)

@@ -80,15 +80,14 @@ title: "Plan semanal"
   * Sudoku
   * El problema de las N-reinas
 
-- Fuerza bruta 3: (Algún miserable?)
-  - simulación
-  - referencias:
-      - R. Graham, D. Knuth, O. Patashnik (1990). Concrete Mathematics. Capitulo 1.
-  - Racso tiene un problema en español de simulación en Polygon
+- [Recapitulación I:](./class-10.html) Racso
+  * Calentamiento
+  * Fuerza bruta
+  * Backtracking
 
-6ta semana
+### Semana 6
 
-- team contest: recursion + simulacion + backtracking: Racso
+- [Contest UNI-UTEC I:](./class-11.html) Leonidas Miguel Racso
 
 - backtracking 2: backtracking para programacion dinamica: Miguel
   - Definir los minimos estados (prepararse para DP)
