@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### ¿Por qué Backtracking?
 
 Backtracking es una serie de ideas para resolver problemas de
-busqueda completa con recursión. El pricipal motivo de backtracking
+búsqueda completa con recursión. El pricipal motivo de backtracking
 es minimizar el tener que revisar todos los estados para armar 
 una solución. Además, usar recursión tiene dos grandes sabores:
 
@@ -49,7 +49,7 @@ void backtrack(parametros independientes, parametros dependientes) {
 }
 ```
 
-otra forma de hacer el for interno sería
+Otra forma de hacer el for interno sería la siguiente:
 
 ```cpp
 while (hay estado siguiente) {
