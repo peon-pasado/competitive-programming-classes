@@ -1,0 +1,82 @@
+---
+title: "Backtracking"
+author: "Miguel Miní"
+date: "2/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### ¿Por qué Backtracking?
+
+Backtracking es una serie de ideas para resolver problemas de
+busqueda completa con recursión. El pricipal motivo de backtracking
+es minimizar el tener que revisar todos los estados para armar 
+una solución. Además, usar recursión tiene dos grandes sabores:
+
+1. Recursión te permite resolver un problema grande de forma local.
+
+2. Abandonar una solución mala cuando haces recursión es solo hacer "return".
+
+### ¿Cómo actúa backtracking?
+
+Backtracking es recursión, pero no solamente intenta ser recursión.
+Backtrack es retractarse en español, por eso mismo los problemas
+que se pueden hacer con backtracking deben tener una solución
+que se puede armar parcialmente, entonces, en backtrack por lo general
+vas a armar una solución, luego retractarte, luego armar otra, 
+luego retractarte y así. Armar un rompecabezas es hacer backtracking.
+
+### ¿Qué tan sencillo es hacer backtrack?
+
+La experiencia me dice que por lo general es sencillo, pero también
+puede ser difícil, esto es el menor de los casos.
+
+### ¿Qué forma tiene bactracking?
+
+```cpp
+void backtrack(parametros independientes, parametros dependientes) {
+  if (estado final) {
+    procesar estado final
+    return;
+  }
+  //hay que apreciar que si no hay estado siguiente, no va a ninguno.
+  for (estado siguiente desde actual estado) {
+    backtrack(estado siguiente);
+  }
+}
+```
+
+otra forma de hacer el for interno sería
+
+```cpp
+while (hay estado siguiente) {
+  modificar estado actual
+  bactrack(estado actual modificado);
+  quitar los cambios al estado actual
+} 
+```
+
+### Aplicar backtracking con problemas:
+
+- [167 - The Sultan's Successors](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=103)
+
+- [380 - Call Forwarding](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=316)
+
+- [539 - The Settlers of Catan](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=480)
+
+- [624 - CD](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=565)
+
+- [628 - Passwords](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=569)
+
+- [677 - All Walks of length "n" from the first node](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=618)
+
+- [729 - The Hamming Distance Problem](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=670)
+
+- [750 - 8 Queens Chess Problem](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=691)
+
+### Un contest para practicar, cuidado con los dedos.
+
+- [contest backtracking](https://vjudge.net/contest/357035)
