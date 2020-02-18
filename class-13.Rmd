@@ -1,0 +1,189 @@
+---
+title: "backtracking 2"
+author: "Miguel Miní"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Optimización y Conteo con Backtracking
+
+Hay veces que no conviene llevar variables sueltas, ni vectores, 
+ni conjuntos, etc. En estos casos, es preferible modelar las soluciones
+de otra forma. Usar una menor cantidad de variables.
+
+#### El problema de la mochila
+
+**Enunciado:** Un ladrón entra a robar a una casa, y tiene una mochila con una capacidad
+C, debe elegir entre n objetos, que tiene un peso y un valor, un subconjunto 
+de ellos tal que su suma de pesos sea menor o igual a C y que tenga suma de 
+valores máximo. Hallar dicha cantidad màxima.
+
+**Solución:** El problema se puede modelas como el siguiente problema de optimización entera:
+
+$$\max \sum_{i=0}^{n-1} x_i w_i$$
+$$0 \le x_i \le 1, \forall i \in \lbrace 0, ..., n-1\rbrace$$
+Si nos damos cuenta, podemos escojer las dos posibilidades para cada x, teniendo un total
+de O($2^n$) estados distintos.
+
+```cpp
+#include <bits/stdc++.h>
+const int maxn = 22;
+int w[maxn], v[maxn];
+int n, C;
+
+int backtrack(int pos, int C) {
+  if (C > 0) return INT_MIN;
+  if (pos == n) return 0;
+  int ans = 0;
+  ans = max(ans, backtrack(pos+1, C));
+  ans = max(ans, backtrack(pos+1, C - w[pos]) + v[pos]);
+  return ans;
+}
+
+int main() {
+  cin >> n >> C;
+  for (int i = 0; i < n; ++i) {
+    cin >> w[i] >> v[i];
+  }
+  cout << bactrack(0, C) << endl;
+  return 0;
+}
+```
+
+#### Parenthesis Balance
+
+Dado una secuencia de parentesis "(" y ")", cual es la mínima cantidad
+de parentesis que debo invertir para que la secuencia este balanceada.
+Una secuencia S es balanceada si:
+
+1. S es vacía.
+
+2. S se puede expresar como (E), donde E es una secuencia balanceada.
+
+3. S se puede expresar como AB, donde A y B son secuencias balanceadas.
+
+Una secuencia balanceada se puede traducir a lo siguiente; asignamos a 
+"(" el valor de 1, y a ")" el valor de -1, se debe cumplir que la suma
+de los $i$ primeros valores debes sumar mayor o igual a 0, para todo $i$.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+string s;
+int backtrack(int pos, int sum) {
+  if (sum < 0) return 1e9;
+  if (pos == s.size()) return 0;
+  int ans = 1e9;
+  ans = min(ans, backtrack(pos+1, sum + (s[pos] == '(' ? 1 : -1));
+  ans = min(ans, backtrack(pos+1, sum + (s[pos] == '(' ? -1 : 1)) + 1);
+  return ans;
+}
+
+int main() {
+  cin >> s;
+  cout << backtrack(0, 0) << endl;
+  return 0;
+}
+```
+
+### Sequence Problem
+
+Dado una secuencia de n elementos, cuantas subsecuencia existen tal que tengan
+maximo comun divisor exactamente k.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 22;
+int n, k;
+int a[maxn];
+
+void backtrack(int pos, int g) {
+  if (g%k != 0) return 0;
+  if (pos == n) return g == k;
+  int ans = 0;
+  ans += backtrack(pos+1, g);
+  ans += backtrack(pos+1, __gcd(g, a[pos]));
+  return ans;
+}
+
+int main() {
+  cin >> n >> k;
+  for (int i = 0; i < n; ++i) cin >> a[i];
+  cout << backtrack(0, 0) << endl;
+  return 0;
+}
+```
+
+### otro problema con secuencias
+
+Dado una secuencia de n elementos, separarla en k rangos continuos de
+tal forma que el rango que tenga mayor suma de elementos, sea lo minimo posible.
+Imprimir esa cantidad mínima.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 22;
+int n, k;
+int a[maxn];
+
+int backtrack(int pos, int k) {
+  if (k < 0) return 2e9;
+  if (pos == n) return k == 0 ? 0 : 2e9;
+  int ans = INT_MAX;
+  int sum = 0;
+  for (int i = pos; i < n; ++i) {
+    sum += a[i];
+    ans = min(ans, max(sum, bactrack(i+1, k-1)));
+  }
+  return ans;
+}
+
+
+int main() {
+  cin >> n >> k;
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+  }
+  cout << backtrack(0, k) << endl;
+  return 0;
+}
+```
+
+### Podemos trabajar con conjuntos de forma más óptima?
+
+__problema:__ puedo hacer de forma simple, tomar una familia
+de conjuntos $P$ y asignarle una función $f$ de tal forma si tomo
+dos elementos $u$, $v$ $\in$ $P$ tal que $u = v$ si y solo si $f(u) = f(v)$,
+además $f(g(u, v)) = h(f(u), f(u))$ donde g es una opeación de conjuntos
+y h es una operacion que expresa lo mismo pero sobre los valores asignados.
+
+Este tipo de función se le llama hash, pero es más que un hash, 
+tenemos un mapeo que necesita mucha más cosas que una función normal.
+Afortunadamente existe una solución computacionalmente amigable.
+
+La computadora maneja los números en base 2, eso quiere decir que los 
+maneja como una secuencia ordenada de ceros y unos, entonces, como hemos
+visto hasta este momento un conjunto lo podemos definir como el estado
+de estar o no de todos los elementos.
+
+Ejemplo:
+
+$5 = 00000000101_2 \equiv \lbrace 0, 2\rbrace$
+$22 = 0000010110 \equiv \lbrace 1, 2, 4\rbrace$
+
+Lo más interesante es que tenemos todo lo que queriamos:
+
+$$U \cap V \equiv B(U) \& B(V)$$
+$$U \cup V \equiv B(U) | B(V)$$
+$$U \triangle V \equiv B(U) \wedge B(V)$$
+
+$$A^c \equiv \sim B(A)$$
+
+### Pondre algunas cosas que se pueden hacer en clase, este tema lo veremos más detallado la siguiente clase.

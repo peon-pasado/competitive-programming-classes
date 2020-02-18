@@ -36,6 +36,9 @@ navbar:
           href: class-11.html
         - text: Backtracking II
           href: class-12.html
+        - text: Semana 7
+        - text: Backtracking II
+        - href: class-13.html
 
   right:
     - text: "Problema del día"
