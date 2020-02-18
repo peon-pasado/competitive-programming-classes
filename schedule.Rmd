@@ -94,9 +94,12 @@ title: "Plan semanal"
 
 ### Semana 7
 
-- backtracking 2: backtracking para programacion dinamica: Miguel
-  - Definir los minimos estados (prepararse para DP)
-  - Atacar problemas de DP con backtracking  
+- [Backtracking II:](./class-13.html)
+  * Optimización y conteo con backtracking
+    + El problema de la mochila
+    + Parenthesis Balance
+    + Sequence Problem
+  * Trabajando con conjuntos de forma más óptima
 
 - bitmask + complete search: Miguel
   * minimum independent set
