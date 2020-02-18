@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Miguel Miní" />
 
 
-<title>GPC-UNI Resto del mundo</title>
+<title>backtracking 2</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
@@ -346,71 +347,142 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">GPC-UNI Resto del mundo</h1>
+<h1 class="title toc-ignore">backtracking 2</h1>
+<h4 class="author">Miguel Miní</h4>
+<h4 class="date">2/18/2020</h4>
 
 </div>
 
 
-<p>Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020</p>
-<div id="entrenadores" class="section level4">
-<h4>Entrenadores</h4>
-<ul>
-<li>José Leonidas García Gonzales<br />
-</li>
-<li>Miguel Alessandro Mini Huambachano<br />
-</li>
-<li>Victor Racsó Galván Oyola<br />
-</li>
-<li>Sergio Sanchez Rojas</li>
-</ul>
+<div id="optimización-y-conteo-con-backtracking" class="section level3">
+<h3>Optimización y Conteo con Backtracking</h3>
+<p>Hay veces que no conviene llevar variables sueltas, ni vectores, ni conjuntos, etc. En estos casos, es preferible modelar las soluciones de otra forma. Usar una menor cantidad de variables.</p>
+<div id="el-problema-de-la-mochila" class="section level4">
+<h4>El problema de la mochila</h4>
+<p><strong>Enunciado:</strong> Un ladrón entra a robar a una casa, y tiene una mochila con una capacidad C, debe elegir entre n objetos, que tiene un peso y un valor, un subconjunto de ellos tal que su suma de pesos sea menor o igual a C y que tenga suma de valores máximo. Hallar dicha cantidad màxima.</p>
+<p><strong>Solución:</strong> El problema se puede modelas como el siguiente problema de optimización entera:</p>
+<p><span class="math display">\[\max \sum_{i=0}^{n-1} x_i w_i\]</span> <span class="math display">\[0 \le x_i \le 1, \forall i \in \lbrace 0, ..., n-1\rbrace\]</span> Si nos damos cuenta, podemos escojer las dos posibilidades para cada x, teniendo un total de O(<span class="math inline">\(2^n\)</span>) estados distintos.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+const int maxn = 22;
+int w[maxn], v[maxn];
+int n, C;
+
+int backtrack(int pos, int C) {
+  if (C &gt; 0) return INT_MIN;
+  if (pos == n) return 0;
+  int ans = 0;
+  ans = max(ans, backtrack(pos+1, C));
+  ans = max(ans, backtrack(pos+1, C - w[pos]) + v[pos]);
+  return ans;
+}
+
+int main() {
+  cin &gt;&gt; n &gt;&gt; C;
+  for (int i = 0; i &lt; n; ++i) {
+    cin &gt;&gt; w[i] &gt;&gt; v[i];
+  }
+  cout &lt;&lt; bactrack(0, C) &lt;&lt; endl;
+  return 0;
+}</code></pre>
 </div>
-<div id="semana-1" class="section level2">
-<h2>Semana 1</h2>
-<ul>
-<li><a href="./class-01.html">Introducción</a></li>
-<li><a href="./class-02.html">Complejidades + STL</a></li>
-</ul>
+<div id="parenthesis-balance" class="section level4">
+<h4>Parenthesis Balance</h4>
+<p>Dado una secuencia de parentesis “(” y “)”, cual es la mínima cantidad de parentesis que debo invertir para que la secuencia este balanceada. Una secuencia S es balanceada si:</p>
+<ol style="list-style-type: decimal">
+<li><p>S es vacía.</p></li>
+<li><p>S se puede expresar como (E), donde E es una secuencia balanceada.</p></li>
+<li><p>S se puede expresar como AB, donde A y B son secuencias balanceadas.</p></li>
+</ol>
+<p>Una secuencia balanceada se puede traducir a lo siguiente; asignamos a “(” el valor de 1, y a “)” el valor de -1, se debe cumplir que la suma de los <span class="math inline">\(i\)</span> primeros valores debes sumar mayor o igual a 0, para todo <span class="math inline">\(i\)</span>.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+string s;
+int backtrack(int pos, int sum) {
+  if (sum &lt; 0) return 1e9;
+  if (pos == s.size()) return 0;
+  int ans = 1e9;
+  ans = min(ans, backtrack(pos+1, sum + (s[pos] == &#39;(&#39; ? 1 : -1));
+  ans = min(ans, backtrack(pos+1, sum + (s[pos] == &#39;(&#39; ? -1 : 1)) + 1);
+  return ans;
+}
+
+int main() {
+  cin &gt;&gt; s;
+  cout &lt;&lt; backtrack(0, 0) &lt;&lt; endl;
+  return 0;
+}</code></pre>
 </div>
-<div id="semana-2" class="section level2">
-<h2>Semana 2</h2>
-<ul>
-<li><a href="./class-03.html">Contest 1</a></li>
-<li><a href="./class-04.html">Teoría de números</a></li>
-</ul>
 </div>
-<div id="semana-3" class="section level2">
-<h2>Semana 3</h2>
-<ul>
-<li><a href="./class-05.html">Fuerza Bruta I</a></li>
-<li><a href="./class-06.html">Fuerza Bruta II</a></li>
-</ul>
+<div id="sequence-problem" class="section level3">
+<h3>Sequence Problem</h3>
+<p>Dado una secuencia de n elementos, cuantas subsecuencia existen tal que tengan maximo comun divisor exactamente k.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+const int maxn = 22;
+int n, k;
+int a[maxn];
+
+void backtrack(int pos, int g) {
+  if (g%k != 0) return 0;
+  if (pos == n) return g == k;
+  int ans = 0;
+  ans += backtrack(pos+1, g);
+  ans += backtrack(pos+1, __gcd(g, a[pos]));
+  return ans;
+}
+
+int main() {
+  cin &gt;&gt; n &gt;&gt; k;
+  for (int i = 0; i &lt; n; ++i) cin &gt;&gt; a[i];
+  cout &lt;&lt; backtrack(0, 0) &lt;&lt; endl;
+  return 0;
+}</code></pre>
 </div>
-<div id="semana-4" class="section level2">
-<h2>Semana 4</h2>
-<ul>
-<li><a href="./class-07.html">Contest 2</a></li>
-<li><a href="./class-08.html">Recursión</a></li>
-</ul>
+<div id="otro-problema-con-secuencias" class="section level3">
+<h3>otro problema con secuencias</h3>
+<p>Dado una secuencia de n elementos, separarla en k rangos continuos de tal forma que el rango que tenga mayor suma de elementos, sea lo minimo posible. Imprimir esa cantidad mínima.</p>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+const int maxn = 22;
+int n, k;
+int a[maxn];
+
+int backtrack(int pos, int k) {
+  if (k &lt; 0) return 2e9;
+  if (pos == n) return k == 0 ? 0 : 2e9;
+  int ans = INT_MAX;
+  int sum = 0;
+  for (int i = pos; i &lt; n; ++i) {
+    sum += a[i];
+    ans = min(ans, max(sum, bactrack(i+1, k-1)));
+  }
+  return ans;
+}
+
+
+int main() {
+  cin &gt;&gt; n &gt;&gt; k;
+  for (int i = 0; i &lt; n; ++i) {
+    cin &gt;&gt; a[i];
+  }
+  cout &lt;&lt; backtrack(0, k) &lt;&lt; endl;
+  return 0;
+}</code></pre>
 </div>
-<div id="semana-5" class="section level2">
-<h2>Semana 5</h2>
-<ul>
-<li><a href="./class-09.html">Backtracking I</a></li>
-<li><a href="./class-10.html">Recapitulacion I</a></li>
-</ul>
+<div id="podemos-trabajar-con-conjuntos-de-forma-más-óptima" class="section level3">
+<h3>Podemos trabajar con conjuntos de forma más óptima?</h3>
+<p><strong>problema:</strong> puedo hacer de forma simple, tomar una familia de conjuntos <span class="math inline">\(P\)</span> y asignarle una función <span class="math inline">\(f\)</span> de tal forma si tomo dos elementos <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span> <span class="math inline">\(\in\)</span> <span class="math inline">\(P\)</span> tal que <span class="math inline">\(u = v\)</span> si y solo si <span class="math inline">\(f(u) = f(v)\)</span>, además <span class="math inline">\(f(g(u, v)) = h(f(u), f(u))\)</span> donde g es una opeación de conjuntos y h es una operacion que expresa lo mismo pero sobre los valores asignados.</p>
+<p>Este tipo de función se le llama hash, pero es más que un hash, tenemos un mapeo que necesita mucha más cosas que una función normal. Afortunadamente existe una solución computacionalmente amigable.</p>
+<p>La computadora maneja los números en base 2, eso quiere decir que los maneja como una secuencia ordenada de ceros y unos, entonces, como hemos visto hasta este momento un conjunto lo podemos definir como el estado de estar o no de todos los elementos.</p>
+<p>Ejemplo:</p>
+<p><span class="math inline">\(5 = 00000000101_2 \equiv \lbrace 0, 2\rbrace\)</span> <span class="math inline">\(22 = 0000010110 \equiv \lbrace 1, 2, 4\rbrace\)</span></p>
+<p>Lo más interesante es que tenemos todo lo que queriamos:</p>
+<p><span class="math display">\[U \cap V \equiv B(U) \&amp; B(V)\]</span> <span class="math display">\[U \cup V \equiv B(U) | B(V)\]</span> <span class="math display">\[U \triangle V \equiv B(U) \wedge B(V)\]</span></p>
+<p><span class="math display">\[A^c \equiv \sim B(A)\]</span></p>
 </div>
-<div id="semana-6" class="section level2">
-<h2>Semana 6</h2>
-<ul>
-<li><a href="./class-11.html">Contest UNI-UTEC I</a></li>
-<li><a href="./class-12.html">Repaso</a></li>
-</ul>
-</div>
-<div id="semana-7" class="section level2">
-<h2>Semana 7</h2>
-<ul>
-<li><a href="./class-13.html">Backtracking II</a></li>
-</ul>
+<div id="pondre-algunas-cosas-que-se-pueden-hacer-en-clase-este-tema-lo-veremos-más-detallado-la-siguiente-clase." class="section level3">
+<h3>Pondre algunas cosas que se pueden hacer en clase, este tema lo veremos más detallado la siguiente clase.</h3>
 </div>
 
 
