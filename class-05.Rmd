@@ -616,7 +616,7 @@ Lecturas recomendadas:
 * [Topcoder - Representation of integers and reals section 1](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-1/)
 * [Topcoder - Representation of integers and reals section 2](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-2/)
 
-<div class="topic">Contest</div>
+<div class="topic" id="contest">Contest</div>
 
 El contest lo puedes encontrar [aquí](https://vjudge.net/contest/353302).
 
@@ -964,7 +964,7 @@ int main () {
 
 ### <a href="https://codeforces.com/problemset/problem/876/C" target="_blank">Classroom Watch</a>
 
-Sea $f(x) = $ suma de dígitos de $x$.
+Sea $f(x) =$ suma de dígitos de $x$.
 
 Por los límites del problema tenemos que $0 \leq f(x) \leq 9 \cdot 9$.
 Entonces, tenemos:
