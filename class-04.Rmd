@@ -381,7 +381,7 @@ while (n != 1) {
 ```
 
 
-<div class=topic>Contest</div>
+<div class="topic">Contest</div>
 
 El contest lo puedes encontrar [aquí](https://vjudge.net/contest/352567).
 

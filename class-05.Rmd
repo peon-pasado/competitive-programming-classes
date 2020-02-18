@@ -616,8 +616,548 @@ Lecturas recomendadas:
 * [Topcoder - Representation of integers and reals section 1](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-1/)
 * [Topcoder - Representation of integers and reals section 2](https://www.topcoder.com/community/competitive-programming/tutorials/representation-of-integers-and-reals-section-2/)
 
-<div class=topic>Contest</div>
+<div class="topic">Contest</div>
 
 El contest lo puedes encontrar [aquí](https://vjudge.net/contest/353302).
 
-Las soluciones se subirán cuando termine el contest.
+<!-- Begins problem A -->
+<div class="card" id="problemA">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">A: Simple Equations</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemA" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2612" target="_blank">Simple Equations</a>
+$$0 \leq x^2 \quad \forall x \in \mathbb{N}$$
+$$\to x^2 \leq x^2 + y^2 + z^2 = C$$
+$$x^2 \leq C$$
+$$|x| \leq \sqrt{C}$$
+$$-\sqrt{C} \leq x \leq \sqrt{C}$$
+
+Lo mismo se cumple para $y$ y $z$. Además si tenemos $x, y$, entonces
+
+$z = A - x - y$. De esta manera, podemos fijar $x, y$ en $O(\sqrt{C}^2) = O(C)$ y chequear si las ecuaciones se cumplen en $O(1)$. 
+No te olvides que $x, y, z$ deben ser distintos.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemA" class="collapse">
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve (int A, int B, int C) {
+  int lim = sqrt(C) + 1;
+  for (int x = -lim; x <= lim; x++) {
+    for (int y = -lim; y <= lim; y++) {
+      int z = A - x - y;
+      if (x == y or x == z or y == z) continue;
+      if ((x + y + z == A) and
+          (x * y * z == B) and
+          (x * x + y * y + z * z == C)) {
+        cout << x << ' ' << y << ' ' << z << '\n';
+        return;
+      }
+    }
+  }
+  cout << "No solution.\n";
+}
+
+int main () {
+  int tc;
+  cin >> tc;
+  while (tc--) {
+    int A, B, C;
+    cin >> A >> B >> C;
+    solve(A, B, C);
+  }
+  return (0);
+}
+```
+  </div>
+  <!-- ends code -->
+</div>
+</div>
+</div>
+<!-- ends problem A -->
+
+
+
+
+<!-- Begins problem B -->
+<div class="card" id="B">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">B: 2Char</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemB" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://codeforces.com/problemset/problem/593/A" target="_blank">2Char</a>
+
+La clave de este problema es darse cuenta cuál es el espacio de búsqueda. Como
+cada texto tendrá como máximo dos caracteres distintos y el máximo tamaño
+posible podemos fijar cuales serán los dos caracteres y solo tomar las cadenas
+que solo tengan esos caracteres.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemB" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int MAX_N = 110;
+
+int n, ans;
+string word[MAX_N];
+
+bool isValid (int id, char ch_1, char ch_2) {
+  for (int pos = 0; pos < word[id].size(); pos++) {
+    if (word[id][pos] != ch_1 and word[id][pos] != ch_2) {
+      return false;
+    }
+  }
+  return true;
+}
+
+int main () {
+  cin >> n;
+  for (int i = 0; i < n; i++) cin >> word[i];
+  for (char ch_1 = 'a'; ch_1 <= 'z'; ch_1++) {
+    for (char ch_2 = ch_1; ch_2 <= 'z'; ch_2++) {
+      int sum = 0;
+      for (int id = 0; id < n; id++) {
+        sum += isValid(id, ch_1, ch_2) * word[id].size();
+      }
+      ans = max(ans, sum);
+    }
+  }
+  cout << ans << endl;
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem B -->
+
+
+
+
+
+<!-- Begins problem C -->
+<div class="card" id="C">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">C: Kaprekar Numbers</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemC" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=915" target="_blank">Kaprekar Numbers</a>
+
+Podemos preprocesar los números de Kaprekar en $[2, 40000]$ (solo hay 19 de
+ellos). Después podemos responder cada query buscando en esos 19 elementos.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemC" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+     
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+     
+using namespace std;
+     
+typedef long long ll;
+typedef pair <int, int> pii;
+typedef vector <int> vi;
+typedef vector <ll> vll;
+
+const int N = 4e4;
+vi kaprekar;
+
+bool isKaprekar (int n) {
+  string sq = to_string(n * n);
+  for (int i = 0; i + 1 < sz(sq); i++) {
+    int l = stoi(sq.substr(0, i + 1));
+    int r = stoi(sq.substr(i + 1));
+    if (0 < min(l, r) and l + r == n) return true;
+  }
+  return false;
+}
+
+void preprocess () {
+  for (int n = 2; n <= N; n++) {
+    if (isKaprekar(n)) {
+      kaprekar.pb(n);
+    }
+  }
+}
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  preprocess(); // just 19 elements
+  int tc;
+  cin >> tc;
+  for (int t = 1; t <= tc; t++) {
+    int l, r;
+    cin >> l >> r;
+    vi ans;
+    for (int elem: kaprekar) {
+      if (l <= elem and elem <= r) {
+        ans.pb(elem);
+      }
+    }
+    if (t > 1) cout << '\n';
+    cout << "case #" << t << '\n';
+    if (ans.empty()) {
+      cout << "no kaprekar numbers\n";
+    } else {
+      for (int elem: ans) {
+        cout << elem << '\n';
+      }
+    }
+  }
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem C -->
+
+
+
+
+
+<!-- Begins problem D -->
+<div class="card" id="D">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">D: Ranges</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemD" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://www.spoj.com/problems/RRANGE/en/" target="_blank">Ranges</a>
+
+Primero, si tenemos esta suma:
+
+$$l + (l + 1) + (l + 2) + \dots + (r - 1) + (r)$$
+
+Podemos calcularla en $O(1)$ usando esta fórmula:
+
+$$\frac{r \cdot (r + 1)}{2} - \frac{(l - 1) \cdot l}{2}$$
+
+Además, notamos que no podemos procesar cada consulta en $O(N)$ (sino
+tendríamos una solución $O(NQ)$ lo cual daría TLE), pero usando la anterior
+fórmula podemos responder cada consulta en $O(U)$, así tenemos una solución en
+$O(QU)$ lo cual es suficiente.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemD" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+ 
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+ 
+using namespace std;
+ 
+typedef long long ll;
+typedef pair <int, int> pii;
+typedef vector <int> vi;
+typedef vector <ll> vll;
+ 
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  const ll MOD = 10000;
+  int n, u, q;
+  cin >> n >> u >> q;
+  vector <pii> update(u);
+  for (int i = 0; i < u; i++) cin >> update[i].first >> update[i].second;
+  auto get = [&] (ll x) {
+    return x * (x + 1) / 2;
+  };
+  while (q--) {
+    int l, r;
+    cin >> l >> r;
+    ll ans = 0;
+    for (auto pp: update) {
+      int L = max(pp.first, l);
+      int R = min(pp.second, r);
+      if (L <= R) {
+        ll x = L - pp.first + 1;
+        ll y = R - pp.first + 1;
+        ans += get(y) - get(x - 1);
+        ans %= MOD;
+      }
+    }
+    cout << ans << '\n';
+  }
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem D -->
+
+
+
+
+
+<!-- Begins problem E -->
+<div class="card" id="E">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemE" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">E: Classroom Watch</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemE" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://codeforces.com/problemset/problem/876/C" target="_blank">Classroom Watch</a>
+
+Sea $f(x) = $ suma de dígitos de $x$.
+
+Por los límites del problema tenemos que $0 \leq f(x) \leq 9 \cdot 9$.
+Entonces, tenemos:
+
+$$\max(0, n - 9 \cdot 9) \leq x \leq n$$
+
+Así, nuestro espacio de búsqueda es muy pequeño, por lo que podemos simplemente
+hacer una búsqueda en ese intervalo.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemE" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int sumOfDigits (int p) {
+  int ret = 0;
+  while (p) ret += (p % 10), p /= 10;
+  return ret;
+}
+
+int main () {
+  int n;
+  vector <int> ans;
+  cin >> n;
+  for (int p = max(0, n - 9 * 9); p <= n; p++) if (p + sumOfDigits(p) == n) ans.push_back(p);
+  cout << ans.size() << endl;
+  for (auto x: ans) cout << x << endl;
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem E -->
+
+
+
+
+
+<!-- Begins problem F -->
+<div class="card" id="F">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemF" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">F: Hyperset</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemF" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://codeforces.com/problemset/problem/1287/B" target="_blank">Hyperset</a>
+
+Si fijamos dos cartas podemos determinar cual debe ser la tercera. Ten cuidado
+con la implementación.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemF" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemF" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef unsigned long long ll;
+typedef pair <int, int> pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n, k;
+  cin >> n >> k;
+  vector <string> arr(n);
+  map <string, int> mp;
+  for (int i = 0; i < n; i++) {
+    cin >> arr[i], mp[arr[i]]++;
+  }
+  ll ans = 0;
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      string need = string(k, ' ');
+      for (int t = 0; t < k; t++) {
+        if (arr[i][t] == arr[j][t]) {
+          need[t] = arr[i][t];
+        } else {
+          if ('S' != arr[i][t] and 'S' != arr[j][t]) need[t] = 'S';
+          if ('E' != arr[i][t] and 'E' != arr[j][t]) need[t] = 'E';
+          if ('T' != arr[i][t] and 'T' != arr[j][t]) need[t] = 'T';
+        }
+      }
+      ans += mp[need];
+    }
+  }
+  cout << ans / 3 << '\n';
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem F -->
+
+
+
+
+
+<!-- Begins problem G -->
+<div class="card" id="G">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemG" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">G: Get AC</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemG" class="collapse">
+<div class="card-body solution-body">
+
+### <a href="https://abc122.contest.atcoder.jp/tasks/abc122_c?lang=en" target="_blank">Get AC</a>
+
+Podemos calcular cuando `AC` hay en un rango usando prefix sums y teniendo
+cuidando con los casos borde.
+
+  <!-- begin code -->
+  <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemG" aria-expanded="false" aria-controls="collapseTwo">
+  <!-- title -->
+  <i class="fas fa-caret-right"></i> <p class="title">Code</p>
+  </div>
+  <div id="codeProblemG" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+
+#define all(A) begin(A), end(A)
+#define sz(A) int(A.size())
+
+using namespace std;
+
+typedef long long ll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n, q;
+  cin >> n >> q;
+  string s;
+  cin >> s;
+  vector <int> ac(n + 1, 0);
+  for (int i = 1; i < n; i++) {
+    if (s[i - 1] == 'A' and s[i] == 'C') {
+      ac[i + 1] = 1;
+    }
+  }
+  for (int i = 1; i <= n; i++) {
+    ac[i] += ac[i - 1];
+  }
+  while (q--) {
+    int l, r;
+    cin >> l >> r;
+    int x = ac[r] - ac[l - 1];
+    if (ac[l] - ac[l - 1] == 1) x--;
+    cout << x << '\n';
+  }
+  return (0);
+}
+```
+
+  </div>
+  <!-- ends code -->
+
+</div>
+</div>
+</div>
+<!-- ends problem G -->
+
+
+

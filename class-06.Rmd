@@ -399,7 +399,7 @@ int main () {
 * [PCUNI-2019. Clase 7](https://nbviewer.jupyter.org/github/TISparta/pcuni-2019/blob/master/clase-07/clase-07.ipynb)
 * [Competitive Programmer’s Handbook, capítulos 5, 8](https://jadi.net/wp-content/uploads/2017/07/competetive-programmers-handbook.pdf)
 
-<div class=topic>Contest</div>
+<div class="topic">Contest</div>
 
 El contest lo puedes encontrar [aquí](https://vjudge.net/contest/353529).
 

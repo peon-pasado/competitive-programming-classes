@@ -9,7 +9,7 @@ output: html_document
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ```
 
-<div class=topic>Contest</div>
+<div class="topic">Contest</div>
 
 El contest lo puedes encontrar [aquí](https://vjudge.net/contest/354182).
 
