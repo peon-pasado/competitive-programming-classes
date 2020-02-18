@@ -89,13 +89,14 @@ title: "Plan semanal"
 
 - [Contest UNI-UTEC I:](./class-11.html) Leonidas Miguel Racso
 
+- [Repaso:](./class-12.html) Miguel
+  * Backtracking
+
+### Semana 7
+
 - backtracking 2: backtracking para programacion dinamica: Miguel
   - Definir los minimos estados (prepararse para DP)
   - Atacar problemas de DP con backtracking  
-
-7ma semana
-
-- Repaso: Miguel
 
 - bitmask + complete search: Miguel
   * minimum independent set
