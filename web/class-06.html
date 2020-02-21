@@ -651,7 +651,323 @@ int main () {
 Contest
 </div>
 <p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/353529">aquí</a>.</p>
-<p>Las soluciones se subirán cuando termine el contest.</p>
+<!-- Begins problem A -->
+<div id="A" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+A: Fox And Snake
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemA" class="collapse">
+<div id="fox-and-snake" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/510/A" target="_blank">Fox And Snake</a></h3>
+<p>There is a pattern every four rows.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemA" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+     
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+     
+using namespace std;
+     
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+typedef vector &lt;int&gt; vi;
+typedef vector &lt;ll&gt; vll;
+     
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n, m;
+  cin &gt;&gt; n &gt;&gt; m;
+  for (int r = 0; r &lt; n; r++) {
+    if (r % 4 == 0 or r % 4 == 2) {
+      cout &lt;&lt; string(m, &#39;#&#39;) &lt;&lt; &#39;\n&#39;;
+    } else if (r % 4 == 1) {
+      cout &lt;&lt; string(m - 1, &#39;.&#39;) + &#39;#&#39; &lt;&lt; &#39;\n&#39;;
+    } else {
+      cout &lt;&lt; &#39;#&#39; + string(m - 1, &#39;.&#39;) &lt;&lt; &#39;\n&#39;;
+    }
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem A -->
+<!-- Begins problem B -->
+<div id="B" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+B: Brutality
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemB" class="collapse">
+<div id="brutality" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/1107/C" target="_blank">Brutality</a></h3>
+<p>La estrategia optima es tomar elementos iguales consecutivos y seleccionar los k mayores de ellos. Podemos implementar esa idea usando two pointers y sorting en <span class="math inline">\(O(n \log n)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemB" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(X) begin(X), end(X)
+
+using namespace std;
+
+typedef long long ll;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  ll n, k;
+  cin &gt;&gt; n &gt;&gt; k;
+  vector &lt;ll&gt; a(n);
+  for (int i = 0; i &lt; n; i++) cin &gt;&gt; a[i];
+  string s;
+  cin &gt;&gt; s;
+  ll ans = 0;
+  for (int i = 0; i &lt; n;) {
+    vector &lt;ll&gt; tmp;
+    tmp.push_back(a[i]);
+    int j = i + 1;
+    while (j &lt; n and s[i] == s[j]) tmp.push_back(a[j]), j++;
+    sort(rbegin(tmp), rend(tmp));
+    int cnt = 0;
+    for (ll elem: tmp) {
+      if (cnt == k) break;
+      ans += elem;
+      cnt++;
+    }
+    i = j;
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem B -->
+<!-- Begins problem C -->
+<div id="C" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+C: Counting Chaos
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemC" class="collapse">
+<div id="counting-chaos" class="section level3 card-body solution-body">
+<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2284" target="_blank">Counting Chaos</a></h3>
+<p>Solo intenta todas las opciones.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemC" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+     
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+     
+using namespace std;
+     
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+typedef vector &lt;int&gt; vi;
+typedef vector &lt;ll&gt; vll;
+
+bool isPalindrome (int hh, int mm) {
+  int val = hh * 100 + mm;
+  string s = to_string(val);
+  string rs = s;
+  reverse(all(rs));
+  return s == rs;
+}
+
+int val (char ch) { return ch - &#39;0&#39;; }
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int tc;
+  cin &gt;&gt; tc;
+  while (tc--) {
+    string s;
+    cin &gt;&gt; s;
+    int hh = val(s[0]) * 10 + val(s[1]);
+    int mm = val(s[3]) * 10 + val(s[4]);
+    do {
+      mm++;
+      if (mm == 60) mm = 0, hh++;
+      if (hh == 24) hh = 0;
+    } while (!isPalindrome(hh, mm));
+    cout &lt;&lt; setfill(&#39;0&#39;) &lt;&lt; setw(2) &lt;&lt; hh &lt;&lt; &quot;:&quot;;
+    cout &lt;&lt; setfill(&#39;0&#39;) &lt;&lt; setw(2) &lt;&lt; mm &lt;&lt; &quot;\n&quot;;
+  }
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem C -->
+<!-- Begins problem D -->
+<div id="D" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+D: Number of Parallelograms
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemD" class="collapse">
+<div id="number-of-parallelograms" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/660/D" target="_blank">Number of Parallelograms </a></h3>
+<p>En un paralelogramo ABCD tenemos <span class="math inline">\(\overline{AB} = \overline{CD}\)</span>. Así, si tenemos <span class="math inline">\(x\)</span> vectores iguales podemos formar <span class="math inline">\(\binom{n}{2}\)</span> paralelogramos, así el problema se reduce a encontrar la cantidad vectores iguales.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemD" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+#define all(A) begin(A), end(A)
+#define rall(A) rbegin(A), rend(A)
+#define sz(A) int(A.size())
+#define pb push_back
+#define mp make_pair
+
+using namespace std;
+
+typedef long long ll;
+typedef pair &lt;int, int&gt; pii;
+
+int main () {
+  ios::sync_with_stdio(false); cin.tie(0);
+  int n;
+  cin &gt;&gt; n;
+  map &lt;pii, int&gt; mp;
+  vector &lt;pii&gt; p (n);
+  for (int i = 0; i &lt; n; i++) cin &gt;&gt; p[i].first &gt;&gt; p[i].second;
+  for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+      if (i == j) continue;
+      pii v;
+      v.first = p[i].first - p[j].first;
+      v.second = p[i].second - p[j].second;
+      mp[v]++;
+    }
+  }
+  ll ans = 0;
+  for (auto pp: mp) ans += 1LL * pp.second * (pp.second - 1) / 2;
+  cout &lt;&lt; ans / 4 &lt;&lt; &#39;\n&#39;;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem D -->
+<!-- Begins problem E -->
+<div id="E" class="card">
+<div class="collapsed solution-title" type="button" data-toggle="collapse" data-target="#collapseProblemE" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+E: Nice Garland
+</p>
+</div>
+<!-- begin body -->
+<div id="collapseProblemE" class="collapse">
+<div id="nice-garland" class="section level3 card-body solution-body">
+<h3><a href="https://codeforces.com/problemset/problem/1108/C" target="_blank">Nice Garland </a></h3>
+<p>Basta darse cuenta que la respuesta tiene la forma <span class="math inline">\(abcabcabc\dots\)</span> donde <span class="math inline">\(abc\)</span> es una permutación de <span class="math inline">\(RGB\)</span>, luego podemos probar todas las permutaciones en <span class="math inline">\(O(3!n) = O(n)\)</span></p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title --> <i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeProblemE" class="collapse">
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int main () {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+  int n;
+  cin &gt;&gt; n;
+  string s;
+  cin &gt;&gt; s;
+  vector &lt;char&gt; p = {0, 1, 2};
+  string X = &quot;RGB&quot;;
+  int mn = INT_MAX;
+  string ans;
+  do {
+    int cnt = 0;
+    for (int i = 0; i &lt; 3 and i &lt; s.size(); i++) {
+      for (int j = i; j &lt; s.size(); j += 3) {
+        cnt += s[j] != X[p[i]];
+      }
+    }
+    if (cnt &lt; mn) {
+      mn = cnt;
+      string ret = &quot;&quot;;
+      for (int k = 0; k &lt; s.size(); k++) {
+        ret += X[p[k % 3]];
+      }
+      ans = ret;
+    }
+  } while (next_permutation(begin(p), end(p)));
+  cout &lt;&lt; mn &lt;&lt; endl;
+  cout &lt;&lt; ans &lt;&lt; endl;
+  return (0);
+}</code></pre>
+</div>
+<p><!-- ends code --></p>
+</div>
+</div>
+</div>
+<!-- ends problem E -->
 </div>
 
 
