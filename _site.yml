@@ -39,9 +39,11 @@ navbar:
         - text: Semana 7
         - text: Backtracking II
         - href: class-13.html
+        - text: Bitmask
+        - href: class-14.html
         - text: Semana 8
         - text: Introducción a Greedy
-        - href: class-14.html
+        - href: class-15.html
 
   right:
     - text: "Problema del día"

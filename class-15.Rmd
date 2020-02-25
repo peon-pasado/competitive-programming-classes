@@ -1,0 +1,95 @@
+---
+title: "Introducción a Greedy"
+author: "GPC-UNI Resto del Mundo"
+date: "25-02-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### ¿Qué es el paradigma Greedy?
+
+El paradigma *Greedy* es aquel que nos permite obtener una solución óptima considerando tomar la decisión óptima local. Esto quiere decir que, en cada paso de nuestro algoritmo, tomaremos la mejor decisión de todas las posibles en dicho momento sin considerar las decisiones del futuro.
+
+**Ejemplo:** Dados dos arreglos $A$ y $B$ de tamaño $n$, reordenarlos de forma que la suma de los productos de los elementos que estén en la misma posición sea la mínima posible.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample1" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Code</p>
+</div>
+<div id="codeExample1" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+int main(){
+	int n;
+	scanf("%d",&n);
+	vector<int> A(n), B(n);
+	for(int i=0; i<n; i++){
+		scanf("%d",&A[i]);
+	}
+	for(int i=0; i<n; i++){
+		scanf("%d",&B[i]);
+	}
+	long long ans = 0LL;
+	sort(A.begin(),A.end());
+	sort(B.begin(),B.end());
+	for(int i=0; i<n; i++){
+		ans += 1LL * A[i] * B[i];
+	}
+	printf("%lld\n",ans);
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+### ¿Cómo estar seguro de que el greedy funciona?
+
+Para poder asegurarnos de que un algoritmo *Greedy* funciona debemos realizar una demostración sobre el algoritmo que diseñemos. Dicha demostración debe concluir que el algoritmo greedy genera una respuesta óptima luego de todo el procedimiento.
+
+Consideremos el ejemplo anterior, que se puede reformular a lo siguiente:
+
+- Un ordenamiento óptimo es reordenar ambos arreglos de forma ascendente.
+
+**Prueba (Por contradicción):**
+
+Sin pérdida de generalidad, podemos decir que $B$ está ordenado desde el inicio (debido a que es un emparejamiento de valores), por lo que nos basaremos en definir el orden correcto de $A$.
+
+Asumamos que la respuesta óptima se obtiene con el arreglo $A'$, el cual es una permutación de los elementos de $A$, y que se cumple que:
+
+$$ \exists i < j : A'_{i} > A'_{j} $$
+
+Supongamos que $B_{i} < B_{j}$, dado que si no es así, no habría problema con hacer un swap a los elementos $A'_{i}$ y $A'_{j}$ para llegar al orden que propusimos.
+
+Por la condición de la solución óptima tenemos que:
+
+$$ A'_{j} < A'_{i} $$
+
+Como $(B_{j} - B_{i}) > 0$, al multiplicar se mantiene la orientación de la desigualdad:
+
+$$ (B_{j} - B_{i})A'_{j} < (B_{j} - B_{i})A'_{i} $$
+
+$$ B_{j}A'_{j} - B_{i}A'_{j} < B_{j}A'_{i} - B_{i}A'_{i} $$
+
+Si reordenamos la desigualdad:
+
+$$ B_{i}A'_{i} + B_{j}A'_{j} < B_{j}A'_{i} + B_{i}A'_{j} $$
+
+Lo cual nos lleva a una contradicción, puesto que existe una solución que tiene un mayor valor que la solución óptima. Además, dicha solución cumple que $\forall i < j$, entonces $A'_{i} \leq A'_{j}$.
+
+Esto nos permite concluir que la solución óptima no tiene ningún par de índices $i < j$ tales que $A'_{i} > A'_{j}$, así que el orden propuesto al inicio tiene las características de una solución óptima.
+
+**Ejercicio:** En backtracking y bitmask hemos visto el problema de la mochila 0-1, el cual es llamado así porque debemos tomar los elementos por completo o simplemente no tomarlos. Una variación es el problema de la mochila fraccionario, el cual permite tomar fracciones de los objetos con la misma fracción del valor completo, es decir, si uno toma $0 \leq x \leq w_{i}$ del objeto $i$, obtiene $\frac{x}{w_{i}}\cdot v_{i}$. ¿Puedes demostrar que existe una solución greedy válida?
+
+### Contest
+
+Por ahora, vamos a intentar resolver algunos problemas juntos.
+
+- [Contest Greedy](https://vjudge.net/contest/359061)

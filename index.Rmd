@@ -38,3 +38,7 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 7
 - [Backtracking II](./class-13.html)
+- [Bitmask](./class-14.html)
+
+## Semana 8
+- [Introducción a Greedy](./class-15.html)
