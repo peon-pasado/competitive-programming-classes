@@ -4,14 +4,14 @@ title: "Plan semanal"
 
 ### Semana 1
 
-- [Introduccion a la programación competitiva:](./class-01.html) Racso
+- [Clase 1: Introduccion a la programación competitiva](./class-01.html) - Racso
   * ¿Qué es programación competitiva?
   * Principales competencias
   * Plataformas a usar
   * Conceptos iniciales: competencia, estructura de problemas, veredictos
     y estilos de competencias 
 
-- [Complejidades + STL:](./class-02.html) Leonidas
+- [Clase 2: Complejidades + STL](./class-02.html) - Leonidas
   * Complejidad algorítmica: problema motivacional
   * Notación Big-O
   * Standard template Library (STL): introducción
@@ -23,11 +23,11 @@ title: "Plan semanal"
 
 ### Semana 2
 
-- [Team contest 1:](./class-03.html) Miguel
+- [Clase 3: Team contest 1](./class-03.html) - Miguel
   * Implementación
   * STL
 
-- [Teoría de números:](./class-04.html) Miguel
+- [Clase 4: Teoría de números](./class-04.html) - Miguel
   * Relaciones de congruencia
   * Aritmética modular
   * Máximo común divisor
@@ -43,7 +43,7 @@ title: "Plan semanal"
 
 ### Semana 3
 
-- [Fuerza bruta 1:](./class-05.html) Leonidas
+- [Clase 5: Fuerza bruta 1](./class-05.html) - Leonidas
   * Paradigmas de problem solving
   * Tripletas pitagóricas
   * Fijando variables
@@ -52,19 +52,19 @@ title: "Plan semanal"
   * Análisis por casos
   * Extra: Prefix sums
 
-- [Fuerza bruta 2:](./class-06.html) Leonidas
+- [Clase 6: Fuerza bruta 2](./class-06.html) - Leonidas
   * Two pointers
   * Contribution technique
   * Búsqueda en todas las permutaciones
 
 ### Semana 4
 
-- [Team contest 2:](./class-07.html) Leonidas
+- [Clase 7: Team contest 2](./class-07.html) - Leonidas
   * Teoría de números
   * Fuerza bruta 1
   * Fuerza bruta 2
 
-- [Recursión:](./class-08.html) Leonidas
+- [Clase 8: Recursión](./class-08.html) - Leonidas
   * Nociones básicas
   * Las torres de Hanoi
   * Ejercicios
@@ -73,55 +73,55 @@ title: "Plan semanal"
   
 ### Semana 5
 
-- [Backtracking 1:](./class-09.html) Leonidas
+- [Clase 9: Backtracking 1](./class-09.html) - Leonidas
   * Conjunto potencia
   * El problema de la mochila 0-1
   * Permutaciones
   * Sudoku
   * El problema de las N-reinas
 
-- [Recapitulación I:](./class-10.html) Racso
+- [Clase 10: Recapitulación I](./class-10.html) - Racso
   * Calentamiento
   * Fuerza bruta
   * Backtracking
 
 ### Semana 6
 
-- [Contest UNI-UTEC I:](./class-11.html) Leonidas Miguel Racso
+- [Clase 11: Contest UNI-UTEC-UPC I](./class-11.html) - Leonidas Miguel Racso
 
-- [Repaso:](./class-12.html) Miguel
+- [Clase 12: Repaso](./class-12.html) - Miguel
   * Backtracking
 
 ### Semana 7
 
-- [Backtracking II:](./class-13.html)
+- [Clase 13: Backtracking II](./class-13.html) - Miguel
   * Optimización y conteo con backtracking
     + El problema de la mochila
     + Parenthesis Balance
     + Sequence Problem
   * Trabajando con conjuntos de forma más óptima
 
-- bitmask + complete search: Miguel
+- Clase 14: bitmask + complete search - Racso
   * minimum independent set
   * recreando divisores
   * generando numeros con un patron.
 
-8va semana
+### Semana 8
 
-- introducción a greedy: Racso
-  * monovariant and invariants
-  * construcciones
+- [Clase 15: Introducción a Greedy](./class-15.html) - Racso
+  * ¿Qué es la programación Greedy?
+  * ¿Cómo estar seguro de que el greedy funciona?
 
-- greedy framework: Miguel
-  * como hacer pequeños problemas greedy
+- [Clase 16: 7 Greedy Problems](./class-16.html) - Miguel
+  * Problemas
 
-9na semana
+### Semana 9
 
-- team contest: Leonidas
-  * bitmaks + tiny greedy + greedy basico
+- Clase 17: Meet in the middle - Miguel
+  * Baby step giant step
+  * Maximum xor rd-path in a grid
+  * Graph problems
 
-- meet in the middle: Miguel
-  * baby step giant step
-  * maximum xor rd-path in a grid
-  * graph problems.
+- Clase 18: Contest UNI-UTEC-UPC II - Leonidas Miguel Racso (Sergio?)
+  * Contest
   * Compartir

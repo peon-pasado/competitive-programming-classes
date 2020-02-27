@@ -1,0 +1,93 @@
+---
+title: "Clase 16: 7 Greedy Problems"
+author: "Miguel Miní"
+date: "27-02-2020"
+output: html_document
+---
+
+## Lista de problemas.
+
+<br>
+1. [Maxima GCD](https://codeforces.com/contest/803/problem/C)
+
+<details>
+    <summary>Hint</summary>
+<p>Como la suma de los elementos es n, si todos tienen gcd igual a d, 
+necesariamente d es un divisor de n. luego existe una solución si
+y solo si los k primeros multiplos de d suman un valor menor o 
+igual a n.</p>
+</details>
+<br>
+2. [Minimal Coverage](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=961)
+
+<details>
+  <summary>Hint</summary>
+<p> Podemos tomar el elemento que cubra el lado derecho lo màs que
+se pueda, y resolver el problema recursivamente, por que esto es correcto?
+Supongamos que no lo es, así que no debe ser igual a ninguna solución optima,
+tomamos la solución optima que tiene los k rangos más a la izquierda que he tomado,
+entonces la solución correcta no toma el siguiente elemento que cubre más, así que 
+yo puedo usar el rango que he escogido y la respuesta se mantiene con la misma
+cantidad de elementos, así que encontré una solución más similar a la mía, que 
+la máxima.
+</p>
+</details>
+
+<br>
+3. [Coin Collector](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2231)
+<details>
+  <summary>Hint</summary>
+<p> 
+En primer lugar, siempre me conviene tener a lo más una moneda de cada tipo, 
+ahora, podemos proponer el siguiente greedy, si tengo hasta ahora una suma de 
+monedas $sum$ y le agrego la $a_i$ (visito los elementos en orden), entonces la 
+tomo si $sum + a_i < a_{i+1}$. Podemos probar esto otra vez con stay ahead.
+</p>
+</details>
+
+<br>
+4. [Pasha and String](https://codeforces.com/problemset/problem/525/B)
+<details>
+  <summary>Hint</summary>
+<p> 
+Debemos darnos cuenta que cada elemento solo tiene dos estados, y la cantidad 
+de $a_i$ que son usado para moverlos es lo único que importa para decidir.
+</p>
+</details>
+
+<br>
+5. [Bridge](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=978)
+
+<details>
+  <summary>Hint</summary>
+<p> 
+Para n < 3 el problema es trivial, en otro caso, debo llevar a los menos rapidos
+tan pronto como pueda, una forma de llevar a los dos más lentos, puedo llevar
+a los dos más rapidos, luego regresar con el más rapido, ir con los dos menos rapidos
+y regresar con el segun más rapido, en otro caso puedo llevar al primero y al segundo más
+rápido solo yendo con el más rapido de uno a la vez. En ambos caso se reduce la
+cantidad de personas en 2.
+</p>
+</details>
+
+<br>
+6. [Moliu Number Generator](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2614)
+
+<details>
+  <summary>Hint</summary>
+<p> 
+Nos debemos dar cuenta que siempre es mejor dividir entre dos, cuando tenemos un número
+le sumamos 1 o restamos 1 si y solo si es multiplo de 4. a menos que sea 3.
+</p>
+</details>
+
+<br>
+7. [Ilya and Sticks](https://codeforces.com/problemset/problem/525/C)
+<details>
+  <summary>Hint</summary>
+<p> 
+Nosotros notamos que siempre nos conviene mantener todos los elementos en pares,
+así que de forma greedy bajo los residuos impares que tengo solo si tengo
+su valor - 1. y al final multiplico los mayores con los mayores pares.
+</p>
+</details>

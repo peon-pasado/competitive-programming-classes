@@ -1,5 +1,5 @@
 ---
-title: "Introducción a Greedy"
+title: "Clase 15: Introducción a Greedy"
 author: "GPC-UNI Resto del Mundo"
 date: "25-02-2020"
 output: html_document

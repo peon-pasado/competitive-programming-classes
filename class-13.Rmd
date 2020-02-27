@@ -1,5 +1,5 @@
 ---
-title: "backtracking 2"
+title: "Clase 13: Backtracking 2"
 author: "Miguel Miní"
 date: "18-02-2020"
 output: html_document
