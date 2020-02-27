@@ -1,5 +1,5 @@
 ---
-title: "Clase 14: Bitmasks"
+title: "Clase 14: Bitmask"
 author: "GPC-UNI Resto del Mundo"
 date: "25-02-2020"
 output: html_document

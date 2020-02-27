@@ -101,7 +101,7 @@ title: "Plan semanal"
     + Sequence Problem
   * Trabajando con conjuntos de forma más óptima
 
-- Clase 14: bitmask + complete search - Racso
+- Clase 14: bitmask + complete search - Miguel
   * minimum independent set
   * recreando divisores
   * generando numeros con un patron.
