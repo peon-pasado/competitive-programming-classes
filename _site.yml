@@ -46,6 +46,9 @@ navbar:
           href: class-15.html
         - text: 7 Greedy Problems
           href: class-16.html
+        - text: Semana 9
+        - text: Meet in the middle
+          href: class-17.html
 
   right:
     - text: "Problema del día"

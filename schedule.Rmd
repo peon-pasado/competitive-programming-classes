@@ -117,10 +117,14 @@ title: "Plan semanal"
 
 ### Semana 9
 
-- Clase 17: Meet in the middle - Miguel
-  * Baby step giant step
-  * Maximum xor rd-path in a grid
-  * Graph problems
+- [Clase 17: Meet in the middle](./class-17.html) - Miguel
+  * ¿Qué es meet in the middle?
+    - Un algoritmo de fuerza bruta más inteligente
+    - Código
+    - Nueva Complejidad
+  * Baby Step Giant Step
+    - Código asumiendo n: primo $O(\sqrt n \log n)$
+  * Problemas
 
 - Clase 18: Contest UNI-UTEC-UPC II - Leonidas Miguel Racso (Sergio?)
   * Contest

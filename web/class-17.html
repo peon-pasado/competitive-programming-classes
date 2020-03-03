@@ -12,7 +12,7 @@
 <meta name="author" content="Miguel Miní" />
 
 
-<title>Clase 13: Backtracking 2</title>
+<title>Meet in the middle</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
@@ -360,142 +360,171 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Clase 13: Backtracking 2</h1>
+<h1 class="title toc-ignore">Meet in the middle</h1>
 <h4 class="author">Miguel Miní</h4>
-<h4 class="date">18-02-2020</h4>
+<h4 class="date">3/3/2020</h4>
 
 </div>
 
 
-<div id="optimización-y-conteo-con-backtracking" class="section level3">
-<h3>Optimización y Conteo con Backtracking</h3>
-<p>Hay veces que no conviene llevar variables sueltas, ni vectores, ni conjuntos, etc. En estos casos, es preferible modelar las soluciones de otra forma. Usar una menor cantidad de variables.</p>
-<div id="el-problema-de-la-mochila" class="section level4">
-<h4>El problema de la mochila</h4>
-<p><strong>Enunciado:</strong> Un ladrón entra a robar a una casa, y tiene una mochila con una capacidad C, debe elegir entre n objetos, que tiene un peso y un valor, un subconjunto de ellos tal que su suma de pesos sea menor o igual a C y que tenga suma de valores máximo. Hallar dicha cantidad màxima.</p>
-<p><strong>Solución:</strong> El problema se puede modelas como el siguiente problema de optimización entera:</p>
-<p><span class="math display">\[\max \sum_{i=0}^{n-1} x_i w_i\]</span> <span class="math display">\[0 \le x_i \le 1, \forall i \in \lbrace 0, ..., n-1\rbrace\]</span> Si nos damos cuenta, podemos escojer las dos posibilidades para cada x, teniendo un total de O(<span class="math inline">\(2^n\)</span>) estados distintos.</p>
+<div id="outline" class="section level2">
+<h2>outline</h2>
+<ul>
+<li><a href="#1">¿Qué es meet in the middle?</a>
+<ul>
+<li><a href="#2">Un algoritmo de fuerza bruta más inteligente</a></li>
+<li><a href="#3">Código</a></li>
+<li><a href="#4">Nueva Complejidad</a></li>
+</ul></li>
+<li><a href="#5">Baby Step Giant Step</a>
+<ul>
+<li><a href="#6">Código asumiendo n: primo <span class="math inline">\(O(\sqrt n \log n)\)</span></a></li>
+</ul></li>
+<li><a href="#7">problemas</a></li>
+</ul>
+</div>
+<div id="qué-es-meet-in-the-middle" class="section level2">
+<h2>¿Qué es meet in the middle?</h2>
+<p>Ya hemos estudiado el problema de la mochila, conocemos que este problema es NP, lo que quiere decir que no exsite una solución determinista y que no sea exponencial respecto a la cantidad de elementos.</p>
+<p>Problema: Dado <span class="math inline">\(n\)</span> elementos con pesos <span class="math inline">\(w_i\)</span> y valores <span class="math inline">\(v_i\)</span>, hallar un subconjunto de los elementos tal que su suma de pesos sea a lo mas <span class="math inline">\(C\)</span> y su valor sea máximo.</p>
+<p><span class="math display">\[\max\limits_{i=1}^n ~v_i x_i\]</span> <span class="math display">\[\sum\limits_{i=1}^n w_i x_i \le C\]</span> <span class="math display">\[x_i \in \{0, 1\}\]</span></p>
+<p>En resumen, conocemos que la complejidad es <span class="math inline">\(O\)</span>(<span class="math inline">\(2^n\)</span>) o <span class="math inline">\(O\)</span>(<span class="math inline">\(2^n n\)</span>), según como se implemente, pero ¿se puede mejorar?.</p>
+<div id="un-algoritmo-de-fuerza-bruta-más-inteligente" class="section level3">
+<h3>Un algoritmo de fuerza bruta más inteligente</h3>
+<p>Recordemos que cada conjunto lo podemos ver como un string de 0’s y 1’s con n elementos, pero eso nos quiere decir que se puede ver como dos string de 0’s y 1’s de tamaños <span class="math inline">\(\lfloor \frac{n}{2} \rfloor\)</span> y <span class="math inline">\(\lceil \frac{n}{2} \rceil\)</span>, respectivamente, los cuales hemos unido.</p>
+<p>Pero, ¿Cómo unirlos? Supongamos que el primer string tenga suma de pesos asociada de <span class="math inline">\(W\)</span>, entonces, debo encontrar de todos los posibles segundos strings que tengan suma de pesos a lo más <span class="math inline">\(C - W\)</span> el que tenga mayor suma de valores.</p>
+<p>Lo último podría ser también costoso, así que probemos lo siguiente, que sucede si ordenamos los conjuntos tanto de derecha y de izquierda de forma creciente respecto a la suma de pesos, sean <span class="math inline">\(W_1^l \le W_2^l \le \dots \le W_m^l\)</span> y <span class="math inline">\(W_1^r \le W_2^r \le \dots \le W_p^r\)</span>. Entonces, al buscar por <span class="math inline">\(W_1^l\)</span> buscamos por todos los que son menores o iguales a <span class="math inline">\(C - W_1^l\)</span> en el lado derecho, eso quiere decir que al buscar el siguiente en el lado izquierdo, estoy consultando por menos en el lado derecho.</p>
+<p align="center">
+<img src="images/class-17/mitm.webp" title="fig:" style="height:10cm" alt="conjuntos ordenados L y R" />
+</p>
+<p>Para finalizar, para poder lograr una buena complejidad, le asignamos al k-ésimo elemento el máximo posible suma de valores de los k primeros elementos.</p>
+</div>
+<div id="código" class="section level3">
+<h3>Código</h3>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-const int maxn = 22;
-int w[maxn], v[maxn];
-int n, C;
-
-int backtrack(int pos, int C) {
-  if (C &gt; 0) return INT_MIN;
-  if (pos == n) return 0;
-  int ans = 0;
-  ans = max(ans, backtrack(pos+1, C));
-  ans = max(ans, backtrack(pos+1, C - w[pos]) + v[pos]);
-  return ans;
-}
+using namespace std;
 
 int main() {
+  inr n, C;
   cin &gt;&gt; n &gt;&gt; C;
+  vector&lt;int&gt; w(n), v(n);
   for (int i = 0; i &lt; n; ++i) {
     cin &gt;&gt; w[i] &gt;&gt; v[i];
   }
-  cout &lt;&lt; bactrack(0, C) &lt;&lt; endl;
+  int m = n/2, p = (n+1)/2;
+  vector&lt;pair&lt;int, int&gt;&gt; L, R;
+  for (int s = 0; s &lt; 1&lt;&lt;m; ++s) {
+    int W = 0, V = 0;
+    for (int i = 0; i &lt; m; ++i) {
+      if (s &amp; (1&lt;&lt;i)) {
+        W += w[i];
+        V += v[i];
+      }
+    }
+    L.push_back({W, V});
+  }
+  for (int s = 0; s &lt; 1&lt;&lt;p; ++s) {
+    int W = 0, V = 0;
+    for (int i = 0; i &lt; p; ++i) {
+      if (s &amp; (1&lt;&lt;i)) {
+        W += w[m + i];
+        V += v[m + i];
+      }
+    }
+    R.push_back({W, V});
+  }
+  sort(L.begin(), L.end());
+  sort(R.begin(), R.end());
+  int mx = -1e9;
+  for (auto&amp; e : R) {
+    e.second = max(e.second, mx);
+    mx = e.second;
+  }
+  int ans = -1e9;
+  for (int l = 0, r = R.size() - 1; l &lt; L.size(); ++l) {
+    while (r &gt; 0 and R[r].first + L[l].first &gt; C) r -= 1;
+    if (R[r].first + L[l].first &lt;= C) {
+      ans = max(ans, R[r].second + L[l].second);
+    }
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
   return 0;
 }</code></pre>
 </div>
-<div id="parenthesis-balance" class="section level4">
-<h4>Parenthesis Balance</h4>
-<p>Dado una secuencia de parentesis “(” y “)”, cual es la mínima cantidad de parentesis que debo invertir para que la secuencia este balanceada. Una secuencia S es balanceada si:</p>
+<div id="nueva-complejidad" class="section level3">
+<h3>Nueva complejidad</h3>
+<p>Qué tanto ha mejorado la complejidad de nuestro anterior algoritmo?, bueno, hemos generado solo conjuntos de a lo más tamaño <span class="math inline">\(\lceil \frac{n}{2} \rceil\)</span> lo que equivale a una complejidad de <span class="math inline">\(O({\sqrt2}^n n)\)</span>, y ordenalos toma lo mismo, al final hacemos un for y tanto <span class="math inline">\(l\)</span> como <span class="math inline">\(r\)</span> recorren todos los elementos una vez. por tanto la complejidad es <span class="math inline">\(O({\sqrt2}^n n)\)</span>. Por tanto podriamos abordar problemas con <span class="math inline">\(n = 44\)</span> aproximadamente.</p>
+</div>
+</div>
+<div id="baby-step-giant-step" class="section level2">
+<h2>Baby Step Giant Step</h2>
+<p>Meet in the middle es un tema relativamente complicado, hay que ser muy ingenioso para luego de partir el problema, poder unilos.</p>
+<p>Problema: Dados <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> y <span class="math inline">\(n\)</span> con mcd(<span class="math inline">\(a\)</span>, <span class="math inline">\(n\)</span>) <span class="math inline">\(= 1\)</span> hallar <span class="math inline">\(m\)</span>, si existe, que cumpla: <span class="math display">\[a^m \equiv b \mod n\]</span></p>
+<p>En primer lugar <span class="math inline">\(a^m\)</span> no toma muchos valores, es claro que no puede tomar más de n valores, y todos los valores distintos se pueden hallar en el conjunto <span class="math inline">\(\{0, 1, \dots, n-1\}\)</span></p>
+<p>Para resolver este problema sin iterar sobre todo <span class="math inline">\(m\)</span>, haremos el siguiente truco: Todo <span class="math inline">\(m\)</span> se puede expresar como <span class="math inline">\(m = d q + r\)</span>, con <span class="math inline">\(0 \le r &lt; d\)</span>. Lo que quiere decir que si nosotros escogemos <span class="math inline">\(d = sqrt(n)\)</span>, puedo ver que <span class="math inline">\(q\)</span> y <span class="math inline">\(r\)</span> no superan <span class="math inline">\(d\)</span>.</p>
+<p>Eso quiere decir que yo puedo tener el siguiente problema: hallar <span class="math inline">\(q\)</span> y <span class="math inline">\(r\)</span> tal que:</p>
+<p><span class="math display">\[a^{d q + r} = b \mod n\]</span> <span class="math display">\[(a^d)^q a^r = b \mod n\]</span> <span class="math display">\[(a^d)^q = b (a^{-1})^r \mod n\]</span></p>
+<p>Esto quiere decir que por cada <span class="math inline">\((a^d)^q\)</span>, debo buscar si existe el mismo valor expresado como <span class="math inline">\(b(a^{-1})^r\)</span>.</p>
+<div id="código-asumiendo-n-primo-osqrt-n-log-n" class="section level3">
+<h3>Código asumiendo n: primo <span class="math inline">\(O(\sqrt n \log n)\)</span></h3>
+<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int mul(long long a, int b, int n) {
+  return a * b % n;
+}
+
+int ex(int a, int b, int n) {
+  int r = 1;
+  while (r &gt; 0) {
+    if (b&amp;1) r = mul(r, a, n);
+    a = mul(a, a, n);
+    b &gt;&gt;= 1;
+  }
+  return r;
+}
+
+int baby_step_giant_step(int a, int b, int n) {
+  int d = sqrt(n) + 1;
+  map&lt;int, int&gt; adq;
+  int ad = ex(a, d, n);
+  int pot = 1;
+  for (int q = 0; q &lt; d; ++q) {
+    adq[pot] = q;
+    pot = mul(pot, ad);
+  }
+  int inva = ex(a, n-2, n);
+  pot = 1;
+  for (int r = 0; r &lt; d; ++r) {
+    int t = mul(b, pot);
+    if (adq.count(t)) {
+      return adq[t] * d + r;
+    }
+    pot = mul(pot, inva);
+  }
+  return -1;
+}
+
+int main() {
+  int a, b, n;
+  cin &gt;&gt; a &gt;&gt; b &gt;&gt; n;
+  cout &lt;&lt; baby_step_giant_step(a, b, n) &lt;&lt; endl;
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div id="problemas" class="section level2">
+<h2>problemas:</h2>
 <ol style="list-style-type: decimal">
-<li><p>S es vacía.</p></li>
-<li><p>S se puede expresar como (E), donde E es una secuencia balanceada.</p></li>
-<li><p>S se puede expresar como AB, donde A y B son secuencias balanceadas.</p></li>
+<li><p><a href="https://community.topcoder.com/stat?c=problem_statement&amp;pm=6742&amp;rd=10763">KnapsackProblem</a></p></li>
+<li><p><a href="https://codeforces.com/contest/1249/problem/C2">Good Numbers</a></p></li>
+<li><p><a href="https://codeforces.com/problemset/problem/1006/F">Xor-Paths</a></p></li>
+<li><p><a href="https://codeforces.com/contest/888/problem/E">Maximum Subsequence</a></p></li>
+<li><p><a href="https://codeforces.com/contest/799/problem/D">Field Expansion</a></p></li>
+<li><p><a href="https://codeforces.com/problemset/problem/490/D">Chocolate</a></p></li>
+<li><p><a href="https://codeforces.com/problemset/problem/457/A">Golden System</a></p></li>
+<li><p><a href="https://codeforces.com/problemset/problem/769/D">k-Interesting Pairs Of Integers</a></p></li>
 </ol>
-<p>Una secuencia balanceada se puede traducir a lo siguiente; asignamos a “(” el valor de 1, y a “)” el valor de -1, se debe cumplir que la suma de los <span class="math inline">\(i\)</span> primeros valores debes sumar mayor o igual a 0, para todo <span class="math inline">\(i\)</span>.</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-using namespace std;
-
-string s;
-int backtrack(int pos, int sum) {
-  if (sum &lt; 0) return 1e9;
-  if (pos == s.size()) return 0;
-  int ans = 1e9;
-  ans = min(ans, backtrack(pos+1, sum + (s[pos] == &#39;(&#39; ? 1 : -1));
-  ans = min(ans, backtrack(pos+1, sum + (s[pos] == &#39;(&#39; ? -1 : 1)) + 1);
-  return ans;
-}
-
-int main() {
-  cin &gt;&gt; s;
-  cout &lt;&lt; backtrack(0, 0) &lt;&lt; endl;
-  return 0;
-}</code></pre>
-</div>
-</div>
-<div id="sequence-problem" class="section level3">
-<h3>Sequence Problem</h3>
-<p>Dado una secuencia de n elementos, cuantas subsecuencia existen tal que tengan maximo comun divisor exactamente k.</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-using namespace std;
-const int maxn = 22;
-int n, k;
-int a[maxn];
-
-void backtrack(int pos, int g) {
-  if (g%k != 0) return 0;
-  if (pos == n) return g == k;
-  int ans = 0;
-  ans += backtrack(pos+1, g);
-  ans += backtrack(pos+1, __gcd(g, a[pos]));
-  return ans;
-}
-
-int main() {
-  cin &gt;&gt; n &gt;&gt; k;
-  for (int i = 0; i &lt; n; ++i) cin &gt;&gt; a[i];
-  cout &lt;&lt; backtrack(0, 0) &lt;&lt; endl;
-  return 0;
-}</code></pre>
-</div>
-<div id="otro-problema-con-secuencias" class="section level3">
-<h3>otro problema con secuencias</h3>
-<p>Dado una secuencia de n elementos, separarla en k rangos continuos de tal forma que el rango que tenga mayor suma de elementos, sea lo minimo posible. Imprimir esa cantidad mínima.</p>
-<pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
-using namespace std;
-const int maxn = 22;
-int n, k;
-int a[maxn];
-
-int backtrack(int pos, int k) {
-  if (k &lt; 0) return 2e9;
-  if (pos == n) return k == 0 ? 0 : 2e9;
-  int ans = INT_MAX;
-  int sum = 0;
-  for (int i = pos; i &lt; n; ++i) {
-    sum += a[i];
-    ans = min(ans, max(sum, bactrack(i+1, k-1)));
-  }
-  return ans;
-}
-
-
-int main() {
-  cin &gt;&gt; n &gt;&gt; k;
-  for (int i = 0; i &lt; n; ++i) {
-    cin &gt;&gt; a[i];
-  }
-  cout &lt;&lt; backtrack(0, k) &lt;&lt; endl;
-  return 0;
-}</code></pre>
-</div>
-<div id="podemos-trabajar-con-conjuntos-de-forma-más-óptima" class="section level3">
-<h3>Podemos trabajar con conjuntos de forma más óptima?</h3>
-<p><strong>problema:</strong> puedo hacer de forma simple, tomar una familia de conjuntos <span class="math inline">\(P\)</span> y asignarle una función <span class="math inline">\(f\)</span> de tal forma si tomo dos elementos <span class="math inline">\(u\)</span>, <span class="math inline">\(v\)</span> <span class="math inline">\(\in\)</span> <span class="math inline">\(P\)</span> tal que <span class="math inline">\(u = v\)</span> si y solo si <span class="math inline">\(f(u) = f(v)\)</span>, además <span class="math inline">\(f(g(u, v)) = h(f(u), f(u))\)</span> donde g es una opeación de conjuntos y h es una operacion que expresa lo mismo pero sobre los valores asignados.</p>
-<p>Este tipo de función se le llama hash, pero es más que un hash, tenemos un mapeo que necesita mucha más cosas que una función normal. Afortunadamente existe una solución computacionalmente amigable.</p>
-<p>La computadora maneja los números en base 2, eso quiere decir que los maneja como una secuencia ordenada de ceros y unos, entonces, como hemos visto hasta este momento un conjunto lo podemos definir como el estado de estar o no de todos los elementos.</p>
-<p>Ejemplo:</p>
-<p><span class="math inline">\(5 = 00000000101_2 \equiv \lbrace 0, 2\rbrace\)</span> <span class="math inline">\(22 = 0000010110 \equiv \lbrace 1, 2, 4\rbrace\)</span></p>
-<p>Lo más interesante es que tenemos todo lo que queriamos:</p>
-<p><span class="math display">\[U \cap V \equiv B(U) \&amp; B(V)\]</span> <span class="math display">\[U \cup V \equiv B(U) | B(V)\]</span> <span class="math display">\[U \triangle V \equiv B(U) \wedge B(V)\]</span></p>
-<p><span class="math display">\[A^c \equiv \sim B(A)\]</span></p>
-</div>
-<div id="pondre-algunas-cosas-que-se-pueden-hacer-en-clase-este-tema-lo-veremos-más-detallado-la-siguiente-clase." class="section level3">
-<h3>Pondre algunas cosas que se pueden hacer en clase, este tema lo veremos más detallado la siguiente clase.</h3>
 </div>
 
 

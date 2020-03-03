@@ -43,3 +43,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 8
 - [Introducción a Greedy](./class-15.html)
 - [7 Greedy Problems](./class-16.html)
+
+## Semana 9
+- [Meet in the middle](./class-17.html)
