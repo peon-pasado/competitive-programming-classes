@@ -1,7 +1,7 @@
 ---
 title: "Meet in the middle"
 author: "Miguel Miní"
-date: "3/3/2020"
+date: "03-03-2020"
 output: html_document
 ---
 
