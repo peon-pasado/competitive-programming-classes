@@ -1,0 +1,206 @@
+---
+title: "Dynamic Programming"
+author: "Miguel Miní"
+date: "17-05-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("/usr/local/bin/python")
+matplotlib <- import("matplotlib")
+matplotlib$use("Agg", force = TRUE)
+```
+
+
+## 1. El problema de hacer recursión.
+
+Recursión, y su versión particular para hacer problemas de fuerza bruta 
+"Backtracking" es una herramienta versátil, pero es un arma de doble filo...
+
+#### Problema 1.
+
+Calcule el n-ésimo termino de la sucesión de fibonacci $f(0) = 0$, $f(1) = 1$
+y $f(n + 2) = f(n + 1) + f(n)$.
+
+Los primeros términos de esta sucesión son: $0, 1, 1, 2, 3, 5, 8, 13, \dots$
+
+```{python}
+def fib(n):
+  if n == 0: return 0
+  if n == 1: return 1
+  return fib(n - 1) + fib(n - 2)
+```
+
+```{python}
+for i in range(10):
+  print(fib(i))
+```
+
+
+```{python , results='hide'}
+import time
+import matplotlib.pyplot as plt
+
+N_MAX = 32
+points = [0] * N_MAX
+for i in range(N_MAX):
+  points[i] -= time.perf_counter()
+  fib(i)
+  points[i] += time.perf_counter()
+```
+
+
+```{python}
+plt.plot(points, 'ob')
+plt.xlabel("n")
+plt.ylabel("tiempo de ejecucion")
+plt.show()
+```
+
+## 2. Sobrelapamiento de estados
+
+¿Por qué Fibonacci? Tal vez ahora te preguntes que tiene Fibonacci de especial
+que no tienen otros problemas de recursión.
+
+La respuesta es _sobrelapamiento de estados_, quiere decir que hay algunos $n$ 
+que se evaluan muchas veces, veamos:
+
+```{python}
+def fib_count(n, cnt):
+  cnt[n] += 1
+  if n == 0: return 0
+  if n == 1: return 1
+  return fib_count(n-1, cnt) + fib_count(n-2, cnt)
+```
+
+```{python}
+cnt = [0] * N_MAX
+fib_count(N_MAX-1, cnt)
+```
+
+```{python}
+plt.plot(cnt)
+plt.xlabel('fib(n) calculados')
+plt.ylabel('frecuencia')
+plt.show()
+```
+
+Hay valores que se calculan ¡¡¡más de $1200000$ veces!!!
+
+## 3. Memoization, memoria a favor de la complejidad
+
+Sí mi problema es calcular los estados muchas veces, pues porqué no guardarlos
+para futuras peticiones? veamos como esta simple idea funciona:
+
+```{python}
+def fib_memo(n, vis, memo):
+  if vis[n] == True: return memo[n]
+  vis[n] = True
+  
+  answer = -1
+  if n == 0: answer = 0
+  elif n == 1: answer = 1
+  else: answer = fib_memo(n-1, vis, memo) + fib_memo(n-2, vis, memo)
+  
+  memo[n] = answer
+  return answer
+```
+
+```{python, results='hide'}
+import sys
+sys.setrecursionlimit(100000)
+M_MAX = 100
+points = [0] * M_MAX 
+for i in range(M_MAX):
+  points[i] -= time.perf_counter()
+  memo = [-1] * M_MAX
+  vis = [False] * M_MAX
+  fib_memo(i, vis, memo)
+  points[i] += time.perf_counter()
+```
+
+```{python}
+plt.plot(points, 'or')
+plt.xlabel('n')
+plt.ylabel('tiempo de ejecucion')
+plt.show()
+```
+
+
+¡¡¡Mi complejidad ahora es lineal!!! ¿Es esto acaso mágia?
+
+## 4. Calculado / Memoizado 
+
+La complejidad ahora es lineal por un simple hecho, los estados no se calculan
+más de una vez...
+
+```{python}
+def fib_dp(n, vis, memo, cnt):
+  cnt[n] += 1
+  if vis[n]:
+    return memo[n] #si ya ha sido calculado lo devuelvo
+  vis[n] = True #lo voy a calcular, falta guardarlo
+  ans = -1
+  if n == 0: ans = 0
+  elif n == 1: ans = 1
+  else: ans = fib_dp(n-1, vis, memo, cnt) + fib_dp(n-2, vis, memo, cnt)
+  
+  memo[n] = ans #como lo he calculado, lo guardo
+  return ans
+```
+
+```{python}
+M_MAX = 1000
+memo = [-1] * M_MAX
+vis = [False] * M_MAX
+cnt = [0] * M_MAX
+fib_dp(M_MAX-1, vis, memo, cnt)
+```
+
+```{python}
+plt.plot(cnt, 'og')
+plt.xlabel('fib(n) calculados')
+plt.ylabel('frecuencia')
+plt.show()
+```
+
+## 5. Un fibonacci-ejemplo diferente
+
+#### Problema 2.
+
+Ana es fanática de los quesos, ella tiene una lista de quesos que puede 
+comprar, y cada uno le agrada con valor $c_i$, los quesos que están 
+consecutivos en la lista se parecen mucho, así que por eso ella no 
+quiere comprar dos consecutivos. Ella no es buena con los cálculos, así 
+que quisiera que la ayudes diciendole la mayor suma de $c_i$ que ella 
+puede obtener.
+
+#### Análisis.
+
+La solución debe tener la forma de: $$dp(n) = \max(dp(n-1), ~dp(n-2) + c_n)$$
+con casos base $dp(1) = c_1$ y $dp(0) = 0$
+
+```{python}
+def dp(n, c, vis, memo):
+  if n == 0: return 0
+  if n == 1: return c[1]
+  if vis[n]: return memo[n]
+  vis[n] = True
+  memo[n] = max(dp(n-1, c, vis, memo), dp(n-2, c, vis, memo) + c[n])
+  return memo[n]
+```
+
+### Tiempo de discusión del problema...
+
+### 6. ¿Un problema difícil?
+
+problema 3. Dado un grafo no dirigido, halle un ciclo hamiltoniano.
+
+### Discusión: Que es un grafo
+
+### Discusión: Que es un ciclo hamiltoniano
+
+### Discusión: Solución simple
+
+### Discusión: Una solución óptima, pero exponencial...

@@ -46,3 +46,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 9
 - [Meet in the middle](./class-17.html)
+
+## Semana 10
+- [Dynamic Programming](./class-18.html)

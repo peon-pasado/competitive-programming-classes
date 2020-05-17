@@ -49,6 +49,9 @@ navbar:
         - text: Semana 9
         - text: Meet in the middle
           href: class-17.html
+        - text: Semana 10
+        - text: Dynamic Programming
+          href: class-18.html
 
   right:
     - text: "Problema del día"
