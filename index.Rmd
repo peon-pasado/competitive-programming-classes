@@ -49,3 +49,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 10
 - [Dynamic Programming](./class-18.html)
+
+## Semana 11
+- [Introducción a la teoría de grafos](./class-19.html)
