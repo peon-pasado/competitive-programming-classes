@@ -52,3 +52,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 11
 - [Introducción a la teoría de grafos](./class-19.html)
+
+## Semana 12
+- [Divide and Conquer](./class-20.html)

@@ -1,0 +1,130 @@
+---
+title: "Clase 20: Divide and Conquer"
+author: "GPC-UNI Resto del Mundo"
+date: "30-05-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# La necesidad de dividir
+
+Supongamos el problema de ordenar un arreglo, este a simple vista podría parecer ser $O(n^{2})$ obteniendo el $i$-ésimo mínimo y colocándolo en la $i$-ésima posición.
+
+Sin embargo, no es difícil notar que si tenemos 2 arreglos ordenados y los queremos unir en un nuevo arreglo ordenado nos podemos demorar $O(n + m)$ si $n$ y $m$ son los tamaños de los arreglos.
+
+Ahora, ¿Cómo unir estos dos problemas que parecen poder relacionarse? Podemos reducir la idea a "Si tengo un algoritmo que ordena un arreglo $a$, puedo dividir el arreglo original en dos subarreglos, ordenarlos con dicho algoritmo y luego unirlos en $O(|a|)$".
+
+Si los dos arreglos tienen tamaño $n$ y $m$, el tiempo de ejecución de este algoritmo propuesto sería de:
+
+$$ T(n + m) = T(n) + T(m) + O(n + m) $$
+
+Para tener un algoritmo que no tenga problemas, tanto el $n$ como el $m$ deben poder ser expresados como $(n + m) \cdot \alpha$, ya que si les asignamos valores fijos tendremos problemas cuando $n + m$ no sea mayor que dichos valores, así que podemos cambiar la expresión a:
+
+$$ T(n) = T(\alpha n) + T((1 - \alpha) n) + O(n) $$
+
+Con $0 < \alpha \leq \frac{1}{2}$, ya que si $\alpha = 0$ no tendría sentido plantear la partición y el límite de $\frac{1}{2}$ es para que $\alpha \leq 1 - \alpha$.
+
+Si planteamos el árbol de recursión, notaremos que cada nivel realiza un trabajo de $O(n)$ y como mínimo tendremos $\log_{\frac{1}{\alpha}}{n}$ niveles, así que demoraremos $\Omega \left(n \cdot \log_{\frac{1}{\alpha}}{n}\right)$ y $O\left(n \cdot \log_{\frac{1}{1 - \alpha}}{n}\right)$.
+
+Para poder minimizar las expresiones anteriores simultáneamente, tendremos que asignar $\alpha = \frac{1}{2}$, lo que significa que siempre intentaremos particionar $a$ en dos mitades.
+
+De esta forma obtendremos una complejidad de $O(n\log_{2}{n})$.
+
+Acabamos de reconstruir el algoritmo llamado **Merge Sort**, uno de los pilares del *Divide and Conquer*.
+
+# Planteamiento de Divide and Conquer
+
+Podemos plantear 3 pasos para diseñar una solución con divide and conquer:
+
+1. Divide: Plantear cómo ividir el conjunto de datos inicial de manera conveniente.
+   En el ejemplo anterior este es el paso en el que decidimos que la solución ideal particionaba en $2$ mitades el arreglo original.
+
+2. Conquer: Obtener toda la información relevante y posible de cada elemento de la partición de los datos.
+   En el ejemplo anterior este es el paso en el que ordenamos las $2$ mitades, ya que las necesitaremos para obtener el arreglo original ordenado
+
+3. Merge: Usar la información de los elementos de la partición de los datos para obtener una respuesta del total.
+   En el ejemplo anterior este es el paso en el que unimos los dos subarreglos en $O(n)$ para lograr un algoritmo eficiente.
+
+## Problemas para practicar en clase
+
+- [Merge Sort](https://www.codechef.com/problems/MRGSRT)
+
+- [Inversion Count](https://www.spoj.com/problems/INVCNT/)
+
+# Búsqueda binaria (o método de bisección)
+
+El método de bisección es usado en métodos numéricos para hallar un punto $x_{0}$ tal que $f(x_{0}) = y_{0}$ para una función monótona (no decreciente o no creciente). El método de búsqueda binaria se basa en el anterior para extender sus aplicaciones.
+
+Consideremos una secuencia de elementos y una función *booleana* llamada **predicado**, la cual nos dará *Verdadero* si un elemento de la secuencia cumple con alguna propiedad en particular o *Falso* si no lo hace.
+
+Consideramos una secuencia como **monótona respecto al predicado $pred$** si esta da los siguientes resultados:
+
+$$ \ldots, V, V, V, F, F, F, \ldots $$
+
+Notemos dos propiedades:
+
+1. Si $f(s_{i})$ es Falso, entonces para todo $k > i$ se dará que $f(s_{k})$ es Falso.
+
+2. Si $f(s_{i})$ es Verdadero, entonces para todo $k < i$ se dará que $f(s_{k})$ es Verdadero.
+
+Esto nos permite encontrar el primer $i$ tal que $f(s_{i})$ es Falso en $O(\log_{2}{n} \cdot pred)$, donde $n$ es el tamaño de la secuencia y $pred$ es lo que demora verificar $f(s_{i})$. Al siguiente algoritmo le llamaremos **Lower bound**:
+
+```C++
+int lower_bound(int n){
+	int lo = 1;
+	int hi = n;
+	while(lo < hi){
+		int mi = lo + (hi - lo) / 2;
+		if(f(mi)) lo = mi+1;
+		else hi = mi;
+	}
+	return lo;
+}
+```
+
+Notemos que por motivos de posible overflow manejamos la diferencia de los límites en vez de la suma directa. Por otra parte, para hallar el último $i$ tal que $f(s_{i})$ es Verdadero, usaremos el siguiente algoritmo, al cual llamaremos **Upper bound**:
+
+```C++
+int upper_bound(int n){
+	int lo = 1;
+	int hi = n;
+	while(lo < hi){
+		int mi = lo + (hi - lo + 1) / 2;
+		if(f(mi)) lo = mi;
+		else hi = mi-1;
+	}
+	return lo;
+}
+```
+
+El análisis de las diferencias entre ambos métodos se deja como ejercicio.
+
+El algoritmo anterior sirve para posiciones en una secuencia, pero se puede extender a reales, donde los elementos son continuos; sin embargo, en estos casos deberemos fijar la cantidad de iteraciones para obtener la precisión deseada:
+
+```C++
+double solve(double maximo, int iter){
+	double lo = 0.0;
+	double hi = maximo;
+	for(int i = 0; i < iter; i++){
+		double mi = (lo + hi) / 2.0;
+		if(f(mi)) lo = mi;
+		else hi = mi;
+	}
+	return lo;
+}
+```
+
+De esta manera obtendremos una aproximación; de hecho, esta forma es la más cercana al método de bisección original.
+
+## Problemas para practicar en clase
+
+- [Math is Love](https://www.spoj.com/problems/MATHLOVE/)
+
+- [Magic Powder - 2](https://codeforces.com/problemset/problem/670/D2)
+
+# Contest Semanal
+
+Pueden entrar al contest mediante el siguiente [link](https://vjudge.net/contest/376191)

@@ -6,52 +6,46 @@ navbar:
       href: schedule.html
     - text: "Clases"
       menu:
-        - text: Semana 1
         - text: Introducción
           href: class-01.html
         - text: Complejidades + STL
           href: class-02.html
-        - text: Semana 2
         - text: Contest 1
           href: class-03.html
         - text: Teoría de números
           href: class-04.html
-        - text: Semana 3
         - text: Fuerza bruta I
           href: class-05.html
         - text: Fuerza bruta II
           href: class-06.html
-        - text: Semana 4
         - text: Contest 2
           href: class-07.html
         - text: Recursión
           href: class-08.html
-        - text: Semana 5
         - text: Backtracking I
           href: class-09.html
         - text: Recapitulacion I
           href: class-10.html
-        - text: Semana 6
         - text: Contest UNI-UTEC I
           href: class-11.html
         - text: Backtracking II
           href: class-12.html
-        - text: Semana 7
         - text: Backtracking II
           href: class-13.html
         - text: Bitmask
           href: class-14.html
-        - text: Semana 8
         - text: Introducción a Greedy
           href: class-15.html
         - text: 7 Greedy Problems
           href: class-16.html
-        - text: Semana 9
         - text: Meet in the middle
           href: class-17.html
-        - text: Semana 10
         - text: Dynamic Programming
           href: class-18.html
+        - text: Grafos
+          href: class-19.html
+        - text: Divide and Conquer
+          href: class-20.html
 
   right:
     - text: "Problema del día"
