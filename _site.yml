@@ -46,6 +46,8 @@ navbar:
           href: class-19.html
         - text: Divide and Conquer
           href: class-20.html
+        - text: DP Classics
+          href: class-21.html
 
   right:
     - text: "Problema del día"

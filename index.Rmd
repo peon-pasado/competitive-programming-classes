@@ -55,3 +55,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 12
 - [Divide and Conquer](./class-20.html)
+
+## Semana 13
+- [Dynamic Programmic Classic Problems](./class-21.html)
