@@ -5,7 +5,7 @@
 - pandoc
 
 ## How to write a class
-```
+```bash
 # Example: Create class number 30.
 # First, get the structure of the classes from a previous class
 cp class-21.Rmd class-30.Rmd
