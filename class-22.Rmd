@@ -1,0 +1,226 @@
+---
+title: "Introducción al problema del máximo flujo"
+author: "Miguel Miní"
+date: "28/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<center>
+![Figura 1. A nuestra izquierda nuestra primera red de flujo. A la derecha un ejemplo de un flujo de 5, donde los caminos rojo, verde y azul tienen un flujo de 2, 1, 2 respectivamente.](max_flow.png)
+
+</center>
+
+
+## Definición:
+
+El problema del máximo flujo es un clásico fácil de usar / difícil de entender en el
+análisis de algoritmos. Por eso primero tendremos en consideración más informal que
+formal.
+
+La figura 1(a) muestra una red de flujo, los valores de las aristas indican la máxima
+cantidad de "algo" que puede fluir sobre esas mismas. El objetivo es averiguar
+cuanto es la máxima cantidad de "algo" que puedo enviar desde el vértice s hacia el
+vértice t.
+
+Por ejemplo, en la figura 1(b) exhibe un método de enviar 5 unidades de flujo desde
+s hacia t, mientras se respeta todas las capacidades de las aristas. puedo mejorar 
+esta cantidad? No, podemos fijarnos que desde s, por sus dos aristas, solo puede
+fluir a lo más 5 de flujo.
+
+Formalmente, un ejemplo del problema del máximo flujo es especificado por las siguientes
+propiedades:
+
+1. Un grafo dirigido $G$, con $V$ vértices y aristas dirigidas $E$.
+
+2. Un vértice fuente $s \in V$ 
+
+3. Un vértice sumidero $t \in V$
+
+4. Un entero no negativo $u_e$ por cada arista $e \in E$
+
+Como el objetivo es enviar flujo desde s hacia t, nosotros podemos asumir sin perdida
+de generalidad que s no tiene aristas entrantes y t no tiene aristas de salida.
+
+Formalmente, un flujo es un vector no negativo $\{f_e\} ~e \in E$, indexado por las
+aristas de F, que satisface dos restricciones:
+
+- Restricciones de capacidad: $f_e \le u_e$ para toda $e \in E$
+
+- Conversación de flujo: para todo vértice $v$ otro que $s$ y $t$, 
+
+<center>
+monto de flujo entrando de $v$ $=$ monto de flujo saliendo de $v$
+</center>
+
+El lado izquierdo es la suma de los $f_e$ sobre todas las aristas entrando 
+en $v$; simétricamente con el lado derecho.
+El objetivo es computar el máximo flujo, uno con el máximo posible valor,
+entendiendo este monto como el flujo que sale de s (el mismo que entra por t).
+
+## Un algoritmo greedy ingenuo.
+
+Ahora fijemonos en el diseño de un algoritmo eficiente para el problema del 
+flujo máximo. A priori, no es claro que este algoritmo exista (Solo de lo que
+hemos visto, este puede ser un NP-hard).
+
+Comenzaremos con un algoritmo greedy. El enfoque greedy para el máximo flujos
+es iniciar con todas las aristas con flujo __cero__, y greedimente producir
+flujos con mayor valor. El proceso natural es enviar flujos sucesivamente 
+por caminos de $s$ hacia $t$.
+
+```c++
+int greedy(graph G) {
+  for (auto& e : G.E) { //asignar 0 a las aristas
+    e.flow = 0;
+  }
+  int max_flow = 0;
+  while (true) {
+    //encontrar un path de s a t tal que e.capacity > e.flow, 
+    //bfs o dfs sirven.
+    auto path = find_path(G, s, t);
+    if (path.size() > 0) {
+      auto delta = inf;
+      for (auto e : path.E) { //hallar el maximo flujos que se puede enviar.
+        delta = min(delta, e.capacity - e.flow);
+      }
+      for (auto& e : pathE) { //actualizar el flujo en las aristas.
+        e.flow += delta;
+      }
+      maxflow += delta; //actualizar el flujo.
+    } else {
+      break; //no existe más paths.
+    }
+  }
+  return max_flow;
+}
+```
+
+Tenga en cuenta que pueden ser muchos caminos desde s hacia t, cualquiera es
+suficiente que cumpla e.capacity > e.flow. Luego de eso enviamos la mayor cantidad
+de flujo posible.
+
+<center>
+![Figura 3: El algoritmo greedy no retorna un resultado óptimo si primero tomamos el camino s, v, w, t.](greedy.PNG)
+
+</center>
+
+Este algoritmo es simple y natural, pero ¿funciona? esto significa, cuando termina
+con un flujo, ¿Es necesario que sea un flujo máximo? El ejemplo que tenemos dice que 
+no (figura 3). 
+
+## Grafo Residual
+
+Una segunda idea es _extender_ el ingenuo algoritmo greedy permitiendo
+operaciones "regresar". Por ejemplo, a pesar de que el algoritmo
+anterior no sea correco, nosotros podriamos enviar 2 unidades mas
+desde s hacia w, y luego regresar flujo por la arista $(v, w)$,
+regresando 2 de las 3 unidades que fueron enviadas en el paso anterior
+y finalmente a traves de la arista $(v, t)$. Esto nos permitirá
+tener un flujo de 5, que es máximo.
+
+<center>
+![Figura 4. (a) arista original con capacidad y flujo (b) arista resultante en la red residual](back.PNG)
+
+</center>
+
+<center>
+![figura 5. Red de glujo residual en la figura 3](residual.PNG)
+
+</center>
+
+Debemos definir que significa permitir "regresar" operaciones. Esto
+motiva la siguiente simple pero importante definición, de una _red residual_. La idea es que, dado un grafo G y un flujo f en este,
+nosotros formamos una nueva red de flujo $G_f$ que tiene el mismo
+conjunto de vertices de G y que tiene dos aristas por cada arista de
+$G$. una arista $e = (v, w)$ de $G$ lleva flujo $f_e$ y tiene 
+capacidad $u_e$ (Figura 4a.) se convierte en una "arista de avance"
+$(u, v)$ de $G_f$ con capacidad $u_e - f_e$ (lo que aun se puede
+enviar) y una "arista de regreso" $(w, v)$ de $G_f$ con capacidad
+$f_e$ (el monto del flujo enviado por esta arista, que puede ser
+regresado). Ver figura 4(b). Observe que una camino en la red $G$,
+es un caso especial de caminos en $G_f$ donde solo se consideran
+aristas de avance.
+
+Por ejemplo, con $G$ de nuestro ejemplo y $f$ el flujo en la figura 3,
+la correspondiente red residual $G_f$ es vista en la figura 5. las
+4 aristas con capacidad 0 en $G_f$ son omitidas en la imagen.
+
+
+## El algoritmo de Ford-Fulkerson
+
+Felizmente, si nosotros corremos el algoritmo greedy natural
+sobre la red residual, nosotros obtendremos un algoritmo correcto,
+el algoritmo de Ford-Fulkerson.
+
+```c++
+int ford_fulkerson(graph G) {
+  int max_flow = 0;
+  for (auto& e : G.E) { //inicializar el flujo
+    e.flow = 0;
+  }
+  auto G_f = G;
+  while (true) {
+    auto path = find_path(G_f, s, t); //encontrar cualquier camino
+    //tal que las aristas cumplan e.capacity - e.flow
+    if (path.size() > 0) {
+      auto delta = inf;
+      for (auto e : path) { //hallar el maximo flujo para aumentar
+        delta = min(delta, e.capacity - e.flow);
+      }
+      for (auto& e : path) { //agregar flujo al camino
+        e.flow += delta; 
+        reverse(Gf, e).flow -= delta; //y quitar a las aristas inversas
+      }
+    } else {
+      break;
+    }
+  }
+  return max_flow;
+}
+
+```
+
+Por ejemplo, iniciando desde la red residual de la figura 5, el
+algoritmo de Ford-Fulkerson deberia aumentar el flujo a traves
+del camino s, w, v, t. Esto ultimo produce el maximo flujo esperado.
+
+Nosotros ahora prestaremos atencion sobre la correctitud, la
+complejidad la veremos en la siguiente clase.
+
+## El algoritmo termina
+
+Nosotros afirmamos que el algoritmo de Ford-Fulkerson termina 
+eventualmente con un flujo factible. esto es debido a dos 
+invariantes, ambas probables por induccion sobre el número
+de iteraciones.
+
+En primer lugar, el algoritmo mantiene la invariante que $\{f_e\}$
+$e \in E$ es un flujo. Esto es claramente verdad al inicio. El
+parametro ___delta___ es definido tal que no exista valor $f_e$
+que se vuelva negativo o exceda la capacidad $u_e$. Por el lado
+de conservacion de flujo, considera un vertice $v$, si $v$ no está en el path $P$ en $G_f$, entonces el flujo no varia trivialmente. Si
+$v$ pertenece a $P$. entonces, las aristas aunque seran de avance
+o de retroceso agregan y quitan el mismo valor en el grafo original.
+Por tanto el flujo es preservado.
+
+En segundo lugar, el algoritmo de Ford-Fulkerson mantiene la propiedad
+que todo monto de flujo es un entero. (Recordemos que hemos considerado que toda capacidad $u_e$ es entera.) Inductivamente, toda capacidad 
+residual es entera, tal que el parametro ___delta___ es entero,
+
+Toda iteración del algoritmo de Ford-Fulkerson incrementa el valor
+del flujo actual por el valor de ___delta___. La segunda invariante
+implica que ___delta___ $\ge 1$ en toda iteracion. Como el flujo
+que sale de s solo puede ser finito (acotado por las aristas de
+salida).
+
+La pregunta actual es... ¿El algoritmo en verdad termina con un flujo máximo?
+
+## Afirmación (condición de optimalidad para el máximo flujo)
+
+Si $f$ es un flujo en $G$ tal que la red residual $G_f$ no
+tiene caminos de $s$ hacia $t$, entonces $f$ es un flujo 
+máximo.

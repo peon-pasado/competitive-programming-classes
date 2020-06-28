@@ -58,3 +58,4 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 13
 - [Dynamic Programmic Classic Problems](./class-21.html)
+- [Max Flow](./class-22.html)

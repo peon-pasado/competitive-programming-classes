@@ -48,6 +48,8 @@ navbar:
           href: class-20.html
         - text: DP Classics
           href: class-21.html
+        - text: Max Flow Introduction
+          href: class-22.html
 
   right:
     - text: "Problema del día"
