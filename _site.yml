@@ -50,6 +50,12 @@ navbar:
           href: class-21.html
         - text: Max Flow Introduction
           href: class-22.html
+    - text: "TC Argentina 2020"
+      menu:
+        - text: Editorial Contest 1 - Inicial
+          href: TCAC1-EditorialI.html
+        - text: Editorial Contest 1 - Avanzado
+          href: TCAC1-EditorialA.html
 
   right:
     - text: "Problema del día"

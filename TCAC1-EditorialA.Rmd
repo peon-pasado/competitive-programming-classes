@@ -1,0 +1,946 @@
+---
+title: "Training Camp Argentina 2020 - Editorial Contest 1 Avanzado"
+author: "GPC-UNI Resto del Mundo"
+date: "13-07-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## [A. Nanami's Digital Board](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/A)
+
+Consideremos un problema similar: hallar el máximo bloque de luz de todo el tablero. Consideraremos que las restricciones de este problema son las mismas que para el problema original, pero sin operaciones extra.
+
+Una idea con fuerza bruta sería fijar todos los 4 lados del bloque, verificar esto puede ser realizado con una matriz de acumulados, así que la complejidad sería $O(n^{4})$. Obviamente esto nos daría un veredicto de TLE.
+
+¿Por qué fijar los 4 lados? Mejor fijemos el lado inferior y el lado superior, de esta forma nuestro problema se vuelve 1D (considerando las columnas como un solo elemento) y puede ser resuelto de manera lineal. Nuestra complejidad ahora será $O(n^{3})$, pero no es suficientemente rápido.
+
+Intentemos fijar solamente el lado inferior, entonces lo que tendremos es un arreglo $up[]$, el cual denotará la máxima "altura" de cada columna. Para ser más preciso, supongamos que el lado inferior se ubica en la fila $x$, entonces $up[i]$ es el máximo valor tal que las celdas $(x, i), (x-1, i), \ldots, (x - up[i] + 1, i)$ están con luz. Si elegimos las columnas $l$ y $r$ como los lados izquierdo y derecho, entonces el área del máximo bloque de luz con estos 3 lados fijos sería:
+
+$$ (r - l + 1)\left(\min_{l \leq i \leq r}{\{up[i]\}}\right) $$
+
+Sea $h = \min_{l \leq i \leq r}{\\{up[i]\\}}$, ¿Qué tal si fijamos $h$ y hallamos el $l$ más a la izquierda y el $r$ más a la derecha? Para ser más preciso, fijamos una columna $p$ y consideremos que la altura de esta columna sea la altura del bloque. Ahora queremos "extender" los lados hacia la izquierda y derecha del bloque, así que buscaremos la columna más hacia la izquierda tal que $\min_{l \leq i \leq r}{\\{up[i]\\}} = up[p]$. De manera análoga, buscaremos la columna más a la derecha que cumpla y el máximo bloque de luz con su altura fijada en la columna $p$ será $(r - l + 1)\cdot up[p]$.
+
+Este enfoque puede ser optimizado usando DSU. Imaginemos que inicialmente el arreglo $up[]$ está vacío. Agreguemos los elementos de $up[]$ uno por uno, de mayor a menor. Usaremos dos DSUs denotados por $L$ y $R$. Cuando agregamos un elemento $up[i]$, asignamos el padre de $i$ como $i+1$ en $R$ y como $i-1$ en $L$. De esta forma basta con hallar el padre de $i$ en $L$ y $R$ para obtener los extremos $l$ y $r$.
+
+Ahora este problema puede resolverse en complejidad casi cuadrática. De hecho, podríamos optimizarlo a complejidad cuadrática usando colas monótonas (Min/Max Queue), pero no es necesario por ahora. Volvamos al problema original.
+
+Supongamos que no hay modificaciones y que las operaciones solo son consultas. Entonces, podríamos mantener el arreglo $up$ de cada fila, y de manera análoga mantener $down[]$, $left[]$, $right[]$ para cada posible rotación. Usaremos el enfoque visto anteriormente para responder una consulta en tiempo casi lineal.
+
+Ahora consideremos las modificaciones. La modificación de un solo pixel solo cambia los valores de $O(n + m)$ posiciones de los arreglos, así que las modificaciones pueden ser resueltas en tiempo lineal.
+
+La complejidad total del algoritmo es $O(n^{2} +  q\cdot n \cdot \alpha(n))$, donde $\alpha(n)$ es la inversa de la función de Ackermann, la cual se ve muy seguido en el análisis de la complejidad de los DSUs.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample1" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por Fischer)</p>
+</div>
+<div id="codeExample1" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+ 
+const int maxn = 1005;
+int u[maxn][maxn];
+int d[maxn][maxn];
+int l[maxn][maxn];
+int r[maxn][maxn];
+int n, m, q;
+int link[2][maxn];
+int rnk[2][maxn];
+bool mat[maxn][maxn];
+int cst[maxn];
+int mini[2][maxn];
+int maxi[2][maxn];
+ 
+void init(int n) {
+	for (int i = 0; i <= n + 1; ++i) {
+		link[0][i] = link[1][i] = i;
+		rnk[0][i] = rnk[1][i] = 0;
+		mini[0][i] = maxi[0][i] = i;
+		mini[1][i] = maxi[1][i] = i;
+	}
+}
+ 
+int get(int idx, int x) {
+	if (x == link[idx][x]) return x;
+	return link[idx][x] = get(idx, link[idx][x]);
+}
+ 
+void merge(int idx, int x, int y) {
+	x = get(idx, x); 
+	y = get(idx, y);
+	if (x == y) return;
+	if (rnk[idx][x] < rnk[idx][y]) swap(x, y);
+	rnk[idx][x] += rnk[idx][x] == rnk[idx][y];
+	link[idx][y] = x;
+	mini[idx][x] = min(mini[idx][x], mini[idx][y]);
+	maxi[idx][x] = max(maxi[idx][x], maxi[idx][y]);
+}
+ 
+int p(int n, int idx) {
+	vector<pair<int, int>> order;
+	for (int i = 1; i <= n; ++i) {
+		order.emplace_back(cst[i], i);
+	}
+	init(n);
+	sort(order.rbegin(), order.rend());
+	int ans = 0;
+	for (auto e : order) {
+		int u = mini[0][get(0, e.second-1)] + 1;
+		int v = maxi[1][get(1, e.second+1)] - 1;
+		if (u <= idx && idx <= v) {
+			ans = max(ans, (v-u+1) * cst[e.second]);
+		}
+		merge(0, e.second, e.second-1);
+		merge(1, e.second, e.second+1);
+	}
+	return ans;
+}
+ 
+int main() {
+    scanf("%d %d %d", &n, &m, &q);
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= m; ++j) {
+			int x;
+			scanf("%d", &x);
+			mat[i][j] = x;
+		}
+	}
+    for (int i = 1; i <= n; ++i) {
+    	for (int j = 1; j <= m; ++j) {
+    		if (mat[i][j]) {
+    			u[i][j] = u[i-1][j] + 1;
+    			l[i][j] = l[i][j-1] + 1;
+    		} else {
+    			u[i][j] = 0;
+    			l[i][j] = 0;
+    		}
+    	}
+    }
+    for (int i = n; i >= 1; --i) {
+        for (int j = m; j >= 1; --j) {
+            if (mat[i][j]) { 
+                d[i][j] = d[i+1][j] + 1;
+                r[i][j] = r[i][j+1] + 1;
+            } else {
+            	d[i][j] = 0;
+            	r[i][j] = 0;
+            }
+        }
+    }
+    while (q--) {
+        int type, a, b;
+        scanf("%d %d %d", &type, &a, &b);
+        if (type == 1) {
+            mat[a][b] = 1 - mat[a][b];
+            for (int i = a; i <= n; ++i) {
+                if (mat[i][b]) {
+                	u[i][b] = u[i-1][b] + 1;
+                } else {
+                	u[i][b] = 0;
+                }
+            }
+            for (int i = a; i >= 1; --i) {
+                if (mat[i][b]) {
+                	d[i][b] = d[i+1][b] + 1;
+                } else {
+                	d[i][b] = 0;
+                }
+            }
+            for (int i = b; i <= m; ++i) {
+                if (mat[a][i]) {
+                	l[a][i] = l[a][i-1] + 1;
+                } else {
+                	l[a][i] = 0;
+                }
+            }
+            for (int i = b; i >= 1; --i) {
+                if (mat[a][i]) {
+                	r[a][i] = r[a][i+1] + 1;
+                } else {
+                	r[a][i] = 0;
+                }
+            }
+        } else {
+            int ans = 0;
+            for (int i = 1; i <= m; ++i) {
+            	cst[i] = u[a][i];
+            }
+            ans = max(ans, p(m, b));
+            for (int i = 1; i <= m; ++i) {
+            	cst[i] = d[a][i];
+            }
+            ans = max(ans, p(m, b));
+            for (int i = 1; i <= n; ++i) {
+            	cst[i] = l[i][b];
+            }
+            ans = max(ans, p(n, a));
+            for (int i = 1; i <= n; ++i) {
+            	cst[i] = r[i][b];
+            }
+            printf("%d\n", max(ans, p(n, a)));
+        }
+    }
+    return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [B. New Year and Permutation](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/B)
+
+Para este problema basta con considerar los subarreglos de tamaño $L$ y considerar su aporte a la respuesta:
+
+Supongamos que hemos fijado $l$ y $r = l + L - 1$, entonces notamos que si deseamos que un subarreglo de mi permutación aporte, necesitamos que exista un subarreglo de tamaño $L$ tal que contenga a $l$ como mínimo y a $r$ como máximo.
+
+**Observación 1:** Solamente se puede dar lo anterior cuando el subarreglo contiene todos los elementos en el rango $[l, r]$.
+
+**Observación 2:** La cantidad de veces que se puede dar este caso en una permutación fijada es:
+
+$$ (\text{Posiciones posibles}) \cdot (\text{Formas de reordenar los L elementos}) \cdot (\text{Formas de reordenar el resto de elementos}) $$
+
+Entonces, notamos que $\text{Posiciones posibles} = n - L + 1$, $\text{Formas de reordenar los L elementos} = L!$ y $\text{Formas de reordenar el resto de elementos} = (n - L)!$.
+
+Ahora, esto lo hemos hecho fijando en $L$ y el $l$, pero fijar ambos valores nos daría una complejidad de $O(n^{2})$. Entonces notamos que la expresión no depende de $l$, sino de $L$, así que la respuesta parcial será multiplicar la cantidad de formas de elegir $l$ a la expresión anterior. La cantidad de formas de elegir $l$ también es $(n - L + 1)$, así que:
+
+$$ aporte(L) = (n - L + 1)^{2} \cdot L! \cdot (n - L)! $$
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample2" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample2" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 250000+5;
+
+int n, MOD;
+int f[N];
+
+int add(int a, int b, int m = MOD){
+	return (a + b) % m;
+}
+
+int mul(long long a, long long b, int m = MOD){
+	return (a * b) % m;
+}
+
+void init(){
+	f[0] = 1;
+	for(int i = 1; i <= n; i++) f[i] = mul(f[i-1], i);
+}
+
+int solve(int L){
+	return mul(mul(n - L + 1, n - L + 1), mul(f[L], f[n - L]));
+}
+
+int main(){
+	scanf("%d %d", &n, &MOD);
+	init();
+	int ans = 0;
+	for(int L = 1; L <= n; L++){
+		ans = add(ans, solve(L));
+	}
+	printf("%d\n", ans);
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [C. Distributed Join](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/C)
+
+Una de las estrategias óptimas en este problema es ubicar un nodo en $a$ con la mayor cantidad de filas de información, luego mover toda la información del cluster al que no pertenece $a$ hacia $a$. Luego de esto basta intentar para el resto de nodos del clúster de $a$ la mejor de dos opciones: Mover toda la información del otro cluster a esa posición o mover la información del nodo actual al $a$.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample3" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe, idea por Fischer)</p>
+</div>
+<div id="codeExample3" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 100000+5;
+
+typedef long long ll;
+
+int n;
+int m;
+int a[N];
+int b[N];
+
+long long solve(){
+	sort(a + 1, a + 1 + n);
+	sort(b + 1, b + 1 + m);
+	ll sumA = accumulate(a + 1, a + 1 + n, 0LL);
+	ll sumB = accumulate(b + 1, b + 1 + m, 0LL);
+	ll ansA = sumB, ansB = sumA;
+	for(int i = 1; i < n; i++){
+		ansA += min(1LL * a[i], sumB);
+	}
+	for(int i = 1; i < m; i++){
+		ansB += min(1LL * b[i], sumA);
+	}
+	return min(ansA, ansB);
+}
+
+int main(){
+	scanf("%d %d", &n, &m);
+	for(int i = 1; i <= n; i++) scanf("%d", a+i);
+	for(int i = 1; i <= m; i++) scanf("%d", b+i);
+	printf("%lld\n", solve());
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [D. Restaurant Tables](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/D)
+
+Para resolver el problema basta con implementar según el enunciado.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample4" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample4" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+int n, a, b;
+
+int main(){
+	scanf("%d %d %d", &n, &a, &b);
+	int ans = 0;
+	int c = 0;
+	for(int i = 1; i <= n; i++){
+		int x;
+		scanf("%d", &x);
+		if(x == 1){
+			if(a == 0){
+				if(b == 0){
+					if(c == 0) ans += 1;
+					else{
+						c -= 1;
+					}
+				}
+				else{
+					b -= 1;
+					c += 1;
+				}
+			}
+			else a -= 1;
+		}
+		else{
+			if(b == 0) ans += 2;
+			else b -= 1;
+		}
+	}
+	printf("%d\n", ans);
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [E. Alice, Bob and Chocolate](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/E)
+
+Para resolver este problema bastaba simular usando two pointers y siempre darle prioridad al que coma primero o, si hay empate, a Alice.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample5" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample5" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 100000+5;
+
+int n;
+int a[N];
+
+int main(){
+	scanf("%d", &n);
+	for(int i=1; i<=n; i++){
+		scanf("%d", a+i);
+	}
+	int cL = 0, cR = 0;
+	int L = 1, R = n;
+	int tL = 0, tR = 0;
+	while(L <= R){
+		if(tL <= tR){
+			cL += 1;
+			tL += a[L];
+			L += 1;
+		}
+		else{
+			cR += 1;
+			tR += a[R];
+			R -= 1;
+		}
+	}
+	printf("%d %d\n", cL, cR);
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [F. Wet Shark and Blocks](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/F)
+
+Para resolver este problema basta con modelarlo como un grafo dirigido (posibles multiaristas) de residuos $G = (V, E)$ definido de la siguiente forma:
+
+$$ V = \{0, 1, \ldots, x-1\} $$
+
+$$ E = \{(u, v) \text{ existe una vez por cada }a_{i} \text{ tal que }10u + a_{i} \equiv v \mod x\} $$
+
+Entonces, lo que se busca sobre este grafo es la cantidad de caminos de longitud $b$ desde el nodo $0$ al nodo $k$. Esto se puede calcular con exponenciación rápida de matrices, considerando la matriz de adyacencia ponderada definida como:
+
+$$ M_{ij} = \text{Cantidad de aristas }(i, j)\text{ en E} $$
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample6" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample6" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 100+5;
+const int MOD = 1000000000+7;
+
+int add(int a, int b, int m = MOD){
+	return (a + b) % m;
+}
+
+int mul(long long a, long long b, int m = MOD){
+	return (a * b) % m;
+}
+
+int n, b, k, x;
+int M[N][N];
+int C[N][N];
+int R[N][N];
+int frec[N];
+
+void multiply(int type){
+	for(int i = 0; i < x; i++){
+		for(int j = 0; j < x; j++){
+			C[i][j] = 0;
+			for(int p = 0; p < x; p++){
+				if(type == 1){
+					C[i][j] = add(C[i][j], mul(M[i][p], R[p][j]));
+				}
+				else{
+					C[i][j] = add(C[i][j], mul(M[i][p], M[p][j]));
+				}
+			}
+		}
+	}
+	for(int i = 0; i < x; i++){
+		for(int j = 0; j < x; j++){
+			if(type == 1) R[i][j] = C[i][j];
+			else M[i][j] = C[i][j];
+		}
+	}
+}
+
+void fastexp(int e){
+	while(e > 0){
+		if(e & 1) multiply(1);
+		multiply(0);
+		e >>= 1;
+	}
+}
+
+int main(){
+	scanf("%d %d %d %d", &n, &b, &k, &x);
+	for(int i = 1; i <= n; i++){
+		int d;
+		scanf("%d", &d);
+		frec[d] += 1;
+	}
+	for(int r1 = 0; r1 < x; r1++){
+		for(int d = 1; d < 10; d++){
+			int r3 = add(mul(r1, 10, x), d, x);
+			M[r1][r3] += frec[d];
+		}
+	}
+	for(int i = 0; i < x; i++){
+		for(int j = 0; j < x; j++){
+			R[i][j] = i == j;
+		}
+	}
+	fastexp(b);
+	printf("%d\n", R[0][k]);
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [G. Multihedgehog](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/G)
+
+Para resolver este problema debemos usar una pista que nos da el enunciado: Al iniciar el procedimiento, **se elige un nodo como centro** y desde ahí se desprenden el resto de los hedgehog.
+
+**Observación clave:** El centro del hedgehog es el centro del árbol, ya que por la forma de construcción siempre se crean nuevas hojas tomándolo como referencia, así que todas estas están en el mismo nivel.
+
+Gracias a la observación clave nos basta hallar el centro del árbol, con lo que hay dos casos:
+
+1. Hay un solo centro: Podemos mandar un DFS para verificar que cumpla con la estructura.
+
+2. Hay dos centros: No es posible, ya que solo debe haber 1 para que cumpla.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample7" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample7" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 100000+5;
+
+int n, k;
+int h[N];
+int deg[N];
+int sum[N];
+bool vis[N];
+vector<int> G[N];
+
+bool DFS(int u, int depth, int p = -1){
+	if(depth == 0) return G[u].size() == 1;
+	int deg = 0;
+	bool ans = true;
+	for(int v : G[u]){
+		if(v == p) continue;
+		if(!DFS(v, depth - 1, u)) ans = false;
+		deg += 1;
+	}
+	return deg >= 3 and ans;
+}
+
+bool solve(){
+	vector<int> frontier;
+	int cnt = n;
+	for(int i = 1; i <= n; i++){
+		h[i] = n;
+		if(deg[i] == 1){
+			deg[i] = 0;
+			h[i] = 0;
+			vis[i] = true;
+			frontier.emplace_back(i);
+		}
+	}
+	while(!frontier.empty() and cnt >= 2){
+		vector<int> new_frontier;
+		for(auto x : frontier){
+			cnt -= 1;
+			for(int v : G[x]){
+				if(vis[v]) continue;
+				deg[v] -= 1;
+				if(deg[v] == 1){
+					vis[v] = true;
+					new_frontier.emplace_back(v);
+					deg[v] = 0;
+				}
+			}
+		}
+		swap(frontier, new_frontier);
+	}
+	if(cnt == 0) return false;
+	if(frontier.empty()) return false;
+	return DFS(frontier.back(), k);
+}
+
+int main(){
+	scanf("%d %d", &n, &k);
+	for(int i = 1; i < n; i++){
+		int u, v;
+		scanf("%d %d", &u, &v);
+		G[u].emplace_back(v);
+		G[v].emplace_back(u);
+		deg[v] += 1;
+		deg[u] += 1;
+	}
+	puts(solve()?"Yes":"No");
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [H. Games with Rectangle](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/H)
+
+Para resolver este problema bastaba notar que la elección de las dos dimensiones es independiente, así que podemos hallar la cantidad de formas de realizar $k$ movimientos sobre una base de tamaño $n$ y la cantidad de formas con una base $m$ y multiplicar dicho valor.
+
+Entonces, ¿Cómo hallamos la cantidad de formas de realizar $k$ movimientos sobre una base de tamaño $n$? Podemos definir la siguiente función:
+
+$$ memo[k][n] = \text{Cantidad de formas de realizar k movimientos sobre una base de tamaño n} $$
+
+Ahora, podemos fijar el primer movimiento para obtener la base nueva y contar su aporte:
+
+$$ memo[k][n] = \sum\limits_{1 \leq l \leq n - 2}Aporte(n, l, k) $$
+
+Sin embargo, notamos que la función $Aporte(n, l, k)$ depende de la cantidad de posiciones que pueda tomar $l$ sobre la base $n$ cumpliendo las reglas y la cantidad de formas de realizar $k - 1$ movimientos con una base de tamaño $l$:
+
+$$ Aporte(n, l, k) = memo[k-1][l] \cdot (n - 1 - l) $$
+
+Entonces si reemplazamos:
+
+$$ memo[k][n] = \sum\limits_{1 \leq l \leq n - 2}memo[k-1][l] \cdot (n - 1 - l) $$
+
+$$ memo[k][n] = (n - 1)\sum\limits_{1 \leq l \leq n - 2}memo[k-1][l] - \sum\limits_{1 \leq l \leq n - 2}l\cdot memo[k-1][l] $$
+
+Ahora, si preprocesamos en $O(n)$ los resultados de la suma de $\sum\limits_{1 \leq l \leq n - 2}memo[k-1][l]$ y $\sum\limits_{1 \leq l \leq n - 2}l\cdot memo[k-1][l]$ por separado en arreglos $suma[k-1][n-2]$ y $sump[k-1][n-2]$ respectivamente, tendremos:
+
+$$ memo[k][n] = (n-1)\cdot suma[k-1][n-2] - sump[k-1][n-2] $$
+
+Y así podremos resolver el problema en $O(n^{2})$.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample8" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample8" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 1000+5;
+const int MOD = 1000000000+7;
+
+int add(int a, int b, int m = MOD){
+	return (a + b) % m;
+}
+
+int mul(long long a, long long b, int m = MOD){
+	return (a * b) % m;
+}
+
+int n, m, k;
+int memo[N][N];
+int suma[N][N];
+int sump[N][N];
+
+void get(int r, int limit){
+	for(int i = 1; i <= limit; i++){
+		suma[r][i] = add(suma[r][i-1], memo[r][i]);
+		sump[r][i] = add(sump[r][i-1], mul(i, memo[r][i]));
+	}
+}
+
+void init(int limit){
+	for(int i = 1; i <= limit; i++) memo[0][i] = 1;
+	for(int i = 1; i <= k; i++){
+		get(i - 1, limit);
+		for(int l = 1; l <= limit; l++){
+			memo[i][l] = add(mul(l - 1, suma[i-1][l-2]), MOD - sump[i-1][l-2]);
+		}
+	}
+}
+
+int main(){
+	scanf("%d %d %d", &n, &m, &k);
+	init(max(n, m));
+	printf("%d\n", mul(memo[k][n], memo[k][m]));
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [I. Morning run](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/I)
+
+Nos piden hallar el valor esperado de los encuentros entre los corredores. ¿Cómo hacer eso? Como un primer paso, el valor esperado es lineal, así que podemos partir los problemas iniciales en diferentes: hallar el valor esperado de encuentros entre un par de corredores fijo. Resolveremos estas particiones para obtener el resultado total. Para ello, necesitamos hacer algunas observaciones:
+
+1. Sea $x$ la distancia entre dos corredores y supongamos que corran en direcciones opuestas por un tiempo infinito (la probabilidad de que esto suceda obviamente es igual a $0.5\cdot 0.5 = 0.25$). Entonces, su primer encuentro sucederá en el tiempo $\frac{x}{2}$, la siguiente --- $\frac{x}{2} + \frac{l}{2}$, la siguiente --- $\frac{x}{2} + \frac{l}{2} + \frac{l}{2}$, etc.
+
+2. Asumamos que cada carrera duró $l$ unidades de tiempo; entonces si dos corredores se encontraron, se encontrarán exactamente 2 veces. La probabilidad del encuentro es igual a $0.5$, dado que ellos corren hacia la misma dirección en 2 casos y en direcciones opuestas en 2 casos.
+
+Construiremos nuestra solución basándonos en estas dos observaciones. Como primer paso representaremos $t$ como $t = k\cdot l + p$, donde $0 \leq p < l$. Entonces, cada corredor correrá $k$ vueltas completas. ¿Qué significa esto? Dado que tenemos $\frac{n(n-1)}{2}$ pares de corredores, entonces en esas $k$ vueltas cada par tendrá $2k$ encuentros con probabilidad igual a $0.5$. De esta manera, necesitamos agregar $2k\cdot \frac{n(n-1)}{2} \cdot 0.5 = \frac{kn(n-1)}{2}$ a nuestra respuesta.
+
+Ahora necesitamos tomar en cuenta los $p$ segundos de carrera. Asumamos que la distancia entre dos corredores es $x$ y ellos corren en direcciones opuestas. Entonces, ellos se encontrarán si $\frac{x}{2} \leq t$, o su equivalente $x  \leq 2t$. Ellos se encontrarán una segunda vez si $\frac{x}{2} + \frac{l}{2} \leq t$, o su equivalente $x \leq 2t - l$. No se pueden encontrar más de 2 veces, debido a que $p < l$.
+
+Fijemos uno de los corredores (sea $i$), entonces podemos usar binary search para encontrar todos los demás corredores a una distancia no mayor a $x$ del que hemos fijado. Sea $x = 2t$, entonces la cantidad de corredores a una distancia no mayor a $x$ expresa la cantidad de corredores que se encuentran con el corredor $i$ al menos una vez. Si $x = 2t - l$, encontraremos la cantidad de corredores que se encuentran con $i$ exactamente dos veces. Multiplicaremos estos valores por $0.25$ --- la probabilidad del encuentro, y los agregaremos a la respuesta.
+
+La complejidad de esta solución es $O(n\log{n})$. Podemos reducirla usando two pointers.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample9" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por Fischer)</p>
+</div>
+<div id="codeExample9" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 1e6 + 10;
+ 
+int main() {
+    int n, l, t;
+    scanf("%d %d %d", &n, &l, &t);
+    vector<int> a(n);
+    for (auto& x : a) scanf("%d", &x);
+    t *= 2;
+    double ans = (t/l)*1.d*(n*1ll*(n-1));
+    int r = t % l;
+    for (int i = 0; i < n; ++i) {
+        a.emplace_back(a[i] + l);
+    }
+    for (int i = n-1; i >= 0; --i) {
+        int lo = 0, hi = 2 * n - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo + 1) / 2;
+            if (a[mid] <= a[i] + r) lo = mid;
+            else hi = mid - 1;
+        }
+        ans += lo - i;
+    }
+    printf("%.8lf\n", ans / 4);
+    return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [J. Photographer](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/J)
+
+Para resolver este problema bastaba notar que el costo de memoria por cada cliente era fijo, así que podíamos ordenar los clientes por costo ascendente e ir tomando pedidos hasta que ya no nos alcance la memoria.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample10" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample10" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 100000+5;
+
+int n, d;
+int a, b;
+long long c[N];
+
+int main(){
+	scanf("%d %d", &n, &d);
+	scanf("%d %d", &a, &b);
+	for(int i = 1; i <= n; i++){
+		int x, y;
+		scanf("%d %d", &x, &y);
+		c[i] = 1LL * x * a + 1LL * y * b;
+	}
+	vector<int> p(n);
+	iota(p.begin(), p.end(), 1);
+	sort(p.begin(), p.end(), [&] (int i, int j){
+		return c[i] < c[j];
+	});
+	vector<int> ans;
+	for(int i : p){
+		if(d >= c[i]){
+			ans.emplace_back(i);
+			d -= c[i];
+		}
+	}
+	printf("%d\n", (int)ans.size());
+	for(int i = 0; i < ans.size(); i++){
+		printf("%d%c", ans[i], " \n"[i + 1 == ans.size()]);
+	}
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+## [K. New Year and Arbitrary Arrangement](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/K)
+
+El principal truco de este problema es que la secuencia podría volverse arbitrariamente larga, pero deseamos una respuesta exacta. En particular, debemos pensar cómo reducir este problema a notar qué información de un prefijo de la secuencia que hemos construido necesitamos mantener para simular nuestro algoritmo correctamente. Esto sugiere un enfoque con programación dinámica.
+
+Para nuestro estado de DP, necesitamos llevar cierta información de nuestro prefijo. En primer lugar, el candidato más obvio es la cantidad de veces que ocurre la cadena 'ab' en el prefijo (de esa manera podremos saber cuándo deternernos). Sin embargo, usar esto no es suficiente, ya que no podremos diferenciar secuencias como 'ab' y 'abaaaa'. Entonces, esto sugiere que también debemos llevar la cuenta de la cantidad de 'a's.
+
+Sea $dp[i][j]$ la respuesta esperada dado que hay $i$ subsecuencias de la forma 'a' en el prefijo y $j$ subsecuencias de la forma 'ab'.
+
+Entonces, tenemos algo como $dp[i][j] = (p_{a} \cdot dp[i + 1][j] + p_{b} \cdot dp[i][i + j]) / (p_{a} + p_{b})$. El primer término de la suma viene de agregar otra 'a' a nuestra secuencia, mientras que el segundo viene de agregar una 'b'. También tenemos que $dp[i][j] = j$ si $j \geq k$ como un caso base. La respuesta debería ser $dp[0][0]$.
+
+Sin embargo, si ejecutamos esto así nomas, notaremos que aún hay algunos problemas. Uno es que $i$ puede volverse arbitrariamente grande a medida que agregamos 'a' indefinidamente. En vez de eso, podemos modificar nuestro caso base a cuando se dé que $i + j \geq k$. En este caso, la siguiente vez que pongamos una 'b', nos detendremos, así que podemos hallar una forma cerrada de este escenario. El segundo es que cualquier cantidad de 'b's que aparezcan antes de la primera 'a' puede ser esencialmente ignorada. Para solucionar esto, podemos ajustar nuestra respuesta a $dp[1][0]$.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample11" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por Fischer)</p>
+</div>
+<div id="codeExample11" class="collapse">
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 1005;
+const int mod = 1e9 + 7;
+ 
+int add(int a, int b) {
+	return (a+b)%mod;
+}
+ 
+int mul(long long a, long long b) {
+	return a*b%mod;
+}
+ 
+int ex(int a, int b) {
+	int r = 1;
+	while (b > 0) {
+		if (b&1) r = mul(r, a);	
+		a = mul(a, a);
+		b >>= 1;
+	}
+	return r;
+}
+ 
+int memo[maxn][maxn];
+ 
+int main() {
+	int k, a, b;
+	cin >> k >> a >> b;
+	int p = mul(a, ex(a+b, mod-2));
+	int q = mul(b, ex(a+b, mod-2));
+	memo[0][0] = 1;
+	int ans = 0;
+	for (int i = 0; i < k; ++i) {
+		for (int j = 0; j < k; ++j) {
+			if (i == 0) {
+				memo[i+1][j] = add(memo[i+1][j], memo[i][j]);
+				continue;
+			}
+			memo[i+1][j] = add(memo[i+1][j], mul(p, memo[i][j]));
+			if (i + j < k) {
+				memo[i][i+j] = add(memo[i][i+j], mul(q, memo[i][j]));
+			} else {
+				ans = add(ans, mul(i + j, mul(q, memo[i][j])));
+			}
+		}
+	}
+	for (int i = 0; i < k; ++i) {
+		ans = add(ans, mul(i+k+mul(p, ex(q, mod-2)), memo[k][i]));
+	}
+	cout << ans << endl;
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->
+
+## [L. Relay Race](https://codeforces.com/group/j1UosVRZar/contest/287329/problem/L)
+
+Para resolver este problema bastaba reducir la respuesta a hallar dos caminos de $(0, 0)$ a $(n-1, n-1)$ tal que contemos una sola vez cada elemento en la suma.
+
+Entonces, podemos plantear el tener 2 caminos que actualmente estén en las posiciones $(x_{1}, y_{1})$ y $(x_{2}, y_{2})$ y que se cumpla que $(x_{1}, y_{1}) \leq (x_{2}, y_{2})$ por comparación lexicográfica (de manera que los caminos no se crucen estrictamente pero si puedan encontrarse en puntos en común).
+
+Esto nos da una solución $O(n^{4})$ con $O(n^{4})$ de memoria, lo cual no nos basta. Sin embargo, ya que nuestro camino es monótono, tendremos que $x + y = pasos$ en todo momento, así que si tenemos una de las coordenadas y el número de pasos realizados, podemos deducir la coordenada faltante.
+
+Una opción sería tener un DP con parámetros $(pasos, x_{1}, x_{2})$, pero esto requeriría $(2 (n-1)\cdot(n-1)\cdot(n-1))$ de memoria, lo cual puede darnos problemas con el ML, así que llevaremos los parámetros $(x_{1}, y_{1}, x_{2})$, ya que podemos deducir $pasos = x_{1} + y_{1}$.
+
+Ya que tenemos nuestro DP definido, podemos simular las elecciones y maximizar la suma de las celdas visitadas sin contar doble.
+
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample12" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i> <p class="title">Código (por racsosabe)</p>
+</div>
+<div id="codeExample12" class="collapse">
+
+```c++
+#include<bits/stdc++.h>
+using namespace::std;
+
+const int N = 300+5;
+const int inf = 1<<29;
+
+int n;
+int a[N][N];
+bool vis[N][N][N];
+int memo[N][N][N];
+int dx[] = {1, 0};
+int dy[] = {0, 1};
+
+bool validPos(int x, int y){
+	return x >= 0 and y >= 0 and x < n and y < n;
+}
+
+int DP(int x1, int y1, int x2){
+	int diag = x1 + y1;
+	int y2 = diag - x2;
+	if(diag == 2 * (n - 1)) return a[x1][y1];
+	if(vis[x1][y1][x2]) return memo[x1][y1][x2];
+	int ans = -inf;
+	for(int i = 0; i < 2; i++){
+		int vx1 = x1 + dx[i];
+		int vy1 = y1 + dy[i];
+		if(!validPos(vx1, vy1)) continue;
+		for(int j = 0; j < 2; j++){
+			int vx2 = x2 + dx[j];
+			int vy2 = y2 + dy[j];
+			if(!validPos(vx2, vy2)) continue;
+			if(make_pair(vx1, vy1) <= make_pair(vx2, vy2)){
+				int cur = (x1 == x2 and y1 == y2? a[x1][y1] : a[x1][y1] + a[x2][y2]) + DP(vx1, vy1, vx2);
+				if(ans < cur) ans = cur;
+			}
+		}
+	}
+	vis[x1][y1][x2] = true;
+	return memo[x1][y1][x2] = ans;
+}
+
+int main(){
+	scanf("%d", &n);
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < n; j++){
+			scanf("%d", &a[i][j]);
+		}
+	}
+	printf("%d\n", DP(0,0,0));
+	return 0;
+}
+```
+
+</div>
+<!-- ends code -->

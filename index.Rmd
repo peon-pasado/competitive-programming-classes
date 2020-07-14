@@ -59,3 +59,9 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 13
 - [Dynamic Programmic Classic Problems](./class-21.html)
 - [Max Flow](./class-22.html)
+
+## Training Camp Argentina 2020
+
+- [Editorial Contest 1 - Inicial](./TCAC1-EditorialI.html)
+
+- [Editorial Contest 1 - Avanzado](./TCAC1-EditorialA.html)
