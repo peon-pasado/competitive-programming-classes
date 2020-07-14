@@ -118,7 +118,7 @@ int main(){
 
 ## [C. Distributed Join](https://codeforces.com/group/j1UosVRZar/contest/287327/problem/C)
 
-Una de las estrategias óptimas en este problema es ubicar un nodo en $a$ con la mayor cantidad de filas de información, luego mover toda la información del cluster al que no pertenece $a$ hacia $a$. Luego de esto basta intentar para el resto de nodos del clúster de $a$ la mejor de dos opciones: Mover toda la información del otro cluster a esa posición o mover la información del nodo actual al $a$.
+Una de las estrategias óptimas en este problema es ubicar un nodo $a$ con la mayor cantidad de filas de información en alguno de los clúster, luego mover toda la información del cluster al que no pertenece $a$ hacia $a$. Luego de esto basta intentar para el resto de nodos del clúster de $a$ la mejor de dos opciones: Mover toda la información del otro cluster a esa posición o mover la información del nodo actual al $a$.
 
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample3" aria-expanded="false" aria-controls="collapseTwo">
