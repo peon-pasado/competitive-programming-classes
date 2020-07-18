@@ -1,0 +1,459 @@
+---
+title: "Algoritmos de aumento por camino para máximo flujo"
+author: "Miguel Miní"
+date: "17/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Preliminares para el teorema del máximo flujo - mínino corte
+
+En la última clase nosotros afirmamos que si no existe un camino desde s hacia t (con capacidad residual positiva en toda arista) en el
+grafo residual $G_f$, entonces f es un flujo máximo en G. veremos como esto deriva en el famoso teorema del máximo flujo/mínimo corte 
+
+
+### (s, t) - Cortes
+
+necesitamo antes una importante definición, un corte será el dual de un flujo en 
+un sentido que se explicará luego.
+
+#### Definición (s, t) - corte. 
+
+Un $(s, t)$ - corte de un grafo $G = (V, E)$ es una partición de $V$ en conjuntos 
+$A$, $B$ con $s \in A$ y $t \in B$. a veces simplemente podemos decir "corte".
+
+En la figura 1 podemos ver una manera de pensar un corte de un grafo. Tal que las 
+aristas se separan en 4 categorias: aquellas con ambos vertices finales en A, 
+aquellas con ambos vértices finales en B, aquellos que comienzan en A y finalizan
+en B, y aquellos que comienzan en B y finalizan en A.
+
+<center>
+![figura 1. Vemos una visual representación de un corte, los nodos se dividen en 2 y las aristas en 4.](corte1.PNG)
+</center>
+
+La capacidad de un (s, t) - corte (A, B) es definido como:
+
+
+$$\sum_{e \in \delta^+(A)} u_e$$
+
+donde $\delta^+ (A)$ denota las aristas saliendo de A. Diremos que un corte es mínimo si
+tiene la menor capacidad posible.
+
+### Condición de optimalidad para el problema del máximo flujo.
+
+Probaremos los siguiente resultados básicos.
+
+#### Teorema 1. (condicion de optimalidad para el flujo máximo) 
+
+Sea $f$ es un flujo en un grafo $G$. Los siguientes son equivalentes:
+
+1. $f$ es un flujo máximo de G.
+
+2. Existe un $(s, t)$-corte $(A, B)$ tal que el valor de $f$ es es igual a la capacidad de $(A, B)$
+
+3. No existe un camino $s-t$ (con capacidad residual positiva) en la red residual $G_f$.
+
+
+el teorema 1 nos dice que cualquiera de los 3 enunciados implica los otros dos. El 
+caso especial que (3) implica (1) nos habla de la afirmación hecha en la anterior clase.
+
+
+#### Corolario 1. 
+
+Si $f$ es un flujo en $G$ tal que la red residual $G_f$ no tiene caminos s-t, entonces
+f es un flujo máximo.
+
+Note que este último corolario implica la correctitud del algoritmo de Ford-Fulkerson.
+
+
+#### Prueba del teorema 1: 
+
+Probaremos una implicación cíclica: (2) implica (1), (1) implica (3) y (3) implica (2).
+de esto se sigue que cualquiera de los enunciados implican los otros dos.
+
+##### Paso 1. (2) implica (1): 
+
+Nosotros afirmamos, que para todo flujo $f$ y todo $(s, t)$-corte $(A, B)$.
+
+$$\text{valor de f } \le \text{capacidad de } (A, B)$$
+Esta afirmación implica que todo valor de un flujo es a lo más algún valor de un corte;
+ver figura 2.
+
+<center>
+![Figura 2. Esta imagen ilustra que todo valor de un flujo (x) no puede ser mayor al valor de un cortre (o)](corte2.PNG)
+</center>
+
+Para ver porque la afirmacion nos dice la deseada implicación, supongamos que (2) cumple, esto corresponde para un
+"x" y un "o" en la misma posición. Por la afirmación, no "x"s pueden aparecer a la derecha de este punto de encuentro.
+Nosotros probaremos una resumida prueba algebraica.
+
+Fijemos $f$ y $(A, B)$. Por definición,
+
+$$\text{valor de f } = \sum_{e \in \delta^+(s)} f_e = \sum_{e \in \delta^+(s)} f_e - \sum_{e \in \delta^-(s)} f_e  ~\dots (1)$$
+
+La segunda ecuación es puesta por conveniencia, y sigue desde nuestra primera asunción que s no tiene
+vertices de entrada. Además, tengamos en cuenta que la restricción de conservación nos dice:
+
+$$\sum_{e \in \delta^+(v)} f_e - \sum_{e \in \delta^-(v)} f_e = 0 ~\dots (2)$$
+
+Para todo $v \neq s, t$. Agregando la ecuación (2) correspondiente para todo vertice de $A \setminus \{s\}$
+para la ecuación (1) nos da:
+
+$$\text{valor de f } = \sum_{v \in A} (\sum_{e \in \delta^+(v)} f_e - \sum_{e \in \delta^-(v)} f_e)  ~\dots (3)$$
+
+Lo siguiente que queremos pensar es sobre la expresión en (3) desde un punto de vista centrado en las aristas, en vez de centrado en los nodos.
+Como contribuye una arista para (3)? La respuesta depende sobre cual de los 4 tipos la arista es. Si ambos de los puntos finales de $e$ están en B,
+entonces $e$ no aporta a la suma (3). si $e$ tiene ambos puntos en $A$, entonces contribuye con $f_e$ una vez y con $-f_e$ una vez. Así las
+aristas en $A$ contribuyen con $0$. Similarmente las aristas saliendo de $A$ aportan con $f_e$ y las aristas entrando a $A$ aportan con $-f_e$.
+En resumen:
+
+$$\text{valor de f} = \sum_{e \in \delta^+(A)} f_e - \sum_{e \in \delta^-(A)} f_e$$
+
+Esta ecuación nos dice que el flujo neto (flujo a favor menor flujo en contra) a traves 
+de todo corte es exactamente el mismo, llamado el valor del flujo f. Finalmente, usando
+la restricción de capacidad y el hecho que todo valor de flujo es no-negativo tenemos:
+
+$$\text{valor de f} = \sum_{e \in \delta^+(A)} f_e (\le u_e) - \sum_{e \in \delta^-(A)} f_e (\ge 0)$$
+$$\le \sum_{e \in \delta^+(A)} u_e ~\dots (4)$$
+$$\text{capacidad de } (A, b) ~\dots(5)$$
+
+Lo cual completa la prueba de la primera implicación.
+
+##### Paso 2. (1) implica (3):
+
+Este paso es fácil. Nosotros probamos la opuesto. Sea $f$ un flujo tal que $G_f$ tiene un
+camino $s-t$ $P$ con capacidad residual positiva. Como en el algoritmo de Ford-Fulkerson, 
+nosotros aumentamos a traves de P para produir un nuevo flujo $f^{'}$ con valor estrictamente
+mayor. Esto nos dice que f no es un máximo flujo.
+
+##### Paso 3. (3) implica (2):
+
+El truco de este paso está en definir
+
+$$A = \{v \in V : \text{ existe un camino s} \sim \text{v en } G_f\}$$
+
+Conceptualmente, si nosotros ejecutamos nuestra sub-rutina favorita (ejm. BFS o DFS) desde s
+mientra se detenga; A es el conjunto de vertices que logras alcanzar. (Esto solo lo ejecutamos
+en nuestra mente, por el proposito de la prueva) 
+Notar que $(A, V-A)$ es un $(s, t)$-corte. Ciertamente $s \in A$, comor $s$ puede alcanzarse a
+si mismo en $G_f$. Por asunción, $G_f$ no tiene un camino $s-t$, tal que $t \notin A$. Así el
+corte debería lucir como en la figura 3, que no tiene aristas (con capacidad residual possitiva)
+saliendo de A. La razón es que si existiera dichas aristas, entonces nuestra busqueda en el grafo
+no puedo haber terminado y A debería ser un conjunto de mayor tamaño.
+
+<center>
+![Figura 3. Note que las aristas solo van desde B hacia A.](corte3.PNG)
+</center>
+
+Si traducimos la figura 3 en la imagen, cual concierne la red residual $G_f$, regresando
+al flujo f en la red original $G$.
+
+1. Toda arista saliendo de $A$ en $G$ (sea $\delta^+(A)$) es saturada (que es $f_e = u_e$).
+En caso que $f_e < u_e$ para $e \in \delta^+(A)$, entonces la red residual $G_f$ debería
+contener una arista en el mismo sentido que e (con capacidad residual positiva) que sería
+una arista saliendo de A en $G_f$ que contradice la Figura 3.
+
+2. Toda arista entrando en $A$ en $G$ (sea $\delta^-(A)$) debe ser 0 ($f_e = 0$). En caso
+de que $f_e > 0$ para $e \in \delta^-(A)$, entonces la red residual $G_f$ debería contener
+una arista en reversa de tal forma que saldría de $A$ en $G_f$ que contradice la Figura 3.
+
+Estos dos puntos implican que la inecuación (4) cumple con iguadad, cuando
+
+$$\text{valor de } f = \text{capacidad de } (A, V - A)$$
+
+Esto completa la prueba.
+
+
+Nosotros podemos derivar el siguiente corolario.
+
+#### Corolario 2. (Teorema del máximo flujo / mínimo corte) En toda red.
+
+$$\text{máximo valor de un flujo} = \text{minima capacidad de un (s, t)-corte}$$
+
+#### _Prueba_: La primera parte de la prueba del teorema 1 implica que el valor máximo de un flujo
+no puede exceder la mínima capacidad de un $(s, t)$-corte. La tercera parte de la prubeaimplica
+que no puede existir un gap entre el valor del flujo maximo y la mínima capacidad de un corte. 
+
+Seguimos en una consecuencia algoritmica: El problema del mínimo corte reduce para el problema
+del máximo flujo.
+
+#### Corolario 3. Dado un máximo flujo, el mínimo corte puede ser computado en tiempo lineal.
+
+#### _prueba_: 
+
+Usamos BFS o DFS para computar, en tiempo lineal, el conjunto $A$ deste la tercera parte del
+teorema 1. La prueba nos muestra que $(A, V - A)$ es el corte mínimo.
+
+### 3. El algoritmo Edmonds-karp: Aumentos por camino mínimo.
+
+#### El algoritmo:
+
+Con un entendimiento sólido de cuando y porqué el algoritmo de flujo máximo es correcto, nosotros
+ahora nos enfocamos sobre la optimización del tiempo de ejecución. Nuestro problema con el
+algoritmo de ford-fulkerson es la elección arbitraria de un camino $s-t$. Esto motiva la elección
+de un camino de una forma más inteligente. El algoritmo de Edmonds-karp es el mismo que el
+algoritmo Ford-Fulkerson, excepto que este siempre escoge el manor camino a aumentar en la red
+residual. note que nosotros podemos usar un BFS para este fin.
+
+```c++
+#include <bits/stdc++.h>
+#define all(x) x.begin(), x.end()
+#define sz(x) (int)x.size()
+#define trav(i, x) for (auto i : x)
+#define re(x, y, z) for (int x=y; x<z; ++x)
+#define eb emplace_back
+#define set_to(x, v) fill(all(x), v)
+using namespace std;
+using ll = long long;
+using vi = vector<int>;
+const int inf = 1e9;
+struct EdmondKarp {
+	struct Edge {
+		int to, cap, flow, link;
+		Edge() {}
+		Edge(int to, int cap, int link, int flow=0):
+			to(to), cap(cap), link(link), flow(flow) {}
+	};
+	vector<vector<Edge>> g;
+	vi d;
+	
+	EdmondKarp(int n): g(n), d(n), pi(n) {}
+
+	void addEdge(int a, int b, int cap) {
+		if (a == b) return;
+	  int pa = sz(g[a]), pb = sz(g[b]);
+		g[a].eb(b, cap, pb); g[b].eb(a, 0, pa);
+	}
+
+	bool bfs(int src, int snk) {
+		queue<int> q({src});
+		set_to(d, inf);
+		d[src] = 0;
+		pi[src] = -1;
+		while (!q.empty()) {
+			int v = q.front(); q.pop();
+			if (v == snk) return true;
+			trav(e, g[v]) {
+				if (e.flow >= e.cap) continue;
+				if (d[e.to] > d[v] + 1) {
+				  pi[e.to] = e.link;
+					d[e.to] = d[v] + 1;
+					q.emplace(e.to);
+				}
+			}
+		}
+		return false;
+	}
+
+	ll solve(int s, int t) {
+		ll res = 0;
+		while (bfs(s, t)) {
+			int v = t;
+			int flow = inf;
+			while (v != s) {
+			  auto e = g[g[v][pi[v]].to][g[v][pi[v]].link];
+			  flow = min(flow, e.cap - e.flow);
+			}
+			res += flow;
+			v = t;
+			while (v != s) {
+			  auto& e = g[g[v][pi[v]].to][g[v][pi[v]].link];
+			  e.flow += flow;
+			  g[v][pi[v]].flow -= flow;
+			}
+		}
+		return res;
+	}
+};
+```
+
+#### Análisis:
+
+Como una especialización del algoritmo de Ford-Fulkerson, El algoritmo de Edmonds-Karp
+mantiene la misma correctitud, qué hacerca del tiempo de ejecucion?
+
+##### Teorema 2. (Tiempo de ejecución de Edmonds-karp)
+
+El algoritmo de Edmonds-Karp se ejecuta en $O(m^2n)$
+
+##### Lema 1. (Lema del progreso EK)
+
+Fijada una red $G$. Para un flujo $f$, sea $d(f)$ el numero mínimo de aristas
+en un camino $s-t$ en $G_f$, o $+\infty$ si no existe dicho camino.
+
+a. $d(f)$ nunca decrece durante la ejecución del algoritmo de Edmonds-Karp.
+
+b. $d(f)$ incrementa al menos uno por m iteraciones.
+
+Como $d(f) \in \{0, 1, 2, \dots, n-2, n-1, +\infty\}$, una vez que $d(f) \ge n$
+nosotros conocemos que $d(f) = +\infty$ y s y t se desconectan en $G_f$. Así
+el lema 1 implica que el algoritmo de Edmonds-Karp termina despues de $m n$
+iteraciones. Como en cada iteración ejecutamos un BFS, nuestro tiempo de ejecución
+es $O(m^2n)$ como nos dice el teorema 2.
+
+Para el analisis, imaginamos que ejecutamos un BFS en $G_f$ iniciando desde la fuente
+s. Recordamos que BFS discubre los vertices en "niveles", con $s$ en el nivel 0,
+y el nivel $i+1$ consiste de los vertices que no estan en los anteriores niveles y que
+son alcanzables por una arista desde el nivel i. Si denotamos las arista de $G_f$ que
+van hacia un nivel mayor como _forward_, las que van al mismo nivel _sideways_ y
+_backward_ como las aristas que van hacia atras. Por la definición de BFS, no pueden
+existir aristas _backward_ o _sideways_ que mejoren un camino corto.
+
+Definimos $L_f$ (_layered subgraph_), como el subgrafo de $G_f$ consistiendo solo de las
+aristas _forward_ (figura 4). (vertices en los niveles despues del que contiene a t
+son irrelevantes y pueden ser descartados).
+
+<center>
+![figura 4. Layered subgraph $L_f$](corte4.PNG)
+</center>
+
+Porque la molestia de definir $L_f$? Porque esta es una forma sucinta de codificar
+todos los caminos mínimos $s-t$ de $G_f$ - los caminos por el cual el algoritmo de
+Edmonds-Karp puede aumentar. Formalmente, todo camino $s-t$ en $L_f$ comprende de
+solo aristas _forward_ del BFS y por tanto tiene exactamente $d(f)$ saltos de niveles,
+el mínimo posible. En contraposición, cualquier camino que este en $G_f$ pero no
+en $L_f$ deberia contener al menos una arista $sideways$ o $backward$ y por tanto
+debe tener al menos una distancia de $d(f) + 1$.
+
+##### Prueba del lema 1. 
+
+Iniciamos con la parte (a) del lema. Notamos que la única cosa que nos puede preocupar
+es que aumentar por un camino mínimo produzca un nuevo, camino mínimo que sea mejor
+que cualquiera en $L_f$.
+Supongamos que el algoritmo de Edmonds-Karp aumenta el flujo actual f por el mínimo
+camino $P$. Este es claramente un camino en el grafo $L_f$. Las posiblemente nuevas aristas
+creadas al realizar esto son las aristas con dirección invertida en $P$. Note que estas
+solo son aristas _backward_, tal que cualquier camino $s-t$ de $G_f$ que usa tales
+aristas tiene al menos $d(f) + 2$ aristas. Así no pueden existir nuevos mejores caminos
+mínimo creados al hacer este aumento.
+Ahora consideramos una ejecución de $k$ iteraciones del algoritmo de Edmonds-Karp en el cual
+el valor de $d(f) = c$ se mantiene constante. debemos ver que $k \le m$. Antes de la primera
+de estas iteraciones, nosotros guardamos una copia de la actual red por niveles: Sea $F$ 
+que denota las aristas de $L_f$ en este tiempo, y $v_0 = {s}, v_1, v_2, \dots, v_c$ los
+vertices en los varios niveles. 
+Consideramos las primeras k iteraciones. Como en la prueba de la parte (a), las unicas
+nuevas aristas introducidas vas desde $v_i$ hacia $v_{i-1}$. Por asunción, despues del 
+aumento, solo las aristas de F cambian y no vuelven a regresar al menos para este layered
+graph, además como la arista de mínim capacidad siempre se invierte, no podemos invertir
+más de m aristas lo cual termina con la prueba.
+
+### Algoritmo de Dinitz: Flujo en bloque.
+
+El siguiente algoritmo osa una fuerte semejanza con el algoritmo de Edmonds-Karp, aunque
+fue desarrollado independientemente y contemporaneamente por Dinitz. A diferencia del 
+algoritmo de Edmonds-Karp, el algoritmo de Dinitz goza de una modularidad que se presta 
+a algoritmos con mejor tiempo de ejecución.
+
+```c++
+#include <bits/stdc++.h>
+#define all(x) x.begin(), x.end()
+#define sz(x) (int)x.size()
+#define trav(i, x) for (auto i : x)
+#define re(x, y, z) for (int x=y; x<z; ++x)
+#define eb emplace_back
+#define set_to(x, v) fill(all(x), v)
+using namespace std;
+using ll = long long;
+using vi = vector<int>;
+const int inf = 1e9;
+struct Dinic {
+	struct Edge {
+		int to, cap, flow, link;
+		Edge() {}
+		Edge(int to, int cap, int link, int flow=0):
+			to(to), cap(cap), link(link), flow(flow) {}
+	};
+	vector<vector<Edge>> g;
+	vi d, pt;
+	
+	Dinic(int n): g(n), d(n), pt(n) {}
+
+	void addEdge(int a, int b, int cap) {
+		if (a == b) return;
+	  	int pa = sz(g[a]), pb = sz(g[b]);
+		g[a].eb(b, cap, pb); g[b].eb(a, 0, pa);
+	}
+
+	bool bfs(int src, int snk) {
+		queue<int> q({src});
+		set_to(d, inf);
+		d[src] = 0;
+		while (!q.empty()) {
+			int v = q.front(); q.pop();
+			if (v == snk) return true;
+			trav(e, g[v]) {
+				if (e.flow >= e.cap) continue;
+				if (d[e.to] > d[v] + 1) {
+					d[e.to] = d[v] + 1;
+					q.emplace(e.to);
+				}
+			}
+		}
+		return false;
+	}
+
+	int dfs(int x, int snk, int flow=inf) {
+		if (x == snk || !flow) return flow;
+		for (; pt[x] < sz(g[x]); ++pt[x]) {
+			auto& e = g[x][pt[x]];
+			if (d[e.to] == d[x] + 1) {
+				int res = min(e.cap - e.flow, flow);
+				if (int push = dfs(e.to, snk, res)) {
+					e.flow += push;
+					g[e.to][e.link].flow -= push;
+					return push;
+				}
+			}
+		}
+		return 0;
+	}
+
+	ll solve(int s, int t) {
+		ll res = 0;
+		while (bfs(s, t)) {
+			set_to(pt, 0);
+			while (int flow = dfs(s, t)) {
+				res += flow;
+			}
+		}
+		return res;
+	}
+};
+```
+
+El algoritmo de Dinitz solo puede terminar con una red residual sin caminos $s-t$, que es,
+con un flujo máximo como ya hemos probado. Mientras que en el algoritmo de Edmonds-Karp
+nosotros solo formamos el _Layered subgraph_ $L_f$ en el analisis, al algoritmo de Dinitz
+explicitamente construye su red en cada iteracion.
+Un flujo en bloque es, intuitivamente, un manojo de caminos cortos de aumento que son
+procesados en _batch_. más formalmente, los flujos en bloque son precisamente lo que
+sería la posible salida del enfoque greedy ingenuo discutido en la anterior clase. Completamos
+formalmente:
+
+### Definición (flujo en bloque)
+
+Un flujo en bloque $g$ en una red $G$ es factible flujo tal que, para todo camino $(s, t)$
+$P$ de $G$ alguna arista $e$ es saturada por $g$.
+Que es, un flujo de bloque pone a cero una arista de todo camino $(s, t)$
+
+### Lema 2 (Lema del progreso de Dinitz)
+
+Fijada una red $G$. para un flujo $f$, sea $d(f)$ el numero de aristas en un camino mínimo
+$(s-t)$ (con capacidad residual positiva) en $G_f$ o $+\infty$ si no existe dicho camino. Si
+$h$ es obtenido desde $f$ por aumentar $f$ por un flujo en bloque g in $G_f$, entonces $d(h) > d(f)$.
+Que es, toda iteración del algoritmo de Dinitz incrementa estrictamente la distancia desde 
+$s$ hacia $t$ en el actual grafo residual.
+
+### pueba (TODO)
+
+Como $d(f)$ solo puede ir hasta $n-1$ antes de hacerse infinito, Lema 2 inmediatamente implica
+que el algoritmo de Dinitz termina despues de a lo mas n iteraciones. En este sentido, el problema
+del flujo máximo reduce para $n$ instancias del prboblema del flujo en bloque en el _layered graph_.
+El algoritmo de Dinitz por tanto tiene un tiempo de ejecución igual a $O(n x BF)$, donde $BF$ se entiende
+como el tiempo requerido para computar el flujo en bloque en el _layered graph_. 
+
+Se puede probar, pero no se va a enfatizar eso en esta clase, que el tiempo de ejecución de $BF$
+es $O(nm)$ que nos da una complejidad de $O(n^2m)$, mejorando la complejidad que nos da Edmonds-Karp.
