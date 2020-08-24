@@ -99,7 +99,7 @@ Primero probaremos que todos los elementos de la secuencia $a$ cumplen con la pr
 
 Por otro lado, debemos hallar una relación entre $LSO(a_{i})$ y $LSO(a_{i} + LSO(a_{i}))$. Ya que $LSO(a_{i})$ es la máxima potencia de 2 que divide a $a_{i}$ podemos expresar:
 
-$$ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N} $$
+$$ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N}\cup\{0\} $$
 
 Lo anterior nos permite notar que:
 

@@ -457,7 +457,7 @@ $(document).ready(function () {
 <li><p>El elemento <span class="math inline">\(a_{i + 1}\)</span> es igual a <span class="math inline">\(a_{i} + LSO(a_{i})\)</span>, es sencillo notar que como <span class="math inline">\(a_{i}\)</span> cumple con la propiedad, se da que <span class="math inline">\(1 \leq pos \leq a_{i}\)</span>, así que <span class="math inline">\(LSO(a_{i}) \geq \rightarrow pos \leq a_{i} + LSO(a_{i}) = a_{i + 1}\)</span>.</p></li>
 </ol>
 <p>Por otro lado, debemos hallar una relación entre <span class="math inline">\(LSO(a_{i})\)</span> y <span class="math inline">\(LSO(a_{i} + LSO(a_{i}))\)</span>. Ya que <span class="math inline">\(LSO(a_{i})\)</span> es la máxima potencia de 2 que divide a <span class="math inline">\(a_{i}\)</span> podemos expresar:</p>
-<p><span class="math display">\[ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N} \]</span></p>
+<p><span class="math display">\[ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N}\cup\{0\} \]</span></p>
 <p>Lo anterior nos permite notar que:</p>
 <p><span class="math display">\[ a_{i} + LSO(a_{i}) = LSO(a_{i})\cdot(2k + 1) + LSO(a_{i}) = LSO(a_{i})(2k + 2) \]</span></p>
 <p>Podemos factorizar un <span class="math inline">\(2\)</span> del <span class="math inline">\(2k + 2\)</span>:</p>
