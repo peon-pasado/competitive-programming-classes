@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Conteo de subarreglos de una función inversa
+# Conteo de subarreglos de una función invertible
 
 Supongamos que nos dan un arreglo de enteros $a$ con tamaño $n$ y nos piden hallar la cantidad de subarreglos de $a$ tales que la suma de sus elementos es un múltiplo de $m$.
 

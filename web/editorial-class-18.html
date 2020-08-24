@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Miguel Miní" />
+<meta name="author" content="GPC-UNI Resto del Mundo" />
 
 
-<title>Dynamic Programming</title>
+<title>Editorial - Contest Programación Dinámica</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
@@ -387,169 +387,13 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Dynamic Programming</h1>
-<h4 class="author">Miguel Miní</h4>
-<h4 class="date">17-05-2020</h4>
+<h1 class="title toc-ignore">Editorial - Contest Programación Dinámica</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">25-05-2020</h4>
 
 </div>
 
 
-<div id="el-problema-de-hacer-recursión." class="section level2">
-<h2>1. El problema de hacer recursión.</h2>
-<p>Recursión, y su versión particular para hacer problemas de fuerza bruta “Backtracking” es una herramienta versátil, pero es un arma de doble filo…</p>
-<div id="problema-1." class="section level4">
-<h4>Problema 1.</h4>
-<p>Calcule el n-ésimo termino de la sucesión de fibonacci <span class="math inline">\(f(0) = 0\)</span>, <span class="math inline">\(f(1) = 1\)</span> y <span class="math inline">\(f(n + 2) = f(n + 1) + f(n)\)</span>.</p>
-<p>Los primeros términos de esta sucesión son: <span class="math inline">\(0, 1, 1, 2, 3, 5, 8, 13, \dots\)</span></p>
-<pre class="python"><code>def fib(n):
-  if n == 0: return 0
-  if n == 1: return 1
-  return fib(n - 1) + fib(n - 2)</code></pre>
-<pre class="python"><code>for i in range(10):
-  print(fib(i))</code></pre>
-<pre><code>## 0
-## 1
-## 1
-## 2
-## 3
-## 5
-## 8
-## 13
-## 21
-## 34</code></pre>
-<pre class="python"><code>import time
-import matplotlib.pyplot as plt
-
-N_MAX = 32
-points = [0] * N_MAX
-for i in range(N_MAX):
-  points[i] -= time.perf_counter()
-  fib(i)
-  points[i] += time.perf_counter()</code></pre>
-<pre class="python"><code>plt.plot(points, &#39;ob&#39;)
-plt.xlabel(&quot;n&quot;)
-plt.ylabel(&quot;tiempo de ejecucion&quot;)
-plt.show()</code></pre>
-<p><img src="class-18_files/figure-html/unnamed-chunk-4-1.png" /><!-- --></p>
-</div>
-</div>
-<div id="sobrelapamiento-de-estados" class="section level2">
-<h2>2. Sobrelapamiento de estados</h2>
-<p>¿Por qué Fibonacci? Tal vez ahora te preguntes que tiene Fibonacci de especial que no tienen otros problemas de recursión.</p>
-<p>La respuesta es <em>sobrelapamiento de estados</em>, quiere decir que hay algunos <span class="math inline">\(n\)</span> que se evaluan muchas veces, veamos:</p>
-<pre class="python"><code>def fib_count(n, cnt):
-  cnt[n] += 1
-  if n == 0: return 0
-  if n == 1: return 1
-  return fib_count(n-1, cnt) + fib_count(n-2, cnt)</code></pre>
-<pre class="python"><code>cnt = [0] * N_MAX
-fib_count(N_MAX-1, cnt)</code></pre>
-<pre><code>## 1346269</code></pre>
-<pre class="python"><code>plt.plot(cnt)
-plt.xlabel(&#39;fib(n) calculados&#39;)
-plt.ylabel(&#39;frecuencia&#39;)
-plt.show()</code></pre>
-<p><img src="class-18_files/figure-html/unnamed-chunk-7-1.png" /><!-- --></p>
-<p>Hay valores que se calculan ¡¡¡más de <span class="math inline">\(1200000\)</span> veces!!!</p>
-</div>
-<div id="memoization-memoria-a-favor-de-la-complejidad" class="section level2">
-<h2>3. Memoization, memoria a favor de la complejidad</h2>
-<p>Sí mi problema es calcular los estados muchas veces, pues porqué no guardarlos para futuras peticiones? veamos como esta simple idea funciona:</p>
-<pre class="python"><code>def fib_memo(n, vis, memo):
-  if vis[n] == True: return memo[n]
-  vis[n] = True
-  
-  answer = -1
-  if n == 0: answer = 0
-  elif n == 1: answer = 1
-  else: answer = fib_memo(n-1, vis, memo) + fib_memo(n-2, vis, memo)
-  
-  memo[n] = answer
-  return answer</code></pre>
-<pre class="python"><code>import sys
-sys.setrecursionlimit(100000)
-M_MAX = 100
-points = [0] * M_MAX 
-for i in range(M_MAX):
-  points[i] -= time.perf_counter()
-  memo = [-1] * M_MAX
-  vis = [False] * M_MAX
-  fib_memo(i, vis, memo)
-  points[i] += time.perf_counter()</code></pre>
-<pre class="python"><code>plt.plot(points, &#39;or&#39;)
-plt.xlabel(&#39;n&#39;)
-plt.ylabel(&#39;tiempo de ejecucion&#39;)
-plt.show()</code></pre>
-<p><img src="class-18_files/figure-html/unnamed-chunk-10-1.png" /><!-- --></p>
-<p>¡¡¡Mi complejidad ahora es lineal!!! ¿Es esto acaso mágia?</p>
-</div>
-<div id="calculado-memoizado" class="section level2">
-<h2>4. Calculado / Memoizado</h2>
-<p>La complejidad ahora es lineal por un simple hecho, los estados no se calculan más de una vez…</p>
-<pre class="python"><code>def fib_dp(n, vis, memo, cnt):
-  cnt[n] += 1
-  if vis[n]:
-    return memo[n] #si ya ha sido calculado lo devuelvo
-  vis[n] = True #lo voy a calcular, falta guardarlo
-  ans = -1
-  if n == 0: ans = 0
-  elif n == 1: ans = 1
-  else: ans = fib_dp(n-1, vis, memo, cnt) + fib_dp(n-2, vis, memo, cnt)
-  
-  memo[n] = ans #como lo he calculado, lo guardo
-  return ans</code></pre>
-<pre class="python"><code>M_MAX = 1000
-memo = [-1] * M_MAX
-vis = [False] * M_MAX
-cnt = [0] * M_MAX
-fib_dp(M_MAX-1, vis, memo, cnt)</code></pre>
-<pre><code>## 26863810024485359386146727202142923967616609318986952340123175997617981700247881689338369654483356564191827856161443356312976673642210350324634850410377680367334151172899169723197082763985615764450078474174626</code></pre>
-<pre class="python"><code>plt.plot(cnt, &#39;og&#39;)
-plt.xlabel(&#39;fib(n) calculados&#39;)
-plt.ylabel(&#39;frecuencia&#39;)
-plt.show()</code></pre>
-<p><img src="class-18_files/figure-html/unnamed-chunk-13-1.png" /><!-- --></p>
-</div>
-<div id="un-fibonacci-ejemplo-diferente" class="section level2">
-<h2>5. Un fibonacci-ejemplo diferente</h2>
-<div id="problema-2." class="section level4">
-<h4>Problema 2.</h4>
-<p>Ana es fanática de los quesos, ella tiene una lista de quesos que puede comprar, y cada uno le agrada con valor <span class="math inline">\(c_i\)</span>, los quesos que están consecutivos en la lista se parecen mucho, así que por eso ella no quiere comprar dos consecutivos. Ella no es buena con los cálculos, así que quisiera que la ayudes diciendole la mayor suma de <span class="math inline">\(c_i\)</span> que ella puede obtener.</p>
-</div>
-<div id="análisis." class="section level4">
-<h4>Análisis.</h4>
-<p>La solución debe tener la forma de: <span class="math display">\[dp(n) = \max(dp(n-1), ~dp(n-2) + c_n)\]</span> con casos base <span class="math inline">\(dp(1) = c_1\)</span> y <span class="math inline">\(dp(0) = 0\)</span></p>
-<pre class="python"><code>def dp(n, c, vis, memo):
-  if n == 0: return 0
-  if n == 1: return c[1]
-  if vis[n]: return memo[n]
-  vis[n] = True
-  memo[n] = max(dp(n-1, c, vis, memo), dp(n-2, c, vis, memo) + c[n])
-  return memo[n]</code></pre>
-</div>
-<div id="tiempo-de-discusión-del-problema" class="section level3">
-<h3>Tiempo de discusión del problema…</h3>
-</div>
-<div id="un-problema-difícil" class="section level3">
-<h3>6. ¿Un problema difícil?</h3>
-<p>problema 3. Dado un grafo no dirigido, halle un ciclo hamiltoniano.</p>
-</div>
-<div id="discusión-que-es-un-grafo" class="section level3">
-<h3>Discusión: Que es un grafo</h3>
-</div>
-<div id="discusión-que-es-un-ciclo-hamiltoniano" class="section level3">
-<h3>Discusión: Que es un ciclo hamiltoniano</h3>
-</div>
-<div id="discusión-solución-simple" class="section level3">
-<h3>Discusión: Solución simple</h3>
-</div>
-<div id="discusión-una-solución-óptima-pero-exponencial" class="section level3">
-<h3>Discusión: Una solución óptima, pero exponencial…</h3>
-</div>
-</div>
-<div id="contest" class="section level1">
-<h1>Contest</h1>
-<p>El contest lo puedes encontrar <a href="https://vjudge.net/contest/374440">aquí</a>.</p>
 <div id="a.-make-product-equal-one" class="section level3">
 <h3><a href="https://vjudge.net/contest/374440#problem/A">A. Make Product Equal One</a></h3>
 <p>Para resolver este problema debemos notar que la solución óptima es una combinación de 1s y -1s, y dado que el producto debe ser 1, tendremos una cantidad par de -1s.</p>
@@ -827,8 +671,75 @@ int main(){
 <p>Ahora, ya que <span class="math inline">\(n \geq 2\)</span>, los números de longitud <span class="math inline">\(1\)</span> nos van a servir para la recursión (a pesar de que teóricamente puedan no coincidir con los resultados), dado que necesitamos números de longitud <span class="math inline">\(n\)</span> que no empiecen con <span class="math inline">\(0\)</span>.</p>
 <p>Por la condición anterior, definimos los casos base:</p>
 <p><span class="math display">\[ memo_{1, 0} = 0 \]</span> <span class="math display">\[ memo_{1, 1} = k-1 \]</span></p>
-<p>Para que todo número construido de izquierda a derecha sea válido. Finalmente nuestra respuesta es $memo_{n, 0} + memo_{n, 1}</p>
+<p>Para que todo número construido de izquierda a derecha sea válido. Finalmente nuestra respuesta es <span class="math inline">\(memo_{n, 0} + memo_{n, 1}\)</span>.</p>
+<p>Complejidad: <span class="math inline">\(O(n)\)</span>.</p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample6" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
 </div>
+<div id="codeExample6" class="collapse">
+<pre class="cpp"><code>#include&lt;bits/stdc++.h&gt;
+using namespace::std;
+
+const int N = 20;
+
+int n;
+int k;
+long long memo[N][3];
+
+int main(){
+    scanf(&quot;%d %d&quot;, &amp;n, &amp;k);
+    memo[1][0] = 0;
+    memo[1][1] = k-1;
+    for(int i=2; i&lt;=n; i++){
+        memo[i][0] = memo[i-1][1];
+        memo[i][1] = (long long)(k - 1) * (memo[i-1][0] + memo[i-1][1]);
+    }
+    printf(&quot;%lld\n&quot;, memo[n][0] + memo[n][1]);
+    return 0;
+}</code></pre>
+</div>
+<!-- ends code -->
+</div>
+<div id="g.-square-country" class="section level3">
+<h3><a href="https://vjudge.net/contest/374440#problem/G">G. Square Country</a></h3>
+<p>Para resolver este problema bastaba definir la recursión <span class="math inline">\(memo_{i}\)</span>, la cual dará el resultado mínimo para un área de <span class="math inline">\(i\)</span>. Según el enunciado, deberemos minimizar la cantidad de cuadrados en la que puede ser particionada <span class="math inline">\(i\)</span>, así que fijaremos el último cuadrado usado, de esta forma:</p>
+<p><span class="math display">\[ memo_{i} = \min\limits_{1 \leq x^{2} \leq i}\{1 + memo_{i - x^{2}}\} \]</span></p>
+<!-- begin code -->
+<div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample7" aria-expanded="false" aria-controls="collapseTwo">
+<!-- title -->
+<i class="fas fa-caret-right"></i>
+<p class="title">
+Code
+</p>
+</div>
+<div id="codeExample7" class="collapse">
+<pre class="cpp"><code>#include&lt;bits/stdc++.h&gt;
+using namespace::std;
+
+const int N = 60000+5;
+
+int n;
+int memo[N];
+
+int main(){
+    scanf(&quot;%d&quot;,&amp;n);
+    memo[0] = 0;
+    for(int i = 1; i &lt;= n; i++){
+        memo[i] = n;
+        for(int x = 1; x * x &lt;= i; x++){
+            memo[i] = min(memo[i], 1 + memo[i - x * x]);
+        }
+    }
+    printf(&quot;%d\n&quot;, memo[n]);
+    return 0;
+}</code></pre>
+</div>
+<!-- ends code -->
 </div>
 
 

@@ -1,0 +1,145 @@
+---
+title: "Clase 24: Sparse Table"
+author: "GPC-UNI Resto del Mundo"
+date: "29-08-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Consultas sobre un conjunto de datos
+
+Hasta ahora, la mayoría de problemas que hemos visto se han podido resolver mediante el uso de estructuras simples (STL o arreglos) debido a que no se nos requería responder a consultas muy elaboradas.
+
+Por lo pronto, tenemos en consideración la estructura de *prefix sums* para poder obtener el resultado de una función invertible en una cantidad de evaluaciones constante para optimizar nuestros algoritmos.
+
+Sin embargo, surgen problemas cuando nos dan funciones que **no son invertibles** (por ejemplo: máximo, mínimo o mcd).
+
+Esta problemática nos obliga a diseñar algunas estructuras de datos que nos permitan responder a dichas consultas en un tiempo prudente.
+
+# Las potencias de 2 al rescate
+
+Una primera idea de diseño sería tomar el conjunto completo de datos y particionarlo o preprocesar información de manera que nos permita unir dicha información fácilmente para responder a las consultas hechas rápidamente.
+
+Consideraremos el preprocesamiento de información en potencias de 2: Esto quiere decir que para cada posición $i$ de la secuencia de elementos preprocesaremos las respuestas parciales de los intervalos de la forma $[i, i + 2^{k} - 1]$ para los $k \geq 0$ tales que $i + 2^{k} - 1 \leq n$.
+
+1. Primera observación: Si queremos calcular $[i, i + 2^{k} - 1]$ podemos calcular primero los intervalos $[i, i + 2^{k - 1} - 1]$ y $[i + 2^{k - 1}, i + 2^{k} - 1]$ y unir dichas respuestas. Esto nos da la idea de que deberemos calcular primero las potencias menores antes que las mayores, ya que los dos intervalos necesitados son de la forma $[j, j + 2^{k - 1} - 1]$.
+
+2. Segunda observación: Si tenemos un intervalo de longitud $L$, nos bastarán $O(\log{L})$ respuestas parciales para poder responder a la consulta de dicho intervalo. Esto se da por que podemos usar la representación binaria de $L$ y así separaremos el rango completo en rangos que tengan como longitud una potencia de 2.
+
+3. Si el evaluar la función $f$ que tomamos de referencia toma un tiempo $O(merge)$, entonces podemos construir toda la estructura en $O(n\log{n}\cdot merge)$.
+
+4. Si $f$ es idempotente respecto a la existencia de los elementos, entonces las consultas se pueden responder en $O(merge)$; en caso contrario, tomará $O(\log{L}\cdot merge)$ como dijimos en la observación 2.
+
+# Construcción
+
+Como ya planteamos anteriormente, iteraremos por $k$ ascendente desde $1$ hasta que ya no podamos más (cuando $2^{k} > n$ nos detendremos), pero primero debemos inicializar los elementos individuales ($k = 0$) por separado, ya que estos no tendrán que usar la recurrencia.
+
+Si guardamos la información en un arreglo $ST[n][\lceil\log_{2}{n}\rceil]$ y la función es $f$, tendremos la siguiente recurrencia:
+
+$$ ST[i][0] = a[i] $$
+
+$$ ST[i][k] = f(ST[i][k-1], ST[i + 2^{k-1}][k-1]) $$
+
+De este modo, nuestra implementación de la construcción podría ser así:
+
+```
+void STBuild(){
+	for(int i = 1; i <= n; i++){
+		ST[i][0] = a[i];
+	}
+	for(int k = 1; 1<<k <= n; k++){
+		int dis = 1<<(k - 1); // 2^(k - 1)
+		for(int i = 1; i + 2 * dis - 1 <= n; i++){ // 2 * dis = 2^{k}
+			ST[i][k] = f(ST[i][k - 1], ST[i + dis][k - 1]);
+		}
+	}
+}
+```
+
+La complejidad es evidente por la forma de la construcción, puesto que el primer `for` realiza $O(\log{n})$ iteraciones, mientras que el for anidado realiza $O(n)$ iteraciones y en cada iteración ejecutamos una evaluación de $f$, así que tendremos $O(n\log{n}\cdot merge)$.
+
+# Respondiendo consultas
+
+## $f$ idempotente respecto a la existencia de los elementos
+
+Cuando tenemos una función $f$ idempotente respecto a la existencia de los elementos, tenemos cierta ventaja, pues no importa el incluir un elemento múltiples veces en el cálculo por la misma naturaleza de la función.
+
+Esto nos permite tomar el intervalo de consulta de longitud $L$ y obtener el máximo $k$ tal que $2^{k} \leq L$ y podemos responder a la consulta usando:
+
+$$ f(a[l], \ldots, a[r]) = f(ST[l][k], ST[r - 2^{k} + 1][k])= f(f(a[l], \ldots, a[l + 2^{k} - 1]), f(a[r - 2^{k} + 1], \ldots, a[r])) $$
+
+Ciertamente existe la posibilidad de que los intervalos $[l, l + 2^{k} - 1]$ y $[r - 2^{k} + 1, r]$ se sobrelapen, pero ya que la función es idempotente, esto no modificará la respuesta final.
+
+Para hacer la explicación más fácil de entender, tomaremos de referencia la función $f = \min$, la cual cumple con la condición de idempotencia ($\min{\{2, 3, 3, 3\}} = \min{\{2, 3\}}$).
+
+$$ \min{(a[l], \ldots, a[r])} = \min{(ST[l][k], ST[r - 2^{k} + 1][k])} = \min{(\min{(a[l], \ldots, a[l + 2^{k} - 1])}, \min{(a[r - 2^{k} + 1], \ldots, a[r])})} $$
+
+Entonces, podemos calcular $k$ de manera directa con un `while` (lo cual tomaría $O(\log{n})$, pero esto empeora la complejidad de $O(merge)$ que habíamos prometido) o usar la expresión `31 - __builtin_clz(r - l + 1)` (lo cual toma $O(1)$).
+
+Finalmente, la implementación de esta forma de respuesta sería:
+
+```
+int STQuery(int L, int R){
+	int d = R - L + 1;
+	int k = 31 - __builtin_clz(d);
+	int dis = 1<<k;
+	return min(ST[L][k], ST[R-dis+1][k])
+}
+```
+
+Como solamente evaluaremos $f$ una vez, esto toma un tiempo $O(merge)$.
+
+### Problema para implementar
+
+- [Range Minimum Query](https://www.spoj.com/problems/RMQSQ/)
+
+## $f$ general
+
+Cuando $f$ no es idempotente, la presencia múltiple de un mismo elemento sí puede modificar la respuesta; por lo tanto, necesitaremos evitar que los intervalos se sobrelapen.
+
+Para este caso, consideraremos la representación binaria de $L$ y tomaremos dichos subsegmentos para responder a nuestra consulta.
+
+Podemos iterar en cualquier orden de los bits, pero para mayor facilidad tomaremos siempre el mayor bit prendido. Tomaremos una función no idempotente $f = +$ de ejemplo para que sea más sencillo entender el procedimiento.
+
+```
+int STQuery(int L, int R){
+	int d = R - L + 1;
+	int ans = 0;
+	while(d > 0){
+		int k = 31 - __builtin_clz(d);
+		ans += ST[L][k];
+		L += (1<<k); // Hacemos el salto
+		d -= (1<<k); // Le quitamos el maximo bit a la distancia
+	}
+	return ans;
+}
+```
+
+Notemos que tomaremos el máximo bit prendido, agregaremos la respuesta parcial $[L, L + 2^{k} - 1]$ y sumaremos $2^{k}$ a $L$, para dar un salto a la siguiente posición que aún falta ser procesada. Esto se dará hasta que $L = R + 1$, lo que significa que terminamos de procesar todas las posiciones en el rango $[L, R]$ original.
+
+### Problema para implementar
+
+- [Maximum Trace](https://vjudge.net/problem/Gym-270304M)
+
+# Ventajas y desventajas
+
+## Ventajas
+
+1. Es sencilla de implementar y rápida por el hecho de usar bucles sin recursión.
+
+2. Nos da una rapidez muy buena si $f$ es idempotente.
+
+3. El requerimiento de $f$ de solo ser asociativa nos da mucha flexibilidad de aplicación.
+
+## Desventajas
+
+1. Uso excesivo de memoria: Hay otras estructuras de datos más potentes que usan $O(n)$ y no $O(n\log{n})$.
+
+2. No permite modificaciones: Para poder plasmar una modificación a alguna de las posiciones del Sparse Table y que esta sea reflejada en las respuestas parciales, deberemos reconstruir la estructura por completo.
+
+# Contest Semanal
+
+Pueden entrar al contest mediante el siguiente [link](https://vjudge.net/contest/391042)

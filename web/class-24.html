@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 24: Sparse Table</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
+    <li>
+      <a href="class-08.html">Recursión</a>
+    </li>
+    <li>
+      <a href="class-09.html">Backtracking I</a>
+    </li>
+    <li>
+      <a href="class-10.html">Recapitulacion I</a>
+    </li>
+    <li>
+      <a href="class-11.html">Contest UNI-UTEC I</a>
+    </li>
+    <li>
+      <a href="class-12.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-13.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-14.html">Bitmask</a>
+    </li>
+    <li>
+      <a href="class-15.html">Introducción a Greedy</a>
+    </li>
+    <li>
+      <a href="class-16.html">7 Greedy Problems</a>
+    </li>
+    <li>
+      <a href="class-17.html">Meet in the middle</a>
+    </li>
+    <li>
+      <a href="class-18.html">Dynamic Programming</a>
+    </li>
+    <li>
+      <a href="class-19.html">Grafos</a>
+    </li>
+    <li>
+      <a href="class-20.html">Divide and Conquer</a>
+    </li>
+    <li>
+      <a href="class-21.html">DP Classics</a>
+    </li>
+    <li>
+      <a href="class-22.html">Max Flow Introduction</a>
+    </li>
+    <li>
+      <a href="class-23.html">Max Flow Algorithm</a>
+    </li>
+    <li>
+      <a href="class-24.html">Sparse Table</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    TC Argentina 2020
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TCAC1-EditorialI.html">Editorial Contest 1 - Inicial</a>
+    </li>
+    <li>
+      <a href="TCAC1-EditorialA.html">Editorial Contest 1 - Avanzado</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 24: Sparse Table</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">29-08-2020</h4>
+
+</div>
+
+
+<div id="consultas-sobre-un-conjunto-de-datos" class="section level1">
+<h1>Consultas sobre un conjunto de datos</h1>
+<p>Hasta ahora, la mayoría de problemas que hemos visto se han podido resolver mediante el uso de estructuras simples (STL o arreglos) debido a que no se nos requería responder a consultas muy elaboradas.</p>
+<p>Por lo pronto, tenemos en consideración la estructura de <em>prefix sums</em> para poder obtener el resultado de una función invertible en una cantidad de evaluaciones constante para optimizar nuestros algoritmos.</p>
+<p>Sin embargo, surgen problemas cuando nos dan funciones que <strong>no son invertibles</strong> (por ejemplo: máximo, mínimo o mcd).</p>
+<p>Esta problemática nos obliga a diseñar algunas estructuras de datos que nos permitan responder a dichas consultas en un tiempo prudente.</p>
+</div>
+<div id="las-potencias-de-2-al-rescate" class="section level1">
+<h1>Las potencias de 2 al rescate</h1>
+<p>Una primera idea de diseño sería tomar el conjunto completo de datos y particionarlo o preprocesar información de manera que nos permita unir dicha información fácilmente para responder a las consultas hechas rápidamente.</p>
+<p>Consideraremos el preprocesamiento de información en potencias de 2: Esto quiere decir que para cada posición <span class="math inline">\(i\)</span> de la secuencia de elementos preprocesaremos las respuestas parciales de los intervalos de la forma <span class="math inline">\([i, i + 2^{k} - 1]\)</span> para los <span class="math inline">\(k \geq 0\)</span> tales que <span class="math inline">\(i + 2^{k} - 1 \leq n\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li><p>Primera observación: Si queremos calcular <span class="math inline">\([i, i + 2^{k} - 1]\)</span> podemos calcular primero los intervalos <span class="math inline">\([i, i + 2^{k - 1} - 1]\)</span> y <span class="math inline">\([i + 2^{k - 1}, i + 2^{k} - 1]\)</span> y unir dichas respuestas. Esto nos da la idea de que deberemos calcular primero las potencias menores antes que las mayores, ya que los dos intervalos necesitados son de la forma <span class="math inline">\([j, j + 2^{k - 1} - 1]\)</span>.</p></li>
+<li><p>Segunda observación: Si tenemos un intervalo de longitud <span class="math inline">\(L\)</span>, nos bastarán <span class="math inline">\(O(\log{L})\)</span> respuestas parciales para poder responder a la consulta de dicho intervalo. Esto se da por que podemos usar la representación binaria de <span class="math inline">\(L\)</span> y así separaremos el rango completo en rangos que tengan como longitud una potencia de 2.</p></li>
+<li><p>Si el evaluar la función <span class="math inline">\(f\)</span> que tomamos de referencia toma un tiempo <span class="math inline">\(O(merge)\)</span>, entonces podemos construir toda la estructura en <span class="math inline">\(O(n\log{n}\cdot merge)\)</span>.</p></li>
+<li><p>Si <span class="math inline">\(f\)</span> es idempotente respecto a la existencia de los elementos, entonces las consultas se pueden responder en <span class="math inline">\(O(merge)\)</span>; en caso contrario, tomará <span class="math inline">\(O(\log{L}\cdot merge)\)</span> como dijimos en la observación 2.</p></li>
+</ol>
+</div>
+<div id="construcción" class="section level1">
+<h1>Construcción</h1>
+<p>Como ya planteamos anteriormente, iteraremos por <span class="math inline">\(k\)</span> ascendente desde <span class="math inline">\(1\)</span> hasta que ya no podamos más (cuando <span class="math inline">\(2^{k} &gt; n\)</span> nos detendremos), pero primero debemos inicializar los elementos individuales (<span class="math inline">\(k = 0\)</span>) por separado, ya que estos no tendrán que usar la recurrencia.</p>
+<p>Si guardamos la información en un arreglo <span class="math inline">\(ST[n][\lceil\log_{2}{n}\rceil]\)</span> y la función es <span class="math inline">\(f\)</span>, tendremos la siguiente recurrencia:</p>
+<p><span class="math display">\[ ST[i][0] = a[i] \]</span></p>
+<p><span class="math display">\[ ST[i][k] = f(ST[i][k-1], ST[i + 2^{k-1}][k-1]) \]</span></p>
+<p>De este modo, nuestra implementación de la construcción podría ser así:</p>
+<pre><code>void STBuild(){
+    for(int i = 1; i &lt;= n; i++){
+        ST[i][0] = a[i];
+    }
+    for(int k = 1; 1&lt;&lt;k &lt;= n; k++){
+        int dis = 1&lt;&lt;(k - 1); // 2^(k - 1)
+        for(int i = 1; i + 2 * dis - 1 &lt;= n; i++){ // 2 * dis = 2^{k}
+            ST[i][k] = f(ST[i][k - 1], ST[i + dis][k - 1]);
+        }
+    }
+}</code></pre>
+<p>La complejidad es evidente por la forma de la construcción, puesto que el primer <code>for</code> realiza <span class="math inline">\(O(\log{n})\)</span> iteraciones, mientras que el for anidado realiza <span class="math inline">\(O(n)\)</span> iteraciones y en cada iteración ejecutamos una evaluación de <span class="math inline">\(f\)</span>, así que tendremos <span class="math inline">\(O(n\log{n}\cdot merge)\)</span>.</p>
+</div>
+<div id="respondiendo-consultas" class="section level1">
+<h1>Respondiendo consultas</h1>
+<div id="f-idempotente-respecto-a-la-existencia-de-los-elementos" class="section level2">
+<h2><span class="math inline">\(f\)</span> idempotente respecto a la existencia de los elementos</h2>
+<p>Cuando tenemos una función <span class="math inline">\(f\)</span> idempotente respecto a la existencia de los elementos, tenemos cierta ventaja, pues no importa el incluir un elemento múltiples veces en el cálculo por la misma naturaleza de la función.</p>
+<p>Esto nos permite tomar el intervalo de consulta de longitud <span class="math inline">\(L\)</span> y obtener el máximo <span class="math inline">\(k\)</span> tal que <span class="math inline">\(2^{k} \leq L\)</span> y podemos responder a la consulta usando:</p>
+<p><span class="math display">\[ f(a[l], \ldots, a[r]) = f(ST[l][k], ST[r - 2^{k} + 1][k])= f(f(a[l], \ldots, a[l + 2^{k} - 1]), f(a[r - 2^{k} + 1], \ldots, a[r])) \]</span></p>
+<p>Ciertamente existe la posibilidad de que los intervalos <span class="math inline">\([l, l + 2^{k} - 1]\)</span> y <span class="math inline">\([r - 2^{k} + 1, r]\)</span> se sobrelapen, pero ya que la función es idempotente, esto no modificará la respuesta final.</p>
+<p>Para hacer la explicación más fácil de entender, tomaremos de referencia la función <span class="math inline">\(f = \min\)</span>, la cual cumple con la condición de idempotencia (<span class="math inline">\(\min{\{2, 3, 3, 3\}} = \min{\{2, 3\}}\)</span>).</p>
+<p><span class="math display">\[ \min{(a[l], \ldots, a[r])} = \min{(ST[l][k], ST[r - 2^{k} + 1][k])} = \min{(\min{(a[l], \ldots, a[l + 2^{k} - 1])}, \min{(a[r - 2^{k} + 1], \ldots, a[r])})} \]</span></p>
+<p>Entonces, podemos calcular <span class="math inline">\(k\)</span> de manera directa con un <code>while</code> (lo cual tomaría <span class="math inline">\(O(\log{n})\)</span>, pero esto empeora la complejidad de <span class="math inline">\(O(merge)\)</span> que habíamos prometido) o usar la expresión <code>31 - __builtin_clz(r - l + 1)</code> (lo cual toma <span class="math inline">\(O(1)\)</span>).</p>
+<p>Finalmente, la implementación de esta forma de respuesta sería:</p>
+<pre><code>int STQuery(int L, int R){
+    int d = R - L + 1;
+    int k = 31 - __builtin_clz(d);
+    int dis = 1&lt;&lt;k;
+    return min(ST[L][k], ST[R-dis+1][k])
+}</code></pre>
+<p>Como solamente evaluaremos <span class="math inline">\(f\)</span> una vez, esto toma un tiempo <span class="math inline">\(O(merge)\)</span>.</p>
+<div id="problema-para-implementar" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://www.spoj.com/problems/RMQSQ/">Range Minimum Query</a></li>
+</ul>
+</div>
+</div>
+<div id="f-general" class="section level2">
+<h2><span class="math inline">\(f\)</span> general</h2>
+<p>Cuando <span class="math inline">\(f\)</span> no es idempotente, la presencia múltiple de un mismo elemento sí puede modificar la respuesta; por lo tanto, necesitaremos evitar que los intervalos se sobrelapen.</p>
+<p>Para este caso, consideraremos la representación binaria de <span class="math inline">\(L\)</span> y tomaremos dichos subsegmentos para responder a nuestra consulta.</p>
+<p>Podemos iterar en cualquier orden de los bits, pero para mayor facilidad tomaremos siempre el mayor bit prendido. Tomaremos una función no idempotente <span class="math inline">\(f = +\)</span> de ejemplo para que sea más sencillo entender el procedimiento.</p>
+<pre><code>int STQuery(int L, int R){
+    int d = R - L + 1;
+    int ans = 0;
+    while(d &gt; 0){
+        int k = 31 - __builtin_clz(d);
+        ans += ST[L][k];
+        L += (1&lt;&lt;k); // Hacemos el salto
+        d -= (1&lt;&lt;k); // Le quitamos el maximo bit a la distancia
+    }
+    return ans;
+}</code></pre>
+<p>Notemos que tomaremos el máximo bit prendido, agregaremos la respuesta parcial <span class="math inline">\([L, L + 2^{k} - 1]\)</span> y sumaremos <span class="math inline">\(2^{k}\)</span> a <span class="math inline">\(L\)</span>, para dar un salto a la siguiente posición que aún falta ser procesada. Esto se dará hasta que <span class="math inline">\(L = R + 1\)</span>, lo que significa que terminamos de procesar todas las posiciones en el rango <span class="math inline">\([L, R]\)</span> original.</p>
+<div id="problema-para-implementar-1" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://vjudge.net/problem/Gym-270304M">Maximum Trace</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="ventajas-y-desventajas" class="section level1">
+<h1>Ventajas y desventajas</h1>
+<div id="ventajas" class="section level2">
+<h2>Ventajas</h2>
+<ol style="list-style-type: decimal">
+<li><p>Es sencilla de implementar y rápida por el hecho de usar bucles sin recursión.</p></li>
+<li><p>Nos da una rapidez muy buena si <span class="math inline">\(f\)</span> es idempotente.</p></li>
+<li><p>El requerimiento de <span class="math inline">\(f\)</span> de solo ser asociativa nos da mucha flexibilidad de aplicación.</p></li>
+</ol>
+</div>
+<div id="desventajas" class="section level2">
+<h2>Desventajas</h2>
+<ol style="list-style-type: decimal">
+<li><p>Uso excesivo de memoria: Hay otras estructuras de datos más potentes que usan <span class="math inline">\(O(n)\)</span> y no <span class="math inline">\(O(n\log{n})\)</span>.</p></li>
+<li><p>No permite modificaciones: Para poder plasmar una modificación a alguna de las posiciones del Sparse Table y que esta sea reflejada en las respuestas parciales, deberemos reconstruir la estructura por completo.</p></li>
+</ol>
+</div>
+</div>
+<div id="contest-semanal" class="section level1">
+<h1>Contest Semanal</h1>
+<p>Pueden entrar al contest mediante el siguiente <a href="https://vjudge.net/contest/391042">link</a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

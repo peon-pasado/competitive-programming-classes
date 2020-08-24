@@ -69,3 +69,7 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 ## Semana 14
 
 - [Max Flow II](./class-23.html)
+
+## Semana 15
+
+- [Sparse Table](./class-24.html)
