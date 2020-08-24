@@ -1,0 +1,198 @@
+---
+title: "Clase 25: Binary Indexed Tree"
+author: "GPC-UNI Resto del Mundo"
+date: "05-09-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# ¿Binary Indexed Tree?
+
+El *Binary Indexed Tree (BIT)* o *Fenwick Tree (por Peter Fenwick)* es una estructura de datos que permite modificaciones y consultas en $O(\log{n})$, siendo $n$ la cantidad de elementos de referencia en la estructura (sea $a$ el arreglo con todos esos elementos). Toma como referencia una función asociativa $f$ y calcula respuestas parciales para optimizar el tiempo de consulta y de modificación.
+
+El BIT de manera natural permite almacenar y consultar datos respecto a un prefijo de $a$ en el caso general si las actualizaciones son *sobreescribibles*; sin embargo, si $f$ es invertible, entonces el BIT permite consultar cualquier rango de los elementos almacenados considerando que:
+
+$$ a_{l} \oplus a_{l + 1} \oplus \ldots \oplus a_{r} = f^{-1}(a_{1} \oplus \ldots \oplus a_{r}, a_{1} \oplus \ldots \oplus a_{l - 1}) $$
+
+Consideraremos que las respuestas parciales de la estructura serán almacenadas en un arreglo $ft$. La cantidad de memoria que necesita el BIT es $O(n)$, siendo más específicos, necesitaría una cantidad cercada a $n+1$ estructuras del mismo tipo que los elementos de $a$, lo cual probaremos a continuación.
+
+# ¿Cómo guardar y consultar los datos?
+
+Lo que propone el BIT es almacenar en la posición $pos$ el resultado de todos los elementos en el rango $[pos - LSO(pos) + 1, pos]$, donde $LSO(pos)$ es el *Least Significant One* de $pos$, el cual es la máxima potencia de $2$ tal que $pos$ es divisible por ella (esta terminología ya la habíamos usado en Bitmask, por lo que no profundizaremos al respecto acá).
+
+Ahora, asumiendo que mantenemos dicha forma de almacenar los datos, es sencillo notar que para obtener el resultado de todos los elementos del rango $[1, pos]$ basta con usar la siguiente iteración:
+
+```
+node getPrefix(int pos){
+    if(pos == 0) return Neutro; // Elemento neutro porque no hay elementos en [1, 0]
+    return f(getPrefix(pos - LSO(pos)), ft[pos]); // Quitamos el LSO, obtenemos su respuesta y operamos con ft[pos]
+}
+```
+
+**Teorema:** El algoritmo `getPrefix(pos)` obtiene adecuadamente la respuesta de los elementos en el rango $[1, pos]$ para todo $pos = 0, 1, \ldots, n$, siendo la respuesta para $pos = 0$ el elemento neutro de la función $f$.
+
+**Prueba:**
+
+Notemos que el caso $pos = 0$ es trivial por la recursión `getPrefix`.
+
+Para $pos > 0$ probaremos por inducción sobre la cantidad de bits prendidos de $pos$ que la respuesta es calculada correctamente:
+
+1. Si $pos$ tiene un solo bit prendido, es una potencia de 2, por lo que devolveremos $f(getPrefix(0), ft[pos]) = f(Neutro,ft[pos]) = ft[pos]$, que es la respuesta parcial de los elementos en el rango $[1, pos]$ por la naturaleza del arreglo $ft$.
+
+2. Asumimos que para un $pos \leq n$ con $k$ bits prendidos la respuesta es correctamente calculada.
+
+3. Sea $pos \leq n$ con $(k + 1)$ bits prendidos, entonces la recursión devolverá $f(getPrefix(pos - LSO(pos)), ft[pos])$, donde $ft[pos]$ tiene la respuesta parcial para el rango $[pos - LSO(pos) + 1, pos]$ y $pos - LSO(pos)$ tiene solo $k$ bits prendidos. Por la hipótesis inductiva (2) tendremos que $getPrefix(pos - LSO(pos))$ devuelve la respuesta correcta para el rango $[1, pos - LSO(pos)]$, así que $f(getPrefix(pos - LSO(pos)), ft[pos])$ obtiene la unión de las respuestas parciales de los rangos $[1, pos - LSO(pos)]$ y $[pos - LSO(pos) + 1, pos]$, dando como resultado al rango $[1, pos]$.
+
+Ya que la recursión da la respuesta correcta, podemos plantear una versión iterativa:
+
+```
+node getPrefix(int pos){
+    node res = Neutro;
+    while(pos > 0){
+        res = f(ft[pos], res); // Notemos que el orden está invertido respecto a la recursión
+        pos -= LSO(pos); // Es equivalente usar pos &= pos-1
+    }
+    return res;
+}
+```
+
+Esta función iterativa da la misma respuesta que la recursiva gracias al orden de la función $f$ al actualizar $res$: Tendremos la invariante de que $res$ almacenará la respuesta de un sufijo de $[1,pos]$ y al final terminará con todo el rango.
+
+# ¿Cómo modificar el BIT?
+
+**Función sobreescribible (no es una definición conocida, solo es un nombre temporal que usaremos acá):** Función en la que cambiar de un valor $x$ a $y$ se puede realizar operando $x$ con algún valor $z$ de manera que $f(x,z) = y$ y además se debe cumplir que $f(a, y, c)=f(a, x, c, z)$.
+
+Para entender bien a qué nos referimos con función *sobreescribible*, tomaremos como referencia a la función suma, la cual es *sobreescribible* e invertible.
+
+* El cambiar el valor de la posición $pos$ de $a_{pos}$ a $a_{pos} + x$ implicar sumar $x$ a todas las posiciones que contengan $pos$ en su rango. Esta función es *sobreescribible*. Además, la consulta en rango será $getPrefix(r)-getPrefix(l-1)$.
+
+Entonces, si $f$ es sobreescribible nos bastará definir el valor de $z$ para modificar todas las respuestas parciales que contengan la posición a modificar. La pregunta ahora es ¿Cómo iterar sobre dichas posiciones de manera eficiente? Propondremos el siguiente algoritmo:
+
+```
+void update(int pos, node val){
+    if(pos > n) return;
+    ft[pos] = f(ft[pos], val);
+    update(pos + LSO(pos), val);
+}
+```
+
+Ahora deberemos probar la correctitud del algoritmo, verificaremos que dado un $1 \leq pos \leq n$ inicial, la secuencia generada por:
+
+$$ a_{0} = pos $$
+
+$$ a_{i} = a_{i - 1} + LSO(a_{i - 1}), \forall i = 1, \ldots $$
+
+**Teorema:** Sea $a$ la secuencia definida anteriormente con $a_{0} = pos$, entonces para todo $i = 0, 1, \ldots$ se da que $a_{i} - LSO(a_{i}) + 1 \leq pos \leq a_{i}$. Además no existe ningún elemento fuera de la secuencia que cumpla con la propiedad anterior.
+
+**Prueba (por inducción):**
+
+Primero probaremos que todos los elementos de la secuencia $a$ cumplen con la propiedad y luego probaremos que no existe ningún elemento $x$ fuera de la secuencia $a$ que cumpla con la misma.
+
+1. Es evidente que $pos - LSO(pos) + 1 \leq pos$ ya que $pos$ es positivo, por lo que $LSO(pos) \geq 1$. Además trivialmente se da que $pos \leq pos$.
+
+2. Asumamos que el elemento de posición $i$ cumple con que $a_{i} - LSO(a_{i}) + 1 \leq pos \leq a_{i}$.
+
+3. El elemento $a_{i + 1}$ es igual a $a_{i} + LSO(a_{i})$, es sencillo notar que como $a_{i}$ cumple con la propiedad, se da que $1 \leq pos \leq a_{i}$, así que $LSO(a_{i}) \geq \rightarrow pos \leq a_{i} + LSO(a_{i}) = a_{i + 1}$.
+
+Por otro lado, debemos hallar una relación entre $LSO(a_{i})$ y $LSO(a_{i} + LSO(a_{i}))$. Ya que $LSO(a_{i})$ es la máxima potencia de 2 que divide a $a_{i}$ podemos expresar:
+
+$$ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N} $$
+
+Lo anterior nos permite notar que:
+
+$$ a_{i} + LSO(a_{i}) = LSO(a_{i})\cdot(2k + 1) + LSO(a_{i}) = LSO(a_{i})(2k + 2) $$
+
+Podemos factorizar un $2$ del $2k + 2$:
+
+$$ a_{i} + LSO(a_{i}) = 2\cdot LSO(a_{i})\cdot (k + 1) $$
+
+Si tomamos $LSO$ de la expresión anterior:
+
+$$ LSO(a_{i} + LSO(a_{i})) = LSO(2 \cdot LSO(a_{i}) \cdot (k + 1)) $$
+
+Ya que no sabemos la paridad de $k + 1$, no podemos concluir nada al respecto, pero sí sabemos que $2\cdot LSO(a_{i})$ es una potencia de 2 y que $k + 1$ es positivo, así que:
+
+$$ LSO(a_{i} + LSO(a_{i})) \geq 2 \cdot LSO(a_{i}) $$
+
+Podemos manipular la inecuación a nuestra conveniencia:
+
+$$ 2\cdot LSO(a_{i}) \leq LSO(a_{i} + LSO(a_{i})) $$
+
+$$ LSO(a_{i}) - LSO(a_{i} + LSO(a_{i})) \leq -LSO(a_{i}) $$
+
+Sumando $a_{i} + 1$ a ambos lados:
+
+$$ a_{i} + LSO(a_{i}) - LSO(a_{i} + LSO(a_{i})) + 1 \leq a_{i} - LSO(a_{i}) + 1 $$
+
+Como $a_{i + 1} = a_{i} + LSO(a_{i})$, podemos reemplazar:
+
+$$ a_{i + 1} - LSO(a_{i + 1}) + 1 \leq a_{i} - LSO(a_{i}) + 1 $$
+
+Por la hipótesis inductiva, tenemos que $a_{i} - LSO(a_{i}) + 1$:
+
+
+$$ a_{i + 1} - LSO(a_{i + 1}) + 1 \leq a_{i} - LSO(a_{i}) + 1 \leq pos $$
+
+Por lo tanto, $a_{i + 1}$ cumple la propiedad propuesta.
+
+**Afirmación:** Sea a la secuencia definida anteriormente con $a_{0} = pos$, entonces para cualquier posición $i=0,1,\ldots$ se da que no existe ningún valor y tal que $a_{i} < y < a_{i} + LSO(a_{i})$ que sea válido.
+
+**Prueba:**
+
+Aislamos el caso en el que $LSO(a_{i}) = 1$ como trivialmente verdadero, ya que no existen $y$ enteros en el rango $(a_{i}, a_{i} + 1)$.
+
+Consideraremos $LSO(a_{i}) > 1$, entonces existe al menos un elemento en el rango $[a_{i} + 1, a_{i} + LSO(a_{i}) - 1]$. Supongamos un elemento $y = a_{i} + x$ con $0 < x < LSO(a_{i})$.
+
+Haremos algunas observaciones:
+
+1. $LSO(a_{i} + x) = LSO(x)$, ya que como $0 < x < LSO(a_{i})$, $x$ no será divisible por $LSO(a_{i})$ ni por alguna potencia de 2 que sea mayor, así que el $LSO(x)$ dividirá a $x$ y como es menor que $LSO(a_{i})$, dividirá a $a_{i}$ también.
+
+2. $pos < a_{i} + 1$, pues $pos \leq a_{i} < a_{i} + 1$.
+
+3. $x \geq LSO(x)$ para todo $x$ positivo, por la definición de $LSO(x)$.
+
+Entonces, consideraremos dos inecuaciones:
+
+$$ x \geq LSO(x) \rightarrow x - LSO(x) \geq 0 $$
+
+$$ a_{i} + 1 > pos $$
+
+Si sumamos ambas inecuaciones tendremos:
+
+$$ a_{i} + x - LSO(x) + 1 > pos $$
+
+Pero al usar la primera observación, tenemos que $LSO(x) = LSO(a_{i} + x)$:
+
+$$ a_{i} + x - LSO(a_{i} + x) + 1 > pos $$
+
+Pero nosotros dijimos que $y = a_{i} + x$, así que:
+
+$$ y - LSO(y) + 1 > pos $$
+
+Lo que significa que todos los valores $y = a_{i} + x$ con $0 < x < LSO(a_{i})$ tienen límite inferior mayor que $pos$, así que no lo contienen.
+
+Uniendo el teorema y la afirmación tenemos que nuestra secuencia es exactamente igual al conjunto de todos los elementos válidos para $pos$.
+
+Ahora que tenemos que nuestra recursión actualiza adecuadamente, podemos plantear su versión iterativa:
+
+```
+void update(int pos, node val){
+    while(pos <= n){
+        ft[pos] = f(ft[pos], val);
+        pos += LSO(pos);
+    }
+}
+```
+
+**Nota:** Otra función sobreescribible es cuando debemos modificar un elemento con el mínimo o máximo entre el valor actual y el nuevo valor. Al ser modificaciones monótonas, se pueden sobreescribir en las respuestas parciales, de ahí el nombre de este tipo de funciones.
+
+### Problema para implementar
+
+- [Inversion Count](https://www.spoj.com/problems/INVCNT/)
+
+# Contest Semanal
+
+Pueden entrar al contest mediante el siguiente [link](https://vjudge.net/contest/391046)

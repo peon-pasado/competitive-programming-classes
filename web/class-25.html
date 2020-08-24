@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 25: Binary Indexed Tree</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
+    <li>
+      <a href="class-08.html">Recursión</a>
+    </li>
+    <li>
+      <a href="class-09.html">Backtracking I</a>
+    </li>
+    <li>
+      <a href="class-10.html">Recapitulacion I</a>
+    </li>
+    <li>
+      <a href="class-11.html">Contest UNI-UTEC I</a>
+    </li>
+    <li>
+      <a href="class-12.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-13.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-14.html">Bitmask</a>
+    </li>
+    <li>
+      <a href="class-15.html">Introducción a Greedy</a>
+    </li>
+    <li>
+      <a href="class-16.html">7 Greedy Problems</a>
+    </li>
+    <li>
+      <a href="class-17.html">Meet in the middle</a>
+    </li>
+    <li>
+      <a href="class-18.html">Dynamic Programming</a>
+    </li>
+    <li>
+      <a href="class-19.html">Grafos</a>
+    </li>
+    <li>
+      <a href="class-20.html">Divide and Conquer</a>
+    </li>
+    <li>
+      <a href="class-21.html">DP Classics</a>
+    </li>
+    <li>
+      <a href="class-22.html">Max Flow Introduction</a>
+    </li>
+    <li>
+      <a href="class-23.html">Max Flow Algorithm</a>
+    </li>
+    <li>
+      <a href="class-24.html">Sparse Table</a>
+    </li>
+    <li>
+      <a href="class-25.html">Binary Indexed Tree</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    TC Argentina 2020
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TCAC1-EditorialI.html">Editorial Contest 1 - Inicial</a>
+    </li>
+    <li>
+      <a href="TCAC1-EditorialA.html">Editorial Contest 1 - Avanzado</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 25: Binary Indexed Tree</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">05-09-2020</h4>
+
+</div>
+
+
+<div id="binary-indexed-tree" class="section level1">
+<h1>¿Binary Indexed Tree?</h1>
+<p>El <em>Binary Indexed Tree (BIT)</em> o <em>Fenwick Tree (por Peter Fenwick)</em> es una estructura de datos que permite modificaciones y consultas en <span class="math inline">\(O(\log{n})\)</span>, siendo <span class="math inline">\(n\)</span> la cantidad de elementos de referencia en la estructura (sea <span class="math inline">\(a\)</span> el arreglo con todos esos elementos). Toma como referencia una función asociativa <span class="math inline">\(f\)</span> y calcula respuestas parciales para optimizar el tiempo de consulta y de modificación.</p>
+<p>El BIT de manera natural permite almacenar y consultar datos respecto a un prefijo de <span class="math inline">\(a\)</span> en el caso general si las actualizaciones son <em>sobreescribibles</em>; sin embargo, si <span class="math inline">\(f\)</span> es invertible, entonces el BIT permite consultar cualquier rango de los elementos almacenados considerando que:</p>
+<p><span class="math display">\[ a_{l} \oplus a_{l + 1} \oplus \ldots \oplus a_{r} = f^{-1}(a_{1} \oplus \ldots \oplus a_{r}, a_{1} \oplus \ldots \oplus a_{l - 1}) \]</span></p>
+<p>Consideraremos que las respuestas parciales de la estructura serán almacenadas en un arreglo <span class="math inline">\(ft\)</span>. La cantidad de memoria que necesita el BIT es <span class="math inline">\(O(n)\)</span>, siendo más específicos, necesitaría una cantidad cercada a <span class="math inline">\(n+1\)</span> estructuras del mismo tipo que los elementos de <span class="math inline">\(a\)</span>, lo cual probaremos a continuación.</p>
+</div>
+<div id="cómo-guardar-y-consultar-los-datos" class="section level1">
+<h1>¿Cómo guardar y consultar los datos?</h1>
+<p>Lo que propone el BIT es almacenar en la posición <span class="math inline">\(pos\)</span> el resultado de todos los elementos en el rango <span class="math inline">\([pos - LSO(pos) + 1, pos]\)</span>, donde <span class="math inline">\(LSO(pos)\)</span> es el <em>Least Significant One</em> de <span class="math inline">\(pos\)</span>, el cual es la máxima potencia de <span class="math inline">\(2\)</span> tal que <span class="math inline">\(pos\)</span> es divisible por ella (esta terminología ya la habíamos usado en Bitmask, por lo que no profundizaremos al respecto acá).</p>
+<p>Ahora, asumiendo que mantenemos dicha forma de almacenar los datos, es sencillo notar que para obtener el resultado de todos los elementos del rango <span class="math inline">\([1, pos]\)</span> basta con usar la siguiente iteración:</p>
+<pre><code>node getPrefix(int pos){
+    if(pos == 0) return Neutro; // Elemento neutro porque no hay elementos en [1, 0]
+    return f(getPrefix(pos - LSO(pos)), ft[pos]); // Quitamos el LSO, obtenemos su respuesta y operamos con ft[pos]
+}</code></pre>
+<p><strong>Teorema:</strong> El algoritmo <code>getPrefix(pos)</code> obtiene adecuadamente la respuesta de los elementos en el rango <span class="math inline">\([1, pos]\)</span> para todo <span class="math inline">\(pos = 0, 1, \ldots, n\)</span>, siendo la respuesta para <span class="math inline">\(pos = 0\)</span> el elemento neutro de la función <span class="math inline">\(f\)</span>.</p>
+<p><strong>Prueba:</strong></p>
+<p>Notemos que el caso <span class="math inline">\(pos = 0\)</span> es trivial por la recursión <code>getPrefix</code>.</p>
+<p>Para <span class="math inline">\(pos &gt; 0\)</span> probaremos por inducción sobre la cantidad de bits prendidos de <span class="math inline">\(pos\)</span> que la respuesta es calculada correctamente:</p>
+<ol style="list-style-type: decimal">
+<li><p>Si <span class="math inline">\(pos\)</span> tiene un solo bit prendido, es una potencia de 2, por lo que devolveremos <span class="math inline">\(f(getPrefix(0), ft[pos]) = f(Neutro,ft[pos]) = ft[pos]\)</span>, que es la respuesta parcial de los elementos en el rango <span class="math inline">\([1, pos]\)</span> por la naturaleza del arreglo <span class="math inline">\(ft\)</span>.</p></li>
+<li><p>Asumimos que para un <span class="math inline">\(pos \leq n\)</span> con <span class="math inline">\(k\)</span> bits prendidos la respuesta es correctamente calculada.</p></li>
+<li><p>Sea <span class="math inline">\(pos \leq n\)</span> con <span class="math inline">\((k + 1)\)</span> bits prendidos, entonces la recursión devolverá <span class="math inline">\(f(getPrefix(pos - LSO(pos)), ft[pos])\)</span>, donde <span class="math inline">\(ft[pos]\)</span> tiene la respuesta parcial para el rango <span class="math inline">\([pos - LSO(pos) + 1, pos]\)</span> y <span class="math inline">\(pos - LSO(pos)\)</span> tiene solo <span class="math inline">\(k\)</span> bits prendidos. Por la hipótesis inductiva (2) tendremos que <span class="math inline">\(getPrefix(pos - LSO(pos))\)</span> devuelve la respuesta correcta para el rango <span class="math inline">\([1, pos - LSO(pos)]\)</span>, así que <span class="math inline">\(f(getPrefix(pos - LSO(pos)), ft[pos])\)</span> obtiene la unión de las respuestas parciales de los rangos <span class="math inline">\([1, pos - LSO(pos)]\)</span> y <span class="math inline">\([pos - LSO(pos) + 1, pos]\)</span>, dando como resultado al rango <span class="math inline">\([1, pos]\)</span>.</p></li>
+</ol>
+<p>Ya que la recursión da la respuesta correcta, podemos plantear una versión iterativa:</p>
+<pre><code>node getPrefix(int pos){
+    node res = Neutro;
+    while(pos &gt; 0){
+        res = f(ft[pos], res); // Notemos que el orden está invertido respecto a la recursión
+        pos -= LSO(pos); // Es equivalente usar pos &amp;= pos-1
+    }
+    return res;
+}</code></pre>
+<p>Esta función iterativa da la misma respuesta que la recursiva gracias al orden de la función <span class="math inline">\(f\)</span> al actualizar <span class="math inline">\(res\)</span>: Tendremos la invariante de que <span class="math inline">\(res\)</span> almacenará la respuesta de un sufijo de <span class="math inline">\([1,pos]\)</span> y al final terminará con todo el rango.</p>
+</div>
+<div id="cómo-modificar-el-bit" class="section level1">
+<h1>¿Cómo modificar el BIT?</h1>
+<p><strong>Función sobreescribible (no es una definición conocida, solo es un nombre temporal que usaremos acá):</strong> Función en la que cambiar de un valor <span class="math inline">\(x\)</span> a <span class="math inline">\(y\)</span> se puede realizar operando <span class="math inline">\(x\)</span> con algún valor <span class="math inline">\(z\)</span> de manera que <span class="math inline">\(f(x,z) = y\)</span> y además se debe cumplir que <span class="math inline">\(f(a, y, c)=f(a, x, c, z)\)</span>.</p>
+<p>Para entender bien a qué nos referimos con función <em>sobreescribible</em>, tomaremos como referencia a la función suma, la cual es <em>sobreescribible</em> e invertible.</p>
+<ul>
+<li>El cambiar el valor de la posición <span class="math inline">\(pos\)</span> de <span class="math inline">\(a_{pos}\)</span> a <span class="math inline">\(a_{pos} + x\)</span> implicar sumar <span class="math inline">\(x\)</span> a todas las posiciones que contengan <span class="math inline">\(pos\)</span> en su rango. Esta función es <em>sobreescribible</em>. Además, la consulta en rango será <span class="math inline">\(getPrefix(r)-getPrefix(l-1)\)</span>.</li>
+</ul>
+<p>Entonces, si <span class="math inline">\(f\)</span> es sobreescribible nos bastará definir el valor de <span class="math inline">\(z\)</span> para modificar todas las respuestas parciales que contengan la posición a modificar. La pregunta ahora es ¿Cómo iterar sobre dichas posiciones de manera eficiente? Propondremos el siguiente algoritmo:</p>
+<pre><code>void update(int pos, node val){
+    if(pos &gt; n) return;
+    ft[pos] = f(ft[pos], val);
+    update(pos + LSO(pos), val);
+}</code></pre>
+<p>Ahora deberemos probar la correctitud del algoritmo, verificaremos que dado un <span class="math inline">\(1 \leq pos \leq n\)</span> inicial, la secuencia generada por:</p>
+<p><span class="math display">\[ a_{0} = pos \]</span></p>
+<p><span class="math display">\[ a_{i} = a_{i - 1} + LSO(a_{i - 1}), \forall i = 1, \ldots \]</span></p>
+<p><strong>Teorema:</strong> Sea <span class="math inline">\(a\)</span> la secuencia definida anteriormente con <span class="math inline">\(a_{0} = pos\)</span>, entonces para todo <span class="math inline">\(i = 0, 1, \ldots\)</span> se da que <span class="math inline">\(a_{i} - LSO(a_{i}) + 1 \leq pos \leq a_{i}\)</span>. Además no existe ningún elemento fuera de la secuencia que cumpla con la propiedad anterior.</p>
+<p><strong>Prueba (por inducción):</strong></p>
+<p>Primero probaremos que todos los elementos de la secuencia <span class="math inline">\(a\)</span> cumplen con la propiedad y luego probaremos que no existe ningún elemento <span class="math inline">\(x\)</span> fuera de la secuencia <span class="math inline">\(a\)</span> que cumpla con la misma.</p>
+<ol style="list-style-type: decimal">
+<li><p>Es evidente que <span class="math inline">\(pos - LSO(pos) + 1 \leq pos\)</span> ya que <span class="math inline">\(pos\)</span> es positivo, por lo que <span class="math inline">\(LSO(pos) \geq 1\)</span>. Además trivialmente se da que <span class="math inline">\(pos \leq pos\)</span>.</p></li>
+<li><p>Asumamos que el elemento de posición <span class="math inline">\(i\)</span> cumple con que <span class="math inline">\(a_{i} - LSO(a_{i}) + 1 \leq pos \leq a_{i}\)</span>.</p></li>
+<li><p>El elemento <span class="math inline">\(a_{i + 1}\)</span> es igual a <span class="math inline">\(a_{i} + LSO(a_{i})\)</span>, es sencillo notar que como <span class="math inline">\(a_{i}\)</span> cumple con la propiedad, se da que <span class="math inline">\(1 \leq pos \leq a_{i}\)</span>, así que <span class="math inline">\(LSO(a_{i}) \geq \rightarrow pos \leq a_{i} + LSO(a_{i}) = a_{i + 1}\)</span>.</p></li>
+</ol>
+<p>Por otro lado, debemos hallar una relación entre <span class="math inline">\(LSO(a_{i})\)</span> y <span class="math inline">\(LSO(a_{i} + LSO(a_{i}))\)</span>. Ya que <span class="math inline">\(LSO(a_{i})\)</span> es la máxima potencia de 2 que divide a <span class="math inline">\(a_{i}\)</span> podemos expresar:</p>
+<p><span class="math display">\[ a_{i} = LSO(a_{i})\cdot(2k + 1), \text{ para algun }k \in \mathbb{N} \]</span></p>
+<p>Lo anterior nos permite notar que:</p>
+<p><span class="math display">\[ a_{i} + LSO(a_{i}) = LSO(a_{i})\cdot(2k + 1) + LSO(a_{i}) = LSO(a_{i})(2k + 2) \]</span></p>
+<p>Podemos factorizar un <span class="math inline">\(2\)</span> del <span class="math inline">\(2k + 2\)</span>:</p>
+<p><span class="math display">\[ a_{i} + LSO(a_{i}) = 2\cdot LSO(a_{i})\cdot (k + 1) \]</span></p>
+<p>Si tomamos <span class="math inline">\(LSO\)</span> de la expresión anterior:</p>
+<p><span class="math display">\[ LSO(a_{i} + LSO(a_{i})) = LSO(2 \cdot LSO(a_{i}) \cdot (k + 1)) \]</span></p>
+<p>Ya que no sabemos la paridad de <span class="math inline">\(k + 1\)</span>, no podemos concluir nada al respecto, pero sí sabemos que <span class="math inline">\(2\cdot LSO(a_{i})\)</span> es una potencia de 2 y que <span class="math inline">\(k + 1\)</span> es positivo, así que:</p>
+<p><span class="math display">\[ LSO(a_{i} + LSO(a_{i})) \geq 2 \cdot LSO(a_{i}) \]</span></p>
+<p>Podemos manipular la inecuación a nuestra conveniencia:</p>
+<p><span class="math display">\[ 2\cdot LSO(a_{i}) \leq LSO(a_{i} + LSO(a_{i})) \]</span></p>
+<p><span class="math display">\[ LSO(a_{i}) - LSO(a_{i} + LSO(a_{i})) \leq -LSO(a_{i}) \]</span></p>
+<p>Sumando <span class="math inline">\(a_{i} + 1\)</span> a ambos lados:</p>
+<p><span class="math display">\[ a_{i} + LSO(a_{i}) - LSO(a_{i} + LSO(a_{i})) + 1 \leq a_{i} - LSO(a_{i}) + 1 \]</span></p>
+<p>Como <span class="math inline">\(a_{i + 1} = a_{i} + LSO(a_{i})\)</span>, podemos reemplazar:</p>
+<p><span class="math display">\[ a_{i + 1} - LSO(a_{i + 1}) + 1 \leq a_{i} - LSO(a_{i}) + 1 \]</span></p>
+<p>Por la hipótesis inductiva, tenemos que <span class="math inline">\(a_{i} - LSO(a_{i}) + 1\)</span>:</p>
+<p><span class="math display">\[ a_{i + 1} - LSO(a_{i + 1}) + 1 \leq a_{i} - LSO(a_{i}) + 1 \leq pos \]</span></p>
+<p>Por lo tanto, <span class="math inline">\(a_{i + 1}\)</span> cumple la propiedad propuesta.</p>
+<p><strong>Afirmación:</strong> Sea a la secuencia definida anteriormente con <span class="math inline">\(a_{0} = pos\)</span>, entonces para cualquier posición <span class="math inline">\(i=0,1,\ldots\)</span> se da que no existe ningún valor y tal que <span class="math inline">\(a_{i} &lt; y &lt; a_{i} + LSO(a_{i})\)</span> que sea válido.</p>
+<p><strong>Prueba:</strong></p>
+<p>Aislamos el caso en el que <span class="math inline">\(LSO(a_{i}) = 1\)</span> como trivialmente verdadero, ya que no existen <span class="math inline">\(y\)</span> enteros en el rango <span class="math inline">\((a_{i}, a_{i} + 1)\)</span>.</p>
+<p>Consideraremos <span class="math inline">\(LSO(a_{i}) &gt; 1\)</span>, entonces existe al menos un elemento en el rango <span class="math inline">\([a_{i} + 1, a_{i} + LSO(a_{i}) - 1]\)</span>. Supongamos un elemento <span class="math inline">\(y = a_{i} + x\)</span> con <span class="math inline">\(0 &lt; x &lt; LSO(a_{i})\)</span>.</p>
+<p>Haremos algunas observaciones:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(LSO(a_{i} + x) = LSO(x)\)</span>, ya que como <span class="math inline">\(0 &lt; x &lt; LSO(a_{i})\)</span>, <span class="math inline">\(x\)</span> no será divisible por <span class="math inline">\(LSO(a_{i})\)</span> ni por alguna potencia de 2 que sea mayor, así que el <span class="math inline">\(LSO(x)\)</span> dividirá a <span class="math inline">\(x\)</span> y como es menor que <span class="math inline">\(LSO(a_{i})\)</span>, dividirá a <span class="math inline">\(a_{i}\)</span> también.</p></li>
+<li><p><span class="math inline">\(pos &lt; a_{i} + 1\)</span>, pues <span class="math inline">\(pos \leq a_{i} &lt; a_{i} + 1\)</span>.</p></li>
+<li><p><span class="math inline">\(x \geq LSO(x)\)</span> para todo <span class="math inline">\(x\)</span> positivo, por la definición de <span class="math inline">\(LSO(x)\)</span>.</p></li>
+</ol>
+<p>Entonces, consideraremos dos inecuaciones:</p>
+<p><span class="math display">\[ x \geq LSO(x) \rightarrow x - LSO(x) \geq 0 \]</span></p>
+<p><span class="math display">\[ a_{i} + 1 &gt; pos \]</span></p>
+<p>Si sumamos ambas inecuaciones tendremos:</p>
+<p><span class="math display">\[ a_{i} + x - LSO(x) + 1 &gt; pos \]</span></p>
+<p>Pero al usar la primera observación, tenemos que <span class="math inline">\(LSO(x) = LSO(a_{i} + x)\)</span>:</p>
+<p><span class="math display">\[ a_{i} + x - LSO(a_{i} + x) + 1 &gt; pos \]</span></p>
+<p>Pero nosotros dijimos que <span class="math inline">\(y = a_{i} + x\)</span>, así que:</p>
+<p><span class="math display">\[ y - LSO(y) + 1 &gt; pos \]</span></p>
+<p>Lo que significa que todos los valores <span class="math inline">\(y = a_{i} + x\)</span> con <span class="math inline">\(0 &lt; x &lt; LSO(a_{i})\)</span> tienen límite inferior mayor que <span class="math inline">\(pos\)</span>, así que no lo contienen.</p>
+<p>Uniendo el teorema y la afirmación tenemos que nuestra secuencia es exactamente igual al conjunto de todos los elementos válidos para <span class="math inline">\(pos\)</span>.</p>
+<p>Ahora que tenemos que nuestra recursión actualiza adecuadamente, podemos plantear su versión iterativa:</p>
+<pre><code>void update(int pos, node val){
+    while(pos &lt;= n){
+        ft[pos] = f(ft[pos], val);
+        pos += LSO(pos);
+    }
+}</code></pre>
+<p><strong>Nota:</strong> Otra función sobreescribible es cuando debemos modificar un elemento con el mínimo o máximo entre el valor actual y el nuevo valor. Al ser modificaciones monótonas, se pueden sobreescribir en las respuestas parciales, de ahí el nombre de este tipo de funciones.</p>
+<div id="problema-para-implementar" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://www.spoj.com/problems/INVCNT/">Inversion Count</a></li>
+</ul>
+</div>
+</div>
+<div id="contest-semanal" class="section level1">
+<h1>Contest Semanal</h1>
+<p>Pueden entrar al contest mediante el siguiente <a href="https://vjudge.net/contest/391046">link</a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

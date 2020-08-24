@@ -54,6 +54,8 @@ navbar:
           href: class-23.html
         - text: Sparse Table
           href: class-24.html
+        - text: Binary Indexed Tree
+          href: class-25.html
     - text: "TC Argentina 2020"
       menu:
         - text: Editorial Contest 1 - Inicial
