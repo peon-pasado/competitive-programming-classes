@@ -122,7 +122,7 @@ Notemos que tomaremos el máximo bit prendido, agregaremos la respuesta parcial 
 
 ### Problema para implementar
 
-- [Maximum Trace](https://vjudge.net/problem/Gym-270304M)
+- [Maximum Trace](https://codeforces.com/group/qWRAoRrTOT/contests)
 
 # Ventajas y desventajas
 
