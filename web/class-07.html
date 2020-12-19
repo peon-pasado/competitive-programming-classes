@@ -15,7 +15,6 @@
 <title>Clase 07: Contest 2</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +25,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +79,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -361,6 +370,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -414,8 +426,8 @@ A: Fifty-Fifty
 </div>
 <!-- begin body -->
 <div id="collapseProblemA" class="collapse">
-<div id="a-fifty-fifty" class="section level3 card-body solution-body">
-<h3><a href="https://abc132.contest.atcoder.jp/tasks/abc132_a" target="_blank">A: Fifty-Fifty</a></h3>
+<div class="card-body solution-body">
+<h3 id="a-fifty-fifty"><a href="https://abc132.contest.atcoder.jp/tasks/abc132_a" target="_blank">A: Fifty-Fifty</a></h3>
 <p>Si ordenas las letras del string solo necesitas chequear que las primeras dos letras son iguales, que las últimas dos letras son iguales y que la segunda y tercera letra son distintas. Así, tenemos una solución en <span class="math inline">\(O(1)\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
@@ -464,8 +476,8 @@ B: Gathering Children
 </div>
 <!-- begin body -->
 <div id="collapseProblemB" class="collapse">
-<div id="b-gathering-children" class="section level3 card-body solution-body">
-<h3><a href="https://abc136.contest.atcoder.jp/tasks/abc136_d?lang=en" target="_blank">B: Gathering Children</a></h3>
+<div class="card-body solution-body">
+<h3 id="b-gathering-children"><a href="https://abc136.contest.atcoder.jp/tasks/abc136_d?lang=en" target="_blank">B: Gathering Children</a></h3>
 <p>Primero resuelve el problema si solo hubiera strings de la forma <span class="math inline">\(RRR \dots RLLLL \dots L\)</span>. Es sencillo determinar cuántos elementos quedaran en cada posición si la cantidad de movimientos es muy grande. Ahora, cada string lo podemos poder como la unión de strings de la anterior forma y así podemos saber la respuesta en todo el segmento en <span class="math inline">\(O(|s|)\)</span>. Ver el código para más detalles.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
@@ -531,8 +543,8 @@ C: DivRem Number
 </div>
 <!-- begin body -->
 <div id="collapseProblemC" class="collapse">
-<div id="c-divrem-number" class="section level3 card-body solution-body">
-<h3><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_d?lang=en" target="_blank">C: DivRem Number</a></h3>
+<div class="card-body solution-body">
+<h3 id="c-divrem-number"><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_d?lang=en" target="_blank">C: DivRem Number</a></h3>
 <p><span class="math display">\[\text{Sea }k = \lfloor \frac{N}{m} \rfloor = N \mod m\]</span></p>
 <p>Sabemos que:</p>
 <p><span class="math display">\[N = \lfloor \frac{N}{m} \rfloor \cdot m + N \mod m\]</span></p>
@@ -593,8 +605,8 @@ D: Takahashi Calendar
 </div>
 <!-- begin body -->
 <div id="collapseProblemD" class="collapse">
-<div id="d-takahashi-calendar" class="section level3 card-body solution-body">
-<h3><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_a?lang=en" target="_blank">D: Takahashi Calendar</a></h3>
+<div class="card-body solution-body">
+<h3 id="d-takahashi-calendar"><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_a?lang=en" target="_blank">D: Takahashi Calendar</a></h3>
 <p>Solo busca todas las opciones con fuerza bruta en <span class="math inline">\(O(MD)\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
@@ -649,8 +661,8 @@ E: Kleene Inversion
 </div>
 <!-- begin body -->
 <div id="collapseProblemE" class="collapse">
-<div id="e-kleene-inversion" class="section level3 card-body solution-body">
-<h3><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_b?lang=en" target="_blank">E: Kleene Inversion</a></h3>
+<div class="card-body solution-body">
+<h3 id="e-kleene-inversion"><a href="https://jsc2019-qual.contest.atcoder.jp/tasks/jsc2019_qual_b?lang=en" target="_blank">E: Kleene Inversion</a></h3>
 <p>Puedes hacer fuerza bruta para fijar <span class="math inline">\(B_j\)</span>. Si ya tienes fijo <span class="math inline">\(B_j\)</span> solo necesitas saber cuantos elementos en <span class="math inline">\([0, j)\)</span> son mayores a <span class="math inline">\(B_j\)</span>, llamemos <span class="math inline">\(x\)</span> a este valor. Luego, sea <span class="math inline">\(gt\)</span> la cantidad de elementos mayores a <span class="math inline">\(B_j\)</span> en <span class="math inline">\([0, n)\)</span>. Entonces <span class="math inline">\(B_{n + j}\)</span> aporta a la respuesta <span class="math inline">\(x + gt\)</span>. <span class="math inline">\(B_{2 * n + j}\)</span> aporta a la respuesta <span class="math inline">\(x + 2 * gt\)</span>. Y así seguimos hasta <span class="math inline">\(B_{2 * (k - 1) + j}\)</span>. De este modo, <span class="math inline">\(B_j, B_{n + j},  B_{2 * n + j}, \dots, B_{(k - 1) * n + j}\)</span> aporta a la respuesta: <span class="math inline">\(k \cdot  x + \frac{(k - 1) * k}{2} \cdot gt\)</span>. Esta solución podemos implementarla en <span class="math inline">\(O(N \cdot \max{A_i})\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
@@ -721,8 +733,8 @@ F: GCD on Blackboard
 </div>
 <!-- begin body -->
 <div id="collapseProblemF" class="collapse">
-<div id="f-gcd-on-blackboard" class="section level3 card-body solution-body">
-<h3><a href="https://abc125.contest.atcoder.jp/tasks/abc125_c?lang=en" target="_blank">F: GCD on Blackboard</a></h3>
+<div class="card-body solution-body">
+<h3 id="f-gcd-on-blackboard"><a href="https://abc125.contest.atcoder.jp/tasks/abc125_c?lang=en" target="_blank">F: GCD on Blackboard</a></h3>
 <p>Supongamos que cambiaremos el elemento <span class="math inline">\(A_i\)</span>. Entonces</p>
 <p><span class="math display">\[g = \gcd(\gcd(A_1, A_2, \dots, A_{i - 1}), \gcd(A_{i + 1}, A_{i + 2}, \dots, A_{n}))\]</span></p>
 <p>Sabemos que:</p>
@@ -778,8 +790,8 @@ G: RGB Boxes
 </div>
 <!-- begin body -->
 <div id="collapseProblemG" class="collapse">
-<div id="g-rgb-boxes" class="section level3 card-body solution-body">
-<h3><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_b?lang=en" target="_blank">G: RGB Boxes</a></h3>
+<div class="card-body solution-body">
+<h3 id="g-rgb-boxes"><a href="https://diverta2019.contest.atcoder.jp/tasks/diverta2019_b?lang=en" target="_blank">G: RGB Boxes</a></h3>
 <p>Reconoce el espacio de búsqueda. Obtendrás una equación con 3 variables, itera sobre dos de ellas, obtén la tercera despejando y comprueba si cumple las condiciones. Así tienes una solución en <span class="math inline">\(O(N^2)\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemG" aria-expanded="false" aria-controls="collapseTwo">
@@ -830,7 +842,7 @@ int main () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

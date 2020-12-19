@@ -15,7 +15,6 @@
 <title>Training Camp Argentina 2020 - Editorial Contest 1 Inicial</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -358,6 +367,9 @@ $(document).ready(function () {
     </li>
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
+    </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
     </li>
   </ul>
 </li>
@@ -892,8 +904,8 @@ int main(){
 <h2><a href="https://codeforces.com/group/j1UosVRZar/contest/287327/problem/I">I. Array with Odd Sum</a></h2>
 <p>Para resolver este problema basta con separar algunos casos posibles:</p>
 <ol style="list-style-type: decimal">
-<li><p>Si la suma ya es impar, la respuesta es “YES”.</p></li>
-<li><p>Si la suma es par, necesitamos poder cambiar la paridad de alguno de los elementos, así que la respuesta es “YES” solo si hay al menos 1 elemento par y 1 impar a la vez.</p></li>
+<li><p>Si la suma ya es impar, la respuesta es &quot;YES&quot;.</p></li>
+<li><p>Si la suma es par, necesitamos poder cambiar la paridad de alguno de los elementos, así que la respuesta es &quot;YES&quot; solo si hay al menos 1 elemento par y 1 impar a la vez.</p></li>
 </ol>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample9" aria-expanded="false" aria-controls="collapseTwo">
@@ -1108,7 +1120,7 @@ int main(){
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

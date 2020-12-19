@@ -15,7 +15,6 @@
 <title>Algoritmos de aumento por camino para máximo flujo</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -405,10 +417,10 @@ $(document).ready(function () {
 <p>necesitamo antes una importante definición, un corte será el dual de un flujo en un sentido que se explicará luego.</p>
 <div id="definición-s-t---corte." class="section level4">
 <h4>Definición (s, t) - corte.</h4>
-<p>Un <span class="math inline">\((s, t)\)</span> - corte de un grafo <span class="math inline">\(G = (V, E)\)</span> es una partición de <span class="math inline">\(V\)</span> en conjuntos <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> con <span class="math inline">\(s \in A\)</span> y <span class="math inline">\(t \in B\)</span>. a veces simplemente podemos decir “corte”.</p>
+<p>Un <span class="math inline">\((s, t)\)</span> - corte de un grafo <span class="math inline">\(G = (V, E)\)</span> es una partición de <span class="math inline">\(V\)</span> en conjuntos <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> con <span class="math inline">\(s \in A\)</span> y <span class="math inline">\(t \in B\)</span>. a veces simplemente podemos decir &quot;corte&quot;.</p>
 <p>En la figura 1 podemos ver una manera de pensar un corte de un grafo. Tal que las aristas se separan en 4 categorias: aquellas con ambos vertices finales en A, aquellas con ambos vértices finales en B, aquellos que comienzan en A y finalizan en B, y aquellos que comienzan en B y finalizan en A.</p>
 <center>
-<img src="corte1.PNG" title="fig:" alt="figura 1. Vemos una visual representación de un corte, los nodos se dividen en 2 y las aristas en 4." />
+<img src="corte1.PNG" alt="figura 1. Vemos una visual representación de un corte, los nodos se dividen en 2 y las aristas en 4." />
 </center>
 <p>La capacidad de un (s, t) - corte (A, B) es definido como:</p>
 <p><span class="math display">\[\sum_{e \in \delta^+(A)} u_e\]</span></p>
@@ -441,9 +453,9 @@ $(document).ready(function () {
 <p>Nosotros afirmamos, que para todo flujo <span class="math inline">\(f\)</span> y todo <span class="math inline">\((s, t)\)</span>-corte <span class="math inline">\((A, B)\)</span>.</p>
 <p><span class="math display">\[\text{valor de f } \le \text{capacidad de } (A, B)\]</span> Esta afirmación implica que todo valor de un flujo es a lo más algún valor de un corte; ver figura 2.</p>
 <center>
-<img src="corte2.PNG" title="fig:" alt="Figura 2. Esta imagen ilustra que todo valor de un flujo (x) no puede ser mayor al valor de un cortre (o)" />
+<img src="corte2.PNG" alt="Figura 2. Esta imagen ilustra que todo valor de un flujo (x) no puede ser mayor al valor de un cortre (o)" />
 </center>
-<p>Para ver porque la afirmacion nos dice la deseada implicación, supongamos que (2) cumple, esto corresponde para un “x” y un “o” en la misma posición. Por la afirmación, no “x”s pueden aparecer a la derecha de este punto de encuentro. Nosotros probaremos una resumida prueba algebraica.</p>
+<p>Para ver porque la afirmacion nos dice la deseada implicación, supongamos que (2) cumple, esto corresponde para un &quot;x&quot; y un &quot;o&quot; en la misma posición. Por la afirmación, no &quot;x&quot;s pueden aparecer a la derecha de este punto de encuentro. Nosotros probaremos una resumida prueba algebraica.</p>
 <p>Fijemos <span class="math inline">\(f\)</span> y <span class="math inline">\((A, B)\)</span>. Por definición,</p>
 <p><span class="math display">\[\text{valor de f } = \sum_{e \in \delta^+(s)} f_e = \sum_{e \in \delta^+(s)} f_e - \sum_{e \in \delta^-(s)} f_e  ~\dots (1)\]</span></p>
 <p>La segunda ecuación es puesta por conveniencia, y sigue desde nuestra primera asunción que s no tiene vertices de entrada. Además, tengamos en cuenta que la restricción de conservación nos dice:</p>
@@ -452,7 +464,7 @@ $(document).ready(function () {
 <p><span class="math display">\[\text{valor de f } = \sum_{v \in A} (\sum_{e \in \delta^+(v)} f_e - \sum_{e \in \delta^-(v)} f_e)  ~\dots (3)\]</span></p>
 <p>Lo siguiente que queremos pensar es sobre la expresión en (3) desde un punto de vista centrado en las aristas, en vez de centrado en los nodos. Como contribuye una arista para (3)? La respuesta depende sobre cual de los 4 tipos la arista es. Si ambos de los puntos finales de <span class="math inline">\(e\)</span> están en B, entonces <span class="math inline">\(e\)</span> no aporta a la suma (3). si <span class="math inline">\(e\)</span> tiene ambos puntos en <span class="math inline">\(A\)</span>, entonces contribuye con <span class="math inline">\(f_e\)</span> una vez y con <span class="math inline">\(-f_e\)</span> una vez. Así las aristas en <span class="math inline">\(A\)</span> contribuyen con <span class="math inline">\(0\)</span>. Similarmente las aristas saliendo de <span class="math inline">\(A\)</span> aportan con <span class="math inline">\(f_e\)</span> y las aristas entrando a <span class="math inline">\(A\)</span> aportan con <span class="math inline">\(-f_e\)</span>. En resumen:</p>
 <p><span class="math display">\[\text{valor de f} = \sum_{e \in \delta^+(A)} f_e - \sum_{e \in \delta^-(A)} f_e\]</span></p>
-<p>Esta ecuación nos dice que el flujo neto (flujo a favor menor flujo en contra) a traves de todo corte es exactamente el mismo, llamado el valor del flujo f. Finalmente, usando la restricción de capacidad y el hecho que todo valor de flujo es no-negativo tenemos:</p>
+<p>Esta ecuación nos dice que el flujo neto (flujo a favor menor flujo en contra) a traves de todo corte es exactamente el mismo, llamado el valor del flujo f. Finalmente, usando la restricción de capacidad y el hecho que todo valor de flujo es no-negativo tenemos:</p>
 <p><span class="math display">\[\text{valor de f} = \sum_{e \in \delta^+(A)} f_e (\le u_e) - \sum_{e \in \delta^-(A)} f_e (\ge 0)\]</span> <span class="math display">\[\le \sum_{e \in \delta^+(A)} u_e ~\dots (4)\]</span> <span class="math display">\[\text{capacidad de } (A, b) ~\dots(5)\]</span></p>
 <p>Lo cual completa la prueba de la primera implicación.</p>
 </div>
@@ -466,7 +478,7 @@ $(document).ready(function () {
 <p><span class="math display">\[A = \{v \in V : \text{ existe un camino s} \sim \text{v en } G_f\}\]</span></p>
 <p>Conceptualmente, si nosotros ejecutamos nuestra sub-rutina favorita (ejm. BFS o DFS) desde s mientra se detenga; A es el conjunto de vertices que logras alcanzar. (Esto solo lo ejecutamos en nuestra mente, por el proposito de la prueva) Notar que <span class="math inline">\((A, V-A)\)</span> es un <span class="math inline">\((s, t)\)</span>-corte. Ciertamente <span class="math inline">\(s \in A\)</span>, comor <span class="math inline">\(s\)</span> puede alcanzarse a si mismo en <span class="math inline">\(G_f\)</span>. Por asunción, <span class="math inline">\(G_f\)</span> no tiene un camino <span class="math inline">\(s-t\)</span>, tal que <span class="math inline">\(t \notin A\)</span>. Así el corte debería lucir como en la figura 3, que no tiene aristas (con capacidad residual possitiva) saliendo de A. La razón es que si existiera dichas aristas, entonces nuestra busqueda en el grafo no puedo haber terminado y A debería ser un conjunto de mayor tamaño.</p>
 <center>
-<img src="corte3.PNG" title="fig:" alt="Figura 3. Note que las aristas solo van desde B hacia A." />
+<img src="corte3.PNG" alt="Figura 3. Note que las aristas solo van desde B hacia A." />
 </center>
 <p>Si traducimos la figura 3 en la imagen, cual concierne la red residual <span class="math inline">\(G_f\)</span>, regresando al flujo f en la red original <span class="math inline">\(G\)</span>.</p>
 <ol style="list-style-type: decimal">
@@ -586,10 +598,10 @@ struct EdmondKarp {
 <li><p><span class="math inline">\(d(f)\)</span> incrementa al menos uno por m iteraciones.</p></li>
 </ol>
 <p>Como <span class="math inline">\(d(f) \in \{0, 1, 2, \dots, n-2, n-1, +\infty\}\)</span>, una vez que <span class="math inline">\(d(f) \ge n\)</span> nosotros conocemos que <span class="math inline">\(d(f) = +\infty\)</span> y s y t se desconectan en <span class="math inline">\(G_f\)</span>. Así el lema 1 implica que el algoritmo de Edmonds-Karp termina despues de <span class="math inline">\(m n\)</span> iteraciones. Como en cada iteración ejecutamos un BFS, nuestro tiempo de ejecución es <span class="math inline">\(O(m^2n)\)</span> como nos dice el teorema 2.</p>
-<p>Para el analisis, imaginamos que ejecutamos un BFS en <span class="math inline">\(G_f\)</span> iniciando desde la fuente s. Recordamos que BFS discubre los vertices en “niveles”, con <span class="math inline">\(s\)</span> en el nivel 0, y el nivel <span class="math inline">\(i+1\)</span> consiste de los vertices que no estan en los anteriores niveles y que son alcanzables por una arista desde el nivel i. Si denotamos las arista de <span class="math inline">\(G_f\)</span> que van hacia un nivel mayor como <em>forward</em>, las que van al mismo nivel <em>sideways</em> y <em>backward</em> como las aristas que van hacia atras. Por la definición de BFS, no pueden existir aristas <em>backward</em> o <em>sideways</em> que mejoren un camino corto.</p>
+<p>Para el analisis, imaginamos que ejecutamos un BFS en <span class="math inline">\(G_f\)</span> iniciando desde la fuente s. Recordamos que BFS discubre los vertices en &quot;niveles&quot;, con <span class="math inline">\(s\)</span> en el nivel 0, y el nivel <span class="math inline">\(i+1\)</span> consiste de los vertices que no estan en los anteriores niveles y que son alcanzables por una arista desde el nivel i. Si denotamos las arista de <span class="math inline">\(G_f\)</span> que van hacia un nivel mayor como <em>forward</em>, las que van al mismo nivel <em>sideways</em> y <em>backward</em> como las aristas que van hacia atras. Por la definición de BFS, no pueden existir aristas <em>backward</em> o <em>sideways</em> que mejoren un camino corto.</p>
 <p>Definimos <span class="math inline">\(L_f\)</span> (<em>layered subgraph</em>), como el subgrafo de <span class="math inline">\(G_f\)</span> consistiendo solo de las aristas <em>forward</em> (figura 4). (vertices en los niveles despues del que contiene a t son irrelevantes y pueden ser descartados).</p>
 <center>
-<img src="corte4.PNG" title="fig:" alt="figura 4. Layered subgraph L_f" />
+<img src="corte4.PNG" alt="figura 4. Layered subgraph L_f" />
 </center>
 <p>Porque la molestia de definir <span class="math inline">\(L_f\)</span>? Porque esta es una forma sucinta de codificar todos los caminos mínimos <span class="math inline">\(s-t\)</span> de <span class="math inline">\(G_f\)</span> - los caminos por el cual el algoritmo de Edmonds-Karp puede aumentar. Formalmente, todo camino <span class="math inline">\(s-t\)</span> en <span class="math inline">\(L_f\)</span> comprende de solo aristas <em>forward</em> del BFS y por tanto tiene exactamente <span class="math inline">\(d(f)\)</span> saltos de niveles, el mínimo posible. En contraposición, cualquier camino que este en <span class="math inline">\(G_f\)</span> pero no en <span class="math inline">\(L_f\)</span> deberia contener al menos una arista <span class="math inline">\(sideways\)</span> o <span class="math inline">\(backward\)</span> y por tanto debe tener al menos una distancia de <span class="math inline">\(d(f) + 1\)</span>.</p>
 </div>
@@ -702,7 +714,7 @@ struct Dinic {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

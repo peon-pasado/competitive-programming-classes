@@ -15,7 +15,6 @@
 <title>Clase 11: Contest UNI-UTEC I</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +25,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +79,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -361,6 +370,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -416,8 +428,8 @@ A: A + B = C
 </div>
 <!-- begin body -->
 <div id="collapseProblemA" class="collapse">
-<div id="a-a-b-c" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/A" target="_blank">A: A + B = C</a></h3>
+<div class="card-body solution-body">
+<h3 id="a-a-b-c"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/A" target="_blank">A: A + B = C</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -454,8 +466,8 @@ B: Quick Game
 </div>
 <!-- begin body -->
 <div id="collapseProblemB" class="collapse">
-<div id="b-quick-game" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/B" target="_blank">B: Quick Game</a></h3>
+<div class="card-body solution-body">
+<h3 id="b-quick-game"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/B" target="_blank">B: Quick Game</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -602,8 +614,8 @@ C: Integer Circumradius
 </div>
 <!-- begin body -->
 <div id="collapseProblemC" class="collapse">
-<div id="c-integer-circumradius" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/C" target="_blank">C: Integer Circumradius</a></h3>
+<div class="card-body solution-body">
+<h3 id="c-integer-circumradius"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/C" target="_blank">C: Integer Circumradius</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -664,8 +676,8 @@ D: The answer to the life
 </div>
 <!-- begin body -->
 <div id="collapseProblemD" class="collapse">
-<div id="d-the-answer-to-the-life" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/D" target="_blank">D: The answer to the life</a></h3>
+<div class="card-body solution-body">
+<h3 id="d-the-answer-to-the-life"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/D" target="_blank">D: The answer to the life</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -728,8 +740,8 @@ E: Carmichael Attack
 </div>
 <!-- begin body -->
 <div id="collapseProblemE" class="collapse">
-<div id="e-carmichael-attack" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/E" target="_blank">E: Carmichael Attack</a></h3>
+<div class="card-body solution-body">
+<h3 id="e-carmichael-attack"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/E" target="_blank">E: Carmichael Attack</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -908,8 +920,8 @@ F. Divisible Subarray
 </div>
 <!-- begin body -->
 <div id="collapseProblemF" class="collapse">
-<div id="f.-divisible-subarray" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/F" target="_blank">F. Divisible Subarray</a></h3>
+<div class="card-body solution-body">
+<h3 id="f.-divisible-subarray"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/F" target="_blank">F. Divisible Subarray</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemF" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -954,8 +966,8 @@ G: 3-sum
 </div>
 <!-- begin body -->
 <div id="collapseProblemG" class="collapse">
-<div id="g-3-sum" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/G" target="_blank">G: 3-sum</a></h3>
+<div class="card-body solution-body">
+<h3 id="g-3-sum"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/G" target="_blank">G: 3-sum</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemG" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -1017,8 +1029,8 @@ H. Rare Factorial
 </div>
 <!-- begin body -->
 <div id="collapseProblemH" class="collapse">
-<div id="h.-rare-factorial" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/H" target="_blank">H. Rare Factorial</a></h3>
+<div class="card-body solution-body">
+<h3 id="h.-rare-factorial"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/H" target="_blank">H. Rare Factorial</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemH" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -1173,8 +1185,8 @@ I. Hyper Sum
 </div>
 <!-- begin body -->
 <div id="collapseProblemI" class="collapse">
-<div id="i.-hyper-sum" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/I" target="_blank">I. Hyper Sum</a></h3>
+<div class="card-body solution-body">
+<h3 id="i.-hyper-sum"><a href="https://codeforces.com/group/02X2svGOwt/contest/268759/problem/I" target="_blank">I. Hyper Sum</a></h3>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemI" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title --> <i class="fas fa-caret-right"></i>
@@ -1229,7 +1241,7 @@ int main() {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

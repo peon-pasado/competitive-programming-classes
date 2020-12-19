@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 26: Introducción a Strings</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
+    <li>
+      <a href="class-08.html">Recursión</a>
+    </li>
+    <li>
+      <a href="class-09.html">Backtracking I</a>
+    </li>
+    <li>
+      <a href="class-10.html">Recapitulacion I</a>
+    </li>
+    <li>
+      <a href="class-11.html">Contest UNI-UTEC I</a>
+    </li>
+    <li>
+      <a href="class-12.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-13.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-14.html">Bitmask</a>
+    </li>
+    <li>
+      <a href="class-15.html">Introducción a Greedy</a>
+    </li>
+    <li>
+      <a href="class-16.html">7 Greedy Problems</a>
+    </li>
+    <li>
+      <a href="class-17.html">Meet in the middle</a>
+    </li>
+    <li>
+      <a href="class-18.html">Dynamic Programming</a>
+    </li>
+    <li>
+      <a href="class-19.html">Grafos</a>
+    </li>
+    <li>
+      <a href="class-20.html">Divide and Conquer</a>
+    </li>
+    <li>
+      <a href="class-21.html">DP Classics</a>
+    </li>
+    <li>
+      <a href="class-22.html">Max Flow Introduction</a>
+    </li>
+    <li>
+      <a href="class-23.html">Max Flow Algorithm</a>
+    </li>
+    <li>
+      <a href="class-24.html">Sparse Table</a>
+    </li>
+    <li>
+      <a href="class-25.html">Binary Indexed Tree</a>
+    </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    TC Argentina 2020
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TCAC1-EditorialI.html">Editorial Contest 1 - Inicial</a>
+    </li>
+    <li>
+      <a href="TCAC1-EditorialA.html">Editorial Contest 1 - Avanzado</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 26: Introducción a Strings</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">19-12-2020</h4>
+
+</div>
+
+
+<div id="strings" class="section level1">
+<h1>Strings</h1>
+<p>Hasta ahora hemos usado los objetos <code>std::string</code> sin problemas porque la mayoria de veces que los usábamos sólo necesitábamos realizar comparaciones unas cuantas veces.</p>
+<p>Recordemos que la comparación usual de dos strings de tamaño <span class="math inline">\(n\)</span> es <span class="math inline">\(O(n)\)</span>, así que si necesitamos realizar esta acción múltiples veces no podremos tener un algoritmo lo suficientemente eficiente por los métodos tradicionales.</p>
+<p>Si bien es cierto que la comparación de dos strings es una operación elemental cuando trabajamos con este tipo de dato, el problema más común que se tiene es el verificar si un string <span class="math inline">\(p\)</span> es un substring de un string <span class="math inline">\(t\)</span>.</p>
+</div>
+<div id="algoritmo-z" class="section level1">
+<h1>Algoritmo Z</h1>
+<p>Dado un string <span class="math inline">\(s\)</span> de longitud <span class="math inline">\(n\)</span>, definiremos la función <span class="math inline">\(z(i)\)</span> para cada posición <span class="math inline">\(i\)</span> como:</p>
+<p><span class="math display">\[ z(i) = \max\{k : s[0, k - 1] = s[i, i + k - 1]\} \]</span></p>
+<p>Y consideraremos de manera trivial que <span class="math inline">\(z(0) = 0\)</span> (ya que esta posición no tiene un valor bien definido).</p>
+<div id="algoritmo-naive" class="section level2">
+<h2>Algoritmo naive</h2>
+<p>Una idea muy simple sería calcular los <span class="math inline">\(z(i)\)</span> de manera directa, esperando que la complejidad sea lo suficientemente buena. El algoritmo es:</p>
+<pre class="c++"><code>vector&lt;int&gt; z(n, 0);
+for(int i = 1; i &lt; n; i++){
+    while(i + z[i] &lt; n and s[i + z[i]] == s[z[i]]) z[i] += 1;
+}</code></pre>
+<p>Sin embargo, la complejidad de este algoritmo para una cadena de la forma <span class="math inline">\(aaaaa\ldots\)</span> es cuadrática, por lo que deberemos buscar alguna alternativa para optimizarlo.</p>
+</div>
+<div id="mejora-a-complejidad-lineal" class="section level2">
+<h2>Mejora a complejidad lineal</h2>
+<p>Consideremos que deseamos procesar el valor de <span class="math inline">\(z(i)\)</span> dado que ya procesamos los <span class="math inline">\(z(j)\)</span> para todos los <span class="math inline">\(j &lt; i\)</span>. Tomemos el <span class="math inline">\(j &lt; i\)</span> tal que <span class="math inline">\(j + z(j) - 1\)</span> sea el máximo de todos los <span class="math inline">\(j\)</span> posibles. Denotaremos los valores de <span class="math inline">\(j\)</span> y <span class="math inline">\(j + z(j) - 1\)</span> deseados por <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span> (El <span class="math inline">\(r\)</span> debe ser el máximo posible).</p>
+<p>Esto nos permitirá aprovechar la información anterior de manera eficiente considerando algunos casos que se pueden dar:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(r &lt; i\)</span>: En este caso no hay nada que hacer, así que ejecutaremos el algoritmo de manera trivial.</p></li>
+<li><p><span class="math inline">\(i \leq r\)</span>: En este caso tenemos que <span class="math inline">\(i\)</span> está dentro del rango del intervalo <span class="math inline">\([l, r]\)</span> (ya que <span class="math inline">\(l\)</span> es menor que <span class="math inline">\(i\)</span> por definición), por lo tanto deberemos considerar lo siguiente:</p></li>
+</ol>
+<ol style="list-style-type: decimal">
+<li><p>El rango <span class="math inline">\([0, r - l]\)</span> coincide con el <span class="math inline">\([l, r]\)</span>, por lo que <span class="math inline">\([i - l, r - l]\)</span> coincide con <span class="math inline">\([i, r]\)</span> pero <span class="math inline">\(s[r - l + 1] \not = s[r + 1]\)</span>.</p></li>
+<li><p>Debido a que los rangos <span class="math inline">\([i - l, r - l]\)</span> y <span class="math inline">\([i, r]\)</span> coinciden, podemos inicializar el valor de <span class="math inline">\(z(i)\)</span> con el mínimo entre <span class="math inline">\(z[i - l]\)</span> y <span class="math inline">\(r - i + 1\)</span>, siendo el primero una aproximación gracias a la coincidencia y el segundo debido a que no sabemos absolutamente nada de <span class="math inline">\(r + 1\)</span> o posiciones siguientes, así que no podemos asegurar que dichos caracteres coincidan.</p></li>
+</ol>
+<p>Esto nos permite cambiar el algoritmo naive:</p>
+<pre class="c++"><code>int l = 0, r = 0;
+vector&lt;int&gt; z(n, 0);
+for(int i = 1; i &lt; n; i++){
+    z[i] = min(r - i + 1, z[i - l])
+    if(z[i] &lt; 0) z[i] = 0; // Cuando r &lt; i puede volverse negativo
+    while(i + z[i] &lt; n and s[i + z[i]] == s[z[i]]) z[i] += 1;
+    if(i + z[i] - 1 &gt; r){
+        l = i;
+        r = i + z[i] - 1;
+    }
+}</code></pre>
+<p>Esta modificación parece haber mejorado la complejidad, ya que nos permite obviar el procesamiento de posiciones que definitivamente coinciden, pero ¿Cuánto ha mejorado?</p>
+</div>
+<div id="análisis-de-la-complejidad" class="section level2">
+<h2>Análisis de la complejidad</h2>
+<p>Claramente todas las operaciones del bucle excepto el <code>while</code> toman <span class="math inline">\(O(1)\)</span>, así que la complejidad del algoritmo depende principalmente de cuántas iteraciones realiza este.</p>
+<p>Notemos que la cantidad de iteraciones del <code>while</code> depende del valor inicial de <span class="math inline">\(z(i)\)</span> que hemos aproximado inicialmente. Tendremos que analizar algunos casos al respecto:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(i &gt; r\)</span>: En este caso, el <code>while</code> ejecuta tantas iteraciones como coincidencias hayan, pero el ejecutar una iteración obligará a que el nuevo intervalo <span class="math inline">\([l&#39;, r&#39;]\)</span> sea <span class="math inline">\([i, i + z(i) - 1]\)</span>, ya que <span class="math inline">\(z(i) - 1 + i \geq i\)</span>. Además, cada iteración aumenta en 1 el valor del nuevo <span class="math inline">\(r\)</span>.</p></li>
+<li><p><span class="math inline">\(i \leq r\)</span>: En este caso tendremos un <span class="math inline">\(z(i)\)</span> inicializado a un valor positivo. Ciertamente necesitamos saber cuántas iteraciones realizará el <code>while</code>, pero esto depende de cuántas coincidencias hayan inicialmente:</p></li>
+</ol>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(z(i) &lt; r - i + 1\)</span>: En este caso no se realizarán bucles, ya que los caracteres <span class="math inline">\(s[z(i - l) + 1]\)</span> y <span class="math inline">\(s[i - l + z(i - l) + 1] = s[i + z(i - l) + 1]\)</span> no coinciden.</p></li>
+<li><p><span class="math inline">\(z(i) == r - i + 1\)</span>: En este caso, tenemos que el intervalo de <span class="math inline">\(i\)</span> está definido inicialmente como <span class="math inline">\([i, r]\)</span>, así que cada iteración que realice el <code>while</code> aumentará el valor del nuevo <span class="math inline">\(r\)</span> en 1.</p></li>
+</ol>
+<p>Obviamente descartamos el caso en el que <span class="math inline">\(z(i) &gt; r - i + 1\)</span> por la aproximación inicial que usamos.</p>
+<p>Notemos que <span class="math inline">\(r &lt; n\)</span> en todo momento, así que solo puede aumentar <span class="math inline">\(n - 1\)</span> veces a lo mucho. Lo anterior nos permite concluir que la cantidad de iteraciones del <code>while</code> será <span class="math inline">\(O(n)\)</span> en total, por lo que el algoritmo tiene complejidad final de <span class="math inline">\(O(n)\)</span>.</p>
+</div>
+<div id="aplicaciones" class="section level2">
+<h2>Aplicaciones</h2>
+<ul>
+<li>Buscar las ocurrencias de un string <span class="math inline">\(s\)</span> en un string <span class="math inline">\(t\)</span>.</li>
+<li>Comprimir un string: Hallar el string <span class="math inline">\(t\)</span> de mínima longitud tal que el string <span class="math inline">\(s\)</span> es una concatenación de múltiples copias de <span class="math inline">\(t\)</span>.</li>
+</ul>
+<div id="problema-para-implementar" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://acmp.ru/asp/do/index.asp?main=task&amp;id_course=2&amp;id_section=18&amp;id_topic=42&amp;id_problem=281">Z-funktsiya</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="algoritmo-de-knuth-morris-pratt-kmp" class="section level1">
+<h1>Algoritmo de Knuth-Morris-Pratt (KMP)</h1>
+<p>Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z o el de Manacher, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.</p>
+<p><strong>Definición:</strong> Se define como <strong>borde</strong> de un string <span class="math inline">\(s\)</span> a aquel sufijo de <span class="math inline">\(s\)</span> que también es prefijo de <span class="math inline">\(s\)</span>, es decir:</p>
+<p><span class="math display">\[ s[0, k - 1] = s[n - k, n - 1] \]</span></p>
+<p>Para algún <span class="math inline">\(k\)</span>.</p>
+<p>Notaremos que los bordes nos ayudarán a obtener información importante de un string, que podremos aplicar en la búsqueda de ocurrencias de un patrón en cualquier texto con complejidad lineal.</p>
+<div id="prefix-function" class="section level2">
+<h2>Prefix function</h2>
+<p>Dado un string <span class="math inline">\(s\)</span> de longitud <span class="math inline">\(n\)</span>, definiremos la función <span class="math inline">\(\pi(i)\)</span> para cada posición <span class="math inline">\(i\)</span> como:</p>
+<p><span class="math display">\[ \pi(i) = \max\{k \leq i : s[0, k - 1] = s[i - k + 1, i]\} \]</span></p>
+<p>Y consideraremos de manera trivial que <span class="math inline">\(\pi(0) = 0\)</span> (por definición, el único <span class="math inline">\(k\)</span> válido es <span class="math inline">\(k = 0\)</span>).</p>
+<div id="algoritmo-trivial" class="section level3">
+<h3>Algoritmo trivial</h3>
+<p>La idea más simple para calcular la función <span class="math inline">\(\pi\)</span> es usar fuerza bruta, lo cual nos da una complejidad de <span class="math inline">\(O(n^{3})\)</span>:</p>
+<pre class="c++"><code>vector&lt;int&gt; pi(n, 0);
+for(int i = 0; i &lt; n; i++){
+    for(int k = i; k &gt; 0; k--){
+        if(s.substr(0, k) == s.substr(i - k + 1, k)){
+            pi[i] = k;
+            break;
+        }
+    }
+}</code></pre>
+<p>Sin embargo, esta complejidad es demasiado alta para poder ser aplicada a la mayoría de los casos, por lo que tendremos que buscar una mejor alternativa.</p>
+</div>
+<div id="mejora-a-complejidad-lineal-1" class="section level3">
+<h3>Mejora a complejidad lineal</h3>
+<p>Descartaremos por completo la idea de intentar optimizar la complejidad del algoritmo trivial y aprovecharemos la naturaleza de la función.</p>
+<p>Notemos que como <span class="math inline">\(\pi[i]\)</span> es la longitud del borde <em>propio</em> más largo del prefijo <span class="math inline">\(i\)</span>, esto quiere decir que el sufijo de tamaño <span class="math inline">\(\pi[i]\)</span> del prefijo de <span class="math inline">\(i\)</span> coincide con el prefijo de tamaño <span class="math inline">\(\pi[i]\)</span> de <span class="math inline">\(s\)</span>.</p>
+<p>Podemos aprovechar lo anterior para intentar buscar los mejores candidatos cada vez hasta que concluyamos que no hay ninguno.</p>
+<p>Consideremos la cadena <span class="math inline">\(s\)</span> y que queremos calcular <span class="math inline">\(\pi[i]\)</span>:</p>
+<p>Tenemos el prefijo:</p>
+<p><span class="math display">\[ s_{1}s_{2}\ldots,s_{i-1}s_{i} \]</span></p>
+<p>Una primera idea sería iterar sobre todos los posibles <span class="math inline">\(k\)</span> tales que el sufijo de tamaño <span class="math inline">\(k\)</span> que termina en <span class="math inline">\(i-1\)</span> coincide con el prefijo de tamaño <span class="math inline">\(k\)</span> del string e intentar comparar los caracteres <span class="math inline">\(s_{k}\)</span> y <span class="math inline">\(s_{i}\)</span>. Obviamente, si iteramos sobre los posibles <span class="math inline">\(k\)</span> en orden decreciente, nos detendremos en la primera vez que se dé <span class="math inline">\(s_{k} = s_{i}\)</span> (Si no existe dicha vez, consideraremos la cadena vacía).</p>
+<p>Entonces, es importante recordar la definición de <span class="math inline">\(\pi[i]\)</span>, ya que <span class="math inline">\(\pi[i - 1]\)</span> es el máximo <span class="math inline">\(k\)</span> posible, así que será nuestro primer candidato.</p>
+<p>La problemática surge cuando tenemos que descartar dicho valor de <span class="math inline">\(k\)</span>: ¿Qué hacer si <span class="math inline">\(s_{\pi[i - 1]} \not = s_{i}\)</span>? La respuesta a esta pregunta se basa en la misma definición de <span class="math inline">\(\pi[i]\)</span>:</p>
+<p>Sabemos que <span class="math inline">\(s[0, \pi[i-1] - 1] = s[i - \pi[i - 1], i - 1]\)</span>, así que nuestro siguiente <span class="math inline">\(k\)</span> es sufijo de <span class="math inline">\(s[0, \pi[i - 1] - 1]\)</span>, y como debe ser el máximo posible, esto es <span class="math inline">\(\pi[\pi[i - 1] - 1]\)</span>.</p>
+<p>Si consideramos que <span class="math inline">\(k\)</span> es una variable, entonces podemos generalizar el cambio de valor de <span class="math inline">\(k\)</span> por:</p>
+<p><span class="math display">\[ k \leftarrow \pi[k - 1] \]</span></p>
+<p>Y esto deberemos realizarlo hasta que <span class="math inline">\(k = 0\)</span>, en cuyo caso tendremos como sufijo anterior a <span class="math inline">\(s_{i}\)</span> a la cadena vacía. Finalmente, si <span class="math inline">\(s_{k} = s_{i}\)</span>, el valor de <span class="math inline">\(\pi[i]\)</span> será <span class="math inline">\(k + 1\)</span>; en caso contrario, será <span class="math inline">\(k\)</span> (que será 0 para entonces).</p>
+<p>Así obtenemos el siguiente algoritmo:</p>
+<pre class="c++"><code>vector&lt;int&gt; pi(n, 0);
+for(int i = 1; i &lt; n; i++){
+    int k = pi[i - 1];
+    while(k &gt; 0 and s[k] != s[i]) k = pi[k - 1];
+    if(s[k] == s[i]) k += 1;
+    pi[i] = k;
+}</code></pre>
+<p>Ahora debemos analizar la complejidad, y una vez más dependemos de la cantidad de iteraciones que realiza el <code>while</code>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Podemos considerar que la cantidad de iteraciones que realiza el <code>while</code> es igual a la cantidad de operaciones que se realizan sobre la variable <span class="math inline">\(k\)</span>, ya que antes de iniciar el bucle este es asignado al valor del <span class="math inline">\(\pi[i - 1]\)</span>, que podríamos considerar como un <em>checkpoint</em> del valor anterior de <span class="math inline">\(k\)</span>.</p></li>
+<li><p>El valor de <span class="math inline">\(k\)</span> aumenta 1 sola vez en cada iteración del <code>for</code> y siempre es no negativo.</p></li>
+<li><p>Una iteración del <code>while</code> reduce el valor de <span class="math inline">\(k\)</span> en al menos 1. Esto se da porque <span class="math inline">\(\pi[k - 1] \leq k - 1\)</span> por definición de <span class="math inline">\(\pi\)</span>, así que <span class="math inline">\(\pi[k - 1] &lt; k\)</span>.</p></li>
+<li><p>Usando 2) y 3) notamos que la máxima cantidad de iteraciones que puede realizar el <code>while</code> en todo el algoritmo es <span class="math inline">\(O(n)\)</span>, pues el <span class="math inline">\(k\)</span> aumenta en 1 a lo mucho <span class="math inline">\(n - 1\)</span> veces.</p></li>
+</ol>
+<p>Finalmente, nuestra complejidad es lineal.</p>
+</div>
+<div id="problema-para-implementar-1" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://acmp.ru/asp/do/index.asp?main=task&amp;id_course=2&amp;id_section=18&amp;id_topic=42&amp;id_problem=280">Prefiks-funktsiya</a></li>
+</ul>
+</div>
+</div>
+<div id="aplicaciones-1" class="section level2">
+<h2>Aplicaciones</h2>
+<ul>
+<li>Buscar las ocurrencias de un string <span class="math inline">\(s\)</span> en un string <span class="math inline">\(t\)</span>.</li>
+<li>Contar la frecuencia de cada prefijo del string <span class="math inline">\(s\)</span> como substring de <span class="math inline">\(s\)</span>.</li>
+<li>Comprimir un string: Hallar el string <span class="math inline">\(t\)</span> de mínima longitud tal que el string <span class="math inline">\(s\)</span> es una concatenación de múltiples copias de <span class="math inline">\(t\)</span>.</li>
+</ul>
+</div>
+</div>
+<div id="extra-algoritmo-de-manacher" class="section level1">
+<h1>Extra: Algoritmo de Manacher</h1>
+<p>Dado un string <span class="math inline">\(s\)</span> de longitud <span class="math inline">\(n\)</span>, se nos pide hallar todos los substrings de <span class="math inline">\(s\)</span> que sean palíndromos. Una primera idea trivial, de manera análoga a la del algoritmo Z, sería fijar cada posición como posible centro del palíndromo y hallar cuantas coincidencias hay entre los extremos. Esta idea deberá separar entre palíndromos de longitud par e impar para hacer el cálculo adecuadamente.</p>
+<p>Obviamente, el algoritmo trivial tiene una complejidad de <span class="math inline">\(O(n^{2})\)</span>, lo cual no es eficiente en absoluto.</p>
+<p>Una opción es aprovechar nuestros conocimientos de hashing y notar que la máxima longitud que uno se puede extender es calculable usando binary search. Esta versión del algoritmo tendría una complejidad de <span class="math inline">\(O(n\log{n})\)</span> con un factor pesado por las operaciones modulares.</p>
+<p>Al igual que el algoritmo Z, mejoraremos la implementación del algoritmo trivial, planteando dos funciones <span class="math inline">\(d_{1}\)</span> y <span class="math inline">\(d_{2}\)</span> que nos darán las respuestas para los palíndromos de longitud impar y par, respectivamente, que están centrados en cada posición.</p>
+<p>Definamos:</p>
+<p><span class="math display">\[ d_{1}(i) = \max\{k : s[i - k, i + k] \text{ es palindromo}\} \]</span></p>
+<p><span class="math display">\[ d_{2}(i) = \max\{k : s[i - k - 1, i + k] \text{ es palindromo}\} \]</span></p>
+<p>De esta manera, nuestro algoritmo trivial será:</p>
+<pre class="c++"><code>vector&lt;int&gt; d1(n, 1); // El caracter s[i] ya es un substring palindromo
+vector&lt;int&gt; d2(n, 0);
+for(int i = 0; i &lt; n; i++){
+    while(i &gt;= d1[i] and i + d1[i] &lt; n and s[i - d1[i]] == s[i + d1[i]]) d1[i] += 1;
+    while(i &gt;= d2[i] + 1 and i + d2[i] &lt; n and s[i - d2[i] - 1] == s[i + d2[i]]) d2[i] += 1;
+}</code></pre>
+<div id="mejora-a-complejidad-lineal-2" class="section level2">
+<h2>Mejora a complejidad lineal</h2>
+<p>Consideraremos primero cómo mejorar la complejidad para el cálculo de <span class="math inline">\(d_{1}(i)\)</span> y luego analizaremos la mejora para <span class="math inline">\(d_{2}(i)\)</span>.</p>
+<p>De manera análoga al algoritmo Z, usaremos las variables <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span> para denotar al palíndromo procesado más a la derecha (<span class="math inline">\(r\)</span> máximo posible) de todos los procesados anteriormente a la posición <span class="math inline">\(i\)</span>.</p>
+<p>Entonces, tendremos la posición <span class="math inline">\(i\)</span> y el rango <span class="math inline">\([l, r]\)</span>. Esto generará dos posibles casos al igual que el algoritmo Z:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(r &lt; i\)</span>: En este caso ejecutaremos el algoritmo trivial porque no podemos aprovechar la información.</p></li>
+<li><p><span class="math inline">\(i \leq r\)</span>: En este caso, notamos que el centro del palíndromo <span class="math inline">\([l, r]\)</span> está antes de <span class="math inline">\(i\)</span>, por lo que su reflejo (que sería la posición <span class="math inline">\(i&#39; = l + (r - i)\)</span>) es menor que <span class="math inline">\(i\)</span>. De esta manera, como tenemos precisamente que <span class="math inline">\([l, r]\)</span> es un palíndromo, entonces cada posición que rodee a <span class="math inline">\(i&#39;\)</span> va a ser igual que su reflejo alrededor de <span class="math inline">\(i\)</span>, por lo que podemos usar <span class="math inline">\(d_{1}(i&#39;)\)</span> como una primera aproximación. Sin embargo, de manera similar al algoritmo Z, no podemos prometer más de lo que podemos, así que la aproximación debe ser a lo mucho <span class="math inline">\(r - i + 1\)</span>.</p></li>
+</ol>
+<p>Notemos que en el caso de <span class="math inline">\(d_{2}(i)\)</span> se da exactamente el mismo criterio pero debemos modificar la posición del reflejo de <span class="math inline">\(i\)</span> a <span class="math inline">\(i&#39; = l + (r - i) + 1\)</span>, ya que la posición reflejada es <span class="math inline">\(l + (r - i)\)</span> pero el &quot;centro&quot; se ubica uno a la derecha.</p>
+<p>Las implementaciones para calcular <span class="math inline">\(d_{1}\)</span> y <span class="math inline">\(d_{2}\)</span> se harán de manera separada, ya que cada uno tendrá sus respectivos <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span>:</p>
+<pre class="c++"><code>vector&lt;int&gt; d1(n, 1);
+int l = 0, r = -1;
+for(int i = 0; i &lt; n; i++){
+    d1[i] = max(1, min(r - i + 1, d1[l + r - i]));
+    while(i &gt;= d1[i] and i + d1[i] &lt; n and s[i - d1[i]] == s[i + d1[i]]) d1[i] += 1;
+    d1[i] -= 1;
+    if(i + d1[i] &gt; r){
+        l = i - d1[i];
+        r = i + d1[i];
+    }
+}</code></pre>
+<pre class="c++"><code>vector&lt;int&gt; d2(n, 0);
+int l = 0; r = -1;
+for(int i = 0; i &lt; n; i++){
+    d2[i] = max(0, min(r - i + 1, d2[l + r - i + 1]));
+    while(i &gt;= d2[i] + 1 and i + d2[i] &lt; n and s[i - d2[i] - 1] == s[i + d2[i]]) d2[i] += 1;
+    d2[i] -= 1;
+    if(i + d2[i] &gt; r){
+        l = i - d2[i] - 1;
+        r = i + d2[i];
+    }
+}</code></pre>
+<p>Finalmente, notamos que se darán casos similares que el algoritmo Z (solo se realizarán iteraciones cuando <span class="math inline">\(d2[i] = r - i + 1\)</span>), así que cada iteración realizada en el <code>while</code> aumentará en <span class="math inline">\(1\)</span> el valor de <span class="math inline">\(r\)</span>.</p>
+<p>Por lo anterior, obtuvimos un algoritmo con complejidad <span class="math inline">\(O(n)\)</span>.</p>
+<div id="problema-para-implementar-2" class="section level3">
+<h3>Problema para implementar</h3>
+<ul>
+<li><a href="https://acmp.ru/asp/do/index.asp?main=task&amp;id_course=2&amp;id_section=18&amp;id_topic=42&amp;id_problem=282">Manacher's Algorithm</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

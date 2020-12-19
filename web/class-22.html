@@ -15,7 +15,6 @@
 <title>Introducción al problema del máximo flujo</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -399,14 +411,14 @@ $(document).ready(function () {
 
 <center>
 <div class="figure">
-<img src="max_flow.png" alt="" />
+<img src="max_flow.png" alt="Figura 1. A nuestra izquierda nuestra primera red de flujo. A la derecha un ejemplo de un flujo de 5, donde los caminos rojo, verde y azul tienen un flujo de 2, 1, 2 respectivamente." />
 <p class="caption">Figura 1. A nuestra izquierda nuestra primera red de flujo. A la derecha un ejemplo de un flujo de 5, donde los caminos rojo, verde y azul tienen un flujo de 2, 1, 2 respectivamente.</p>
 </div>
 </center>
 <div id="definición" class="section level2">
 <h2>Definición:</h2>
 <p>El problema del máximo flujo es un clásico fácil de usar / difícil de entender en el análisis de algoritmos. Por eso primero tendremos en consideración más informal que formal.</p>
-<p>La figura 1(a) muestra una red de flujo, los valores de las aristas indican la máxima cantidad de “algo” que puede fluir sobre esas mismas. El objetivo es averiguar cuanto es la máxima cantidad de “algo” que puedo enviar desde el vértice s hacia el vértice t.</p>
+<p>La figura 1(a) muestra una red de flujo, los valores de las aristas indican la máxima cantidad de &quot;algo&quot; que puede fluir sobre esas mismas. El objetivo es averiguar cuanto es la máxima cantidad de &quot;algo&quot; que puedo enviar desde el vértice s hacia el vértice t.</p>
 <p>Por ejemplo, en la figura 1(b) exhibe un método de enviar 5 unidades de flujo desde s hacia t, mientras se respeta todas las capacidades de las aristas. puedo mejorar esta cantidad? No, podemos fijarnos que desde s, por sus dos aristas, solo puede fluir a lo más 5 de flujo.</p>
 <p>Formalmente, un ejemplo del problema del máximo flujo es especificado por las siguientes propiedades:</p>
 <ol style="list-style-type: decimal">
@@ -457,7 +469,7 @@ monto de flujo entrando de <span class="math inline">\(v\)</span> <span class="m
 <p>Tenga en cuenta que pueden ser muchos caminos desde s hacia t, cualquiera es suficiente que cumpla e.capacity &gt; e.flow. Luego de eso enviamos la mayor cantidad de flujo posible.</p>
 <center>
 <div class="figure">
-<img src="greedy.PNG" alt="" />
+<img src="greedy.PNG" alt="Figura 3: El algoritmo greedy no retorna un resultado óptimo si primero tomamos el camino s, v, w, t." />
 <p class="caption">Figura 3: El algoritmo greedy no retorna un resultado óptimo si primero tomamos el camino s, v, w, t.</p>
 </div>
 </center>
@@ -465,20 +477,20 @@ monto de flujo entrando de <span class="math inline">\(v\)</span> <span class="m
 </div>
 <div id="grafo-residual" class="section level2">
 <h2>Grafo Residual</h2>
-<p>Una segunda idea es <em>extender</em> el ingenuo algoritmo greedy permitiendo operaciones “regresar”. Por ejemplo, a pesar de que el algoritmo anterior no sea correco, nosotros podriamos enviar 2 unidades mas desde s hacia w, y luego regresar flujo por la arista <span class="math inline">\((v, w)\)</span>, regresando 2 de las 3 unidades que fueron enviadas en el paso anterior y finalmente a traves de la arista <span class="math inline">\((v, t)\)</span>. Esto nos permitirá tener un flujo de 5, que es máximo.</p>
+<p>Una segunda idea es <em>extender</em> el ingenuo algoritmo greedy permitiendo operaciones &quot;regresar&quot;. Por ejemplo, a pesar de que el algoritmo anterior no sea correco, nosotros podriamos enviar 2 unidades mas desde s hacia w, y luego regresar flujo por la arista <span class="math inline">\((v, w)\)</span>, regresando 2 de las 3 unidades que fueron enviadas en el paso anterior y finalmente a traves de la arista <span class="math inline">\((v, t)\)</span>. Esto nos permitirá tener un flujo de 5, que es máximo.</p>
 <center>
 <div class="figure">
-<img src="back.PNG" alt="" />
+<img src="back.PNG" alt="Figura 4. (a) arista original con capacidad y flujo (b) arista resultante en la red residual" />
 <p class="caption">Figura 4. (a) arista original con capacidad y flujo (b) arista resultante en la red residual</p>
 </div>
 </center>
 <center>
 <div class="figure">
-<img src="residual.PNG" alt="" />
+<img src="residual.PNG" alt="figura 5. Red de glujo residual en la figura 3" />
 <p class="caption">figura 5. Red de glujo residual en la figura 3</p>
 </div>
 </center>
-<p>Debemos definir que significa permitir “regresar” operaciones. Esto motiva la siguiente simple pero importante definición, de una <em>red residual</em>. La idea es que, dado un grafo G y un flujo f en este, nosotros formamos una nueva red de flujo <span class="math inline">\(G_f\)</span> que tiene el mismo conjunto de vertices de G y que tiene dos aristas por cada arista de <span class="math inline">\(G\)</span>. una arista <span class="math inline">\(e = (v, w)\)</span> de <span class="math inline">\(G\)</span> lleva flujo <span class="math inline">\(f_e\)</span> y tiene capacidad <span class="math inline">\(u_e\)</span> (Figura 4a.) se convierte en una “arista de avance” <span class="math inline">\((u, v)\)</span> de <span class="math inline">\(G_f\)</span> con capacidad <span class="math inline">\(u_e - f_e\)</span> (lo que aun se puede enviar) y una “arista de regreso” <span class="math inline">\((w, v)\)</span> de <span class="math inline">\(G_f\)</span> con capacidad <span class="math inline">\(f_e\)</span> (el monto del flujo enviado por esta arista, que puede ser regresado). Ver figura 4(b). Observe que una camino en la red <span class="math inline">\(G\)</span>, es un caso especial de caminos en <span class="math inline">\(G_f\)</span> donde solo se consideran aristas de avance.</p>
+<p>Debemos definir que significa permitir &quot;regresar&quot; operaciones. Esto motiva la siguiente simple pero importante definición, de una <em>red residual</em>. La idea es que, dado un grafo G y un flujo f en este, nosotros formamos una nueva red de flujo <span class="math inline">\(G_f\)</span> que tiene el mismo conjunto de vertices de G y que tiene dos aristas por cada arista de <span class="math inline">\(G\)</span>. una arista <span class="math inline">\(e = (v, w)\)</span> de <span class="math inline">\(G\)</span> lleva flujo <span class="math inline">\(f_e\)</span> y tiene capacidad <span class="math inline">\(u_e\)</span> (Figura 4a.) se convierte en una &quot;arista de avance&quot; <span class="math inline">\((u, v)\)</span> de <span class="math inline">\(G_f\)</span> con capacidad <span class="math inline">\(u_e - f_e\)</span> (lo que aun se puede enviar) y una &quot;arista de regreso&quot; <span class="math inline">\((w, v)\)</span> de <span class="math inline">\(G_f\)</span> con capacidad <span class="math inline">\(f_e\)</span> (el monto del flujo enviado por esta arista, que puede ser regresado). Ver figura 4(b). Observe que una camino en la red <span class="math inline">\(G\)</span>, es un caso especial de caminos en <span class="math inline">\(G_f\)</span> donde solo se consideran aristas de avance.</p>
 <p>Por ejemplo, con <span class="math inline">\(G\)</span> de nuestro ejemplo y <span class="math inline">\(f\)</span> el flujo en la figura 3, la correspondiente red residual <span class="math inline">\(G_f\)</span> es vista en la figura 5. las 4 aristas con capacidad 0 en <span class="math inline">\(G_f\)</span> son omitidas en la imagen.</p>
 </div>
 <div id="el-algoritmo-de-ford-fulkerson" class="section level2">
@@ -518,7 +530,7 @@ monto de flujo entrando de <span class="math inline">\(v\)</span> <span class="m
 <p>En primer lugar, el algoritmo mantiene la invariante que <span class="math inline">\(\{f_e\}\)</span> <span class="math inline">\(e \in E\)</span> es un flujo. Esto es claramente verdad al inicio. El parametro <strong><em>delta</em></strong> es definido tal que no exista valor <span class="math inline">\(f_e\)</span> que se vuelva negativo o exceda la capacidad <span class="math inline">\(u_e\)</span>. Por el lado de conservacion de flujo, considera un vertice <span class="math inline">\(v\)</span>, si <span class="math inline">\(v\)</span> no está en el path <span class="math inline">\(P\)</span> en <span class="math inline">\(G_f\)</span>, entonces el flujo no varia trivialmente. Si <span class="math inline">\(v\)</span> pertenece a <span class="math inline">\(P\)</span>. entonces, las aristas aunque seran de avance o de retroceso agregan y quitan el mismo valor en el grafo original. Por tanto el flujo es preservado.</p>
 <p>En segundo lugar, el algoritmo de Ford-Fulkerson mantiene la propiedad que todo monto de flujo es un entero. (Recordemos que hemos considerado que toda capacidad <span class="math inline">\(u_e\)</span> es entera.) Inductivamente, toda capacidad residual es entera, tal que el parametro <strong><em>delta</em></strong> es entero,</p>
 <p>Toda iteración del algoritmo de Ford-Fulkerson incrementa el valor del flujo actual por el valor de <strong><em>delta</em></strong>. La segunda invariante implica que <strong><em>delta</em></strong> <span class="math inline">\(\ge 1\)</span> en toda iteracion. Como el flujo que sale de s solo puede ser finito (acotado por las aristas de salida).</p>
-<p>La pregunta actual es… ¿El algoritmo en verdad termina con un flujo máximo?</p>
+<p>La pregunta actual es... ¿El algoritmo en verdad termina con un flujo máximo?</p>
 </div>
 <div id="afirmación-condición-de-optimalidad-para-el-máximo-flujo" class="section level2">
 <h2>Afirmación (condición de optimalidad para el máximo flujo)</h2>
@@ -534,7 +546,7 @@ monto de flujo entrando de <span class="math inline">\(v\)</span> <span class="m
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

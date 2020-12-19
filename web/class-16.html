@@ -15,7 +15,6 @@
 <title>Clase 16: 7 Greedy Problems</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -400,54 +412,43 @@ $(document).ready(function () {
 <div id="lista-de-problemas." class="section level2">
 <h2>Lista de problemas.</h2>
 <p><br> 1. <a href="https://codeforces.com/contest/803/problem/C">Maxima GCD</a></p>
-<details>
-<summary>Hint</summary>
+<details> <summary>Hint</summary>
 <p>
-Como la suma de los elementos es n, si todos tienen gcd igual a d, necesariamente d es un divisor de n. luego existe una solución si y solo si los k primeros multiplos de d suman un valor menor o igual a n.
+Como la suma de los elementos es n, si todos tienen gcd igual a d, necesariamente d es un divisor de n. luego existe una solución si y solo si los k primeros multiplos de d suman un valor menor o igual a n.
 </p>
-</details>
-<p><br> 2. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=961">Minimal Coverage</a></p>
-<details>
-<summary>Hint</summary>
+<p></details> <br> 2. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=961">Minimal Coverage</a></p>
+<details> <summary>Hint</summary>
 <p>
 Podemos tomar el elemento que cubra el lado derecho lo màs que se pueda, y resolver el problema recursivamente, por que esto es correcto? Supongamos que no lo es, así que no debe ser igual a ninguna solución optima, tomamos la solución optima que tiene los k rangos más a la izquierda que he tomado, entonces la solución correcta no toma el siguiente elemento que cubre más, así que yo puedo usar el rango que he escogido y la respuesta se mantiene con la misma cantidad de elementos, así que encontré una solución más similar a la mía, que la máxima.
 </p>
-</details>
-<br> 3. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=2231">Coin Collector</a>
-<details>
-<summary>Hint</summary>
+<p></details></p>
+<br> 3. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=2231">Coin Collector</a> <details> <summary>Hint</summary>
 <p>
 En primer lugar, siempre me conviene tener a lo más una moneda de cada tipo, ahora, podemos proponer el siguiente greedy, si tengo hasta ahora una suma de monedas <span class="math inline">\(sum\)</span> y le agrego la <span class="math inline">\(a_i\)</span> (visito los elementos en orden), entonces la tomo si <span class="math inline">\(sum + a_i &lt; a_{i+1}\)</span>. Podemos probar esto otra vez con stay ahead.
 </p>
-</details>
-<br> 4. <a href="https://codeforces.com/problemset/problem/525/B">Pasha and String</a>
-<details>
-<summary>Hint</summary>
+<p></details></p>
+<br> 4. <a href="https://codeforces.com/problemset/problem/525/B">Pasha and String</a> <details> <summary>Hint</summary>
 <p>
 Debemos darnos cuenta que cada elemento solo tiene dos estados, y la cantidad de <span class="math inline">\(a_i\)</span> que son usado para moverlos es lo único que importa para decidir.
 </p>
-</details>
+<p></details></p>
 <p><br> 5. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=978">Bridge</a></p>
-<details>
-<summary>Hint</summary>
+<details> <summary>Hint</summary>
 <p>
 Para n &lt; 3 el problema es trivial, en otro caso, debo llevar a los menos rapidos tan pronto como pueda, una forma de llevar a los dos más lentos, puedo llevar a los dos más rapidos, luego regresar con el más rapido, ir con los dos menos rapidos y regresar con el segun más rapido, en otro caso puedo llevar al primero y al segundo más rápido solo yendo con el más rapido de uno a la vez. En ambos caso se reduce la cantidad de personas en 2.
 </p>
-</details>
+<p></details></p>
 <p><br> 6. <a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;page=show_problem&amp;problem=2614">Moliu Number Generator</a></p>
-<details>
-<summary>Hint</summary>
+<details> <summary>Hint</summary>
 <p>
 Nos debemos dar cuenta que siempre es mejor dividir entre dos, cuando tenemos un número le sumamos 1 o restamos 1 si y solo si es multiplo de 4. a menos que sea 3.
 </p>
-</details>
-<br> 7. <a href="https://codeforces.com/problemset/problem/525/C">Ilya and Sticks</a>
-<details>
-<summary>Hint</summary>
+<p></details></p>
+<br> 7. <a href="https://codeforces.com/problemset/problem/525/C">Ilya and Sticks</a> <details> <summary>Hint</summary>
 <p>
 Nosotros notamos que siempre nos conviene mantener todos los elementos en pares, así que de forma greedy bajo los residuos impares que tengo solo si tengo su valor - 1. y al final multiplico los mayores con los mayores pares.
 </p>
-</details>
+<p></details></p>
 </div>
 
 
@@ -459,7 +460,7 @@ Nosotros notamos que siempre nos conviene mantener todos los elementos en pares,
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

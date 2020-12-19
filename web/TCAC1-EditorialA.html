@@ -15,7 +15,6 @@
 <title>Training Camp Argentina 2020 - Editorial Contest 1 Avanzado</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -398,13 +410,13 @@ $(document).ready(function () {
 
 
 <div id="a.-nanamis-digital-board" class="section level2">
-<h2><a href="https://codeforces.com/group/j1UosVRZar/contest/287329/problem/A">A. Nanami’s Digital Board</a></h2>
+<h2><a href="https://codeforces.com/group/j1UosVRZar/contest/287329/problem/A">A. Nanami's Digital Board</a></h2>
 <p>Consideremos un problema similar: hallar el máximo bloque de luz de todo el tablero. Consideraremos que las restricciones de este problema son las mismas que para el problema original, pero sin operaciones extra.</p>
 <p>Una idea con fuerza bruta sería fijar todos los 4 lados del bloque, verificar esto puede ser realizado con una matriz de acumulados, así que la complejidad sería <span class="math inline">\(O(n^{4})\)</span>. Obviamente esto nos daría un veredicto de TLE.</p>
 <p>¿Por qué fijar los 4 lados? Mejor fijemos el lado inferior y el lado superior, de esta forma nuestro problema se vuelve 1D (considerando las columnas como un solo elemento) y puede ser resuelto de manera lineal. Nuestra complejidad ahora será <span class="math inline">\(O(n^{3})\)</span>, pero no es suficientemente rápido.</p>
-<p>Intentemos fijar solamente el lado inferior, entonces lo que tendremos es un arreglo <span class="math inline">\(up[]\)</span>, el cual denotará la máxima “altura” de cada columna. Para ser más preciso, supongamos que el lado inferior se ubica en la fila <span class="math inline">\(x\)</span>, entonces <span class="math inline">\(up[i]\)</span> es el máximo valor tal que las celdas <span class="math inline">\((x, i), (x-1, i), \ldots, (x - up[i] + 1, i)\)</span> están con luz. Si elegimos las columnas <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span> como los lados izquierdo y derecho, entonces el área del máximo bloque de luz con estos 3 lados fijos sería:</p>
+<p>Intentemos fijar solamente el lado inferior, entonces lo que tendremos es un arreglo <span class="math inline">\(up[]\)</span>, el cual denotará la máxima &quot;altura&quot; de cada columna. Para ser más preciso, supongamos que el lado inferior se ubica en la fila <span class="math inline">\(x\)</span>, entonces <span class="math inline">\(up[i]\)</span> es el máximo valor tal que las celdas <span class="math inline">\((x, i), (x-1, i), \ldots, (x - up[i] + 1, i)\)</span> están con luz. Si elegimos las columnas <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span> como los lados izquierdo y derecho, entonces el área del máximo bloque de luz con estos 3 lados fijos sería:</p>
 <p><span class="math display">\[ (r - l + 1)\left(\min_{l \leq i \leq r}{\{up[i]\}}\right) \]</span></p>
-<p>Sea <span class="math inline">\(h = \min_{l \leq i \leq r}{\\{up[i]\\}}\)</span>, ¿Qué tal si fijamos <span class="math inline">\(h\)</span> y hallamos el <span class="math inline">\(l\)</span> más a la izquierda y el <span class="math inline">\(r\)</span> más a la derecha? Para ser más preciso, fijamos una columna <span class="math inline">\(p\)</span> y consideremos que la altura de esta columna sea la altura del bloque. Ahora queremos “extender” los lados hacia la izquierda y derecha del bloque, así que buscaremos la columna más hacia la izquierda tal que <span class="math inline">\(\min_{l \leq i \leq r}{\\{up[i]\\}} = up[p]\)</span>. De manera análoga, buscaremos la columna más a la derecha que cumpla y el máximo bloque de luz con su altura fijada en la columna <span class="math inline">\(p\)</span> será <span class="math inline">\((r - l + 1)\cdot up[p]\)</span>.</p>
+<p>Sea <span class="math inline">\(h = \min_{l \leq i \leq r}{\\{up[i]\\}}\)</span>, ¿Qué tal si fijamos <span class="math inline">\(h\)</span> y hallamos el <span class="math inline">\(l\)</span> más a la izquierda y el <span class="math inline">\(r\)</span> más a la derecha? Para ser más preciso, fijamos una columna <span class="math inline">\(p\)</span> y consideremos que la altura de esta columna sea la altura del bloque. Ahora queremos &quot;extender&quot; los lados hacia la izquierda y derecha del bloque, así que buscaremos la columna más hacia la izquierda tal que <span class="math inline">\(\min_{l \leq i \leq r}{\\{up[i]\\}} = up[p]\)</span>. De manera análoga, buscaremos la columna más a la derecha que cumpla y el máximo bloque de luz con su altura fijada en la columna <span class="math inline">\(p\)</span> será <span class="math inline">\((r - l + 1)\cdot up[p]\)</span>.</p>
 <p>Este enfoque puede ser optimizado usando DSU. Imaginemos que inicialmente el arreglo <span class="math inline">\(up[]\)</span> está vacío. Agreguemos los elementos de <span class="math inline">\(up[]\)</span> uno por uno, de mayor a menor. Usaremos dos DSUs denotados por <span class="math inline">\(L\)</span> y <span class="math inline">\(R\)</span>. Cuando agregamos un elemento <span class="math inline">\(up[i]\)</span>, asignamos el padre de <span class="math inline">\(i\)</span> como <span class="math inline">\(i+1\)</span> en <span class="math inline">\(R\)</span> y como <span class="math inline">\(i-1\)</span> en <span class="math inline">\(L\)</span>. De esta forma basta con hallar el padre de <span class="math inline">\(i\)</span> en <span class="math inline">\(L\)</span> y <span class="math inline">\(R\)</span> para obtener los extremos <span class="math inline">\(l\)</span> y <span class="math inline">\(r\)</span>.</p>
 <p>Ahora este problema puede resolverse en complejidad casi cuadrática. De hecho, podríamos optimizarlo a complejidad cuadrática usando colas monótonas (Min/Max Queue), pero no es necesario por ahora. Volvamos al problema original.</p>
 <p>Supongamos que no hay modificaciones y que las operaciones solo son consultas. Entonces, podríamos mantener el arreglo <span class="math inline">\(up\)</span> de cada fila, y de manera análoga mantener <span class="math inline">\(down[]\)</span>, <span class="math inline">\(left[]\)</span>, <span class="math inline">\(right[]\)</span> para cada posible rotación. Usaremos el enfoque visto anteriormente para responder una consulta en tiempo casi lineal.</p>
@@ -1026,12 +1038,12 @@ int main(){
 <h2><a href="https://codeforces.com/group/j1UosVRZar/contest/287329/problem/I">I. Morning run</a></h2>
 <p>Nos piden hallar el valor esperado de los encuentros entre los corredores. ¿Cómo hacer eso? Como un primer paso, el valor esperado es lineal, así que podemos partir los problemas iniciales en diferentes: hallar el valor esperado de encuentros entre un par de corredores fijo. Resolveremos estas particiones para obtener el resultado total. Para ello, necesitamos hacer algunas observaciones:</p>
 <ol style="list-style-type: decimal">
-<li><p>Sea <span class="math inline">\(x\)</span> la distancia entre dos corredores y supongamos que corran en direcciones opuestas por un tiempo infinito (la probabilidad de que esto suceda obviamente es igual a <span class="math inline">\(0.5\cdot 0.5 = 0.25\)</span>). Entonces, su primer encuentro sucederá en el tiempo <span class="math inline">\(\frac{x}{2}\)</span>, la siguiente — <span class="math inline">\(\frac{x}{2} + \frac{l}{2}\)</span>, la siguiente — <span class="math inline">\(\frac{x}{2} + \frac{l}{2} + \frac{l}{2}\)</span>, etc.</p></li>
+<li><p>Sea <span class="math inline">\(x\)</span> la distancia entre dos corredores y supongamos que corran en direcciones opuestas por un tiempo infinito (la probabilidad de que esto suceda obviamente es igual a <span class="math inline">\(0.5\cdot 0.5 = 0.25\)</span>). Entonces, su primer encuentro sucederá en el tiempo <span class="math inline">\(\frac{x}{2}\)</span>, la siguiente --- <span class="math inline">\(\frac{x}{2} + \frac{l}{2}\)</span>, la siguiente --- <span class="math inline">\(\frac{x}{2} + \frac{l}{2} + \frac{l}{2}\)</span>, etc.</p></li>
 <li><p>Asumamos que cada carrera duró <span class="math inline">\(l\)</span> unidades de tiempo; entonces si dos corredores se encontraron, se encontrarán exactamente 2 veces. La probabilidad del encuentro es igual a <span class="math inline">\(0.5\)</span>, dado que ellos corren hacia la misma dirección en 2 casos y en direcciones opuestas en 2 casos.</p></li>
 </ol>
 <p>Construiremos nuestra solución basándonos en estas dos observaciones. Como primer paso representaremos <span class="math inline">\(t\)</span> como <span class="math inline">\(t = k\cdot l + p\)</span>, donde <span class="math inline">\(0 \leq p &lt; l\)</span>. Entonces, cada corredor correrá <span class="math inline">\(k\)</span> vueltas completas. ¿Qué significa esto? Dado que tenemos <span class="math inline">\(\frac{n(n-1)}{2}\)</span> pares de corredores, entonces en esas <span class="math inline">\(k\)</span> vueltas cada par tendrá <span class="math inline">\(2k\)</span> encuentros con probabilidad igual a <span class="math inline">\(0.5\)</span>. De esta manera, necesitamos agregar <span class="math inline">\(2k\cdot \frac{n(n-1)}{2} \cdot 0.5 = \frac{kn(n-1)}{2}\)</span> a nuestra respuesta.</p>
 <p>Ahora necesitamos tomar en cuenta los <span class="math inline">\(p\)</span> segundos de carrera. Asumamos que la distancia entre dos corredores es <span class="math inline">\(x\)</span> y ellos corren en direcciones opuestas. Entonces, ellos se encontrarán si <span class="math inline">\(\frac{x}{2} \leq t\)</span>, o su equivalente <span class="math inline">\(x  \leq 2t\)</span>. Ellos se encontrarán una segunda vez si <span class="math inline">\(\frac{x}{2} + \frac{l}{2} \leq t\)</span>, o su equivalente <span class="math inline">\(x \leq 2t - l\)</span>. No se pueden encontrar más de 2 veces, debido a que <span class="math inline">\(p &lt; l\)</span>.</p>
-<p>Fijemos uno de los corredores (sea <span class="math inline">\(i\)</span>), entonces podemos usar binary search para encontrar todos los demás corredores a una distancia no mayor a <span class="math inline">\(x\)</span> del que hemos fijado. Sea <span class="math inline">\(x = 2t\)</span>, entonces la cantidad de corredores a una distancia no mayor a <span class="math inline">\(x\)</span> expresa la cantidad de corredores que se encuentran con el corredor <span class="math inline">\(i\)</span> al menos una vez. Si <span class="math inline">\(x = 2t - l\)</span>, encontraremos la cantidad de corredores que se encuentran con <span class="math inline">\(i\)</span> exactamente dos veces. Multiplicaremos estos valores por <span class="math inline">\(0.25\)</span> — la probabilidad del encuentro, y los agregaremos a la respuesta.</p>
+<p>Fijemos uno de los corredores (sea <span class="math inline">\(i\)</span>), entonces podemos usar binary search para encontrar todos los demás corredores a una distancia no mayor a <span class="math inline">\(x\)</span> del que hemos fijado. Sea <span class="math inline">\(x = 2t\)</span>, entonces la cantidad de corredores a una distancia no mayor a <span class="math inline">\(x\)</span> expresa la cantidad de corredores que se encuentran con el corredor <span class="math inline">\(i\)</span> al menos una vez. Si <span class="math inline">\(x = 2t - l\)</span>, encontraremos la cantidad de corredores que se encuentran con <span class="math inline">\(i\)</span> exactamente dos veces. Multiplicaremos estos valores por <span class="math inline">\(0.25\)</span> --- la probabilidad del encuentro, y los agregaremos a la respuesta.</p>
 <p>La complejidad de esta solución es <span class="math inline">\(O(n\log{n})\)</span>. Podemos reducirla usando two pointers.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample9" aria-expanded="false" aria-controls="collapseTwo">
@@ -1125,10 +1137,10 @@ int main(){
 <div id="k.-new-year-and-arbitrary-arrangement" class="section level2">
 <h2><a href="https://codeforces.com/group/j1UosVRZar/contest/287329/problem/K">K. New Year and Arbitrary Arrangement</a></h2>
 <p>El principal truco de este problema es que la secuencia podría volverse arbitrariamente larga, pero deseamos una respuesta exacta. En particular, debemos pensar cómo reducir este problema a notar qué información de un prefijo de la secuencia que hemos construido necesitamos mantener para simular nuestro algoritmo correctamente. Esto sugiere un enfoque con programación dinámica.</p>
-<p>Para nuestro estado de DP, necesitamos llevar cierta información de nuestro prefijo. En primer lugar, el candidato más obvio es la cantidad de veces que ocurre la cadena ‘ab’ en el prefijo (de esa manera podremos saber cuándo deternernos). Sin embargo, usar esto no es suficiente, ya que no podremos diferenciar secuencias como ‘ab’ y ‘abaaaa’. Entonces, esto sugiere que también debemos llevar la cuenta de la cantidad de ’a’s.</p>
-<p>Sea <span class="math inline">\(dp[i][j]\)</span> la respuesta esperada dado que hay <span class="math inline">\(i\)</span> subsecuencias de la forma ‘a’ en el prefijo y <span class="math inline">\(j\)</span> subsecuencias de la forma ‘ab’.</p>
-<p>Entonces, tenemos algo como <span class="math inline">\(dp[i][j] = (p_{a} \cdot dp[i + 1][j] + p_{b} \cdot dp[i][i + j]) / (p_{a} + p_{b})\)</span>. El primer término de la suma viene de agregar otra ‘a’ a nuestra secuencia, mientras que el segundo viene de agregar una ‘b’. También tenemos que <span class="math inline">\(dp[i][j] = j\)</span> si <span class="math inline">\(j \geq k\)</span> como un caso base. La respuesta debería ser <span class="math inline">\(dp[0][0]\)</span>.</p>
-<p>Sin embargo, si ejecutamos esto así nomas, notaremos que aún hay algunos problemas. Uno es que <span class="math inline">\(i\)</span> puede volverse arbitrariamente grande a medida que agregamos ‘a’ indefinidamente. En vez de eso, podemos modificar nuestro caso base a cuando se dé que <span class="math inline">\(i + j \geq k\)</span>. En este caso, la siguiente vez que pongamos una ‘b’, nos detendremos, así que podemos hallar una forma cerrada de este escenario. El segundo es que cualquier cantidad de ‘b’s que aparezcan antes de la primera ’a’ puede ser esencialmente ignorada. Para solucionar esto, podemos ajustar nuestra respuesta a <span class="math inline">\(dp[1][0]\)</span>.</p>
+<p>Para nuestro estado de DP, necesitamos llevar cierta información de nuestro prefijo. En primer lugar, el candidato más obvio es la cantidad de veces que ocurre la cadena 'ab' en el prefijo (de esa manera podremos saber cuándo deternernos). Sin embargo, usar esto no es suficiente, ya que no podremos diferenciar secuencias como 'ab' y 'abaaaa'. Entonces, esto sugiere que también debemos llevar la cuenta de la cantidad de 'a's.</p>
+<p>Sea <span class="math inline">\(dp[i][j]\)</span> la respuesta esperada dado que hay <span class="math inline">\(i\)</span> subsecuencias de la forma 'a' en el prefijo y <span class="math inline">\(j\)</span> subsecuencias de la forma 'ab'.</p>
+<p>Entonces, tenemos algo como <span class="math inline">\(dp[i][j] = (p_{a} \cdot dp[i + 1][j] + p_{b} \cdot dp[i][i + j]) / (p_{a} + p_{b})\)</span>. El primer término de la suma viene de agregar otra 'a' a nuestra secuencia, mientras que el segundo viene de agregar una 'b'. También tenemos que <span class="math inline">\(dp[i][j] = j\)</span> si <span class="math inline">\(j \geq k\)</span> como un caso base. La respuesta debería ser <span class="math inline">\(dp[0][0]\)</span>.</p>
+<p>Sin embargo, si ejecutamos esto así nomas, notaremos que aún hay algunos problemas. Uno es que <span class="math inline">\(i\)</span> puede volverse arbitrariamente grande a medida que agregamos 'a' indefinidamente. En vez de eso, podemos modificar nuestro caso base a cuando se dé que <span class="math inline">\(i + j \geq k\)</span>. En este caso, la siguiente vez que pongamos una 'b', nos detendremos, así que podemos hallar una forma cerrada de este escenario. El segundo es que cualquier cantidad de 'b's que aparezcan antes de la primera 'a' puede ser esencialmente ignorada. Para solucionar esto, podemos ajustar nuestra respuesta a <span class="math inline">\(dp[1][0]\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeExample11" aria-expanded="false" aria-controls="collapseTwo">
 <!-- title -->
@@ -1273,7 +1285,7 @@ int main(){
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

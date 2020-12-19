@@ -14,7 +14,6 @@
 <title>Daily Problem</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -25,6 +24,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -70,6 +78,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -360,6 +369,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -409,8 +421,8 @@ Día 03: ConneR and the A.R.C. Markland-N
 </div>
 <!-- begin body -->
 <div id="collapseProblemproblem-03" class="collapse">
-<div id="día-03-conner-and-the-a.r.c.-markland-n" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/1293/A" target="_blank">Día 03: ConneR and the A.R.C. Markland-N</a></h3>
+<div class="card-body solution-body">
+<h3 id="día-03-conner-and-the-a.r.c.-markland-n"><a href="https://codeforces.com/problemset/problem/1293/A" target="_blank">Día 03: ConneR and the A.R.C. Markland-N</a></h3>
 <p>Hay <span class="math inline">\(k\)</span> restaurantes cerrados, así encontraremos la respuesta en <span class="math inline">\(O(k)\)</span> estados, por eso una solución fuerza bruta es suficiente.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-03" aria-expanded="false" aria-controls="collapseTwo">
@@ -479,8 +491,8 @@ Día 02: Number of Triplets
 </div>
 <!-- begin body -->
 <div id="collapseProblemproblem-02" class="collapse">
-<div id="día-02-number-of-triplets" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/181/B" target="_blank">Día 02: Number of Triplets</a></h3>
+<div class="card-body solution-body">
+<h3 id="día-02-number-of-triplets"><a href="https://codeforces.com/problemset/problem/181/B" target="_blank">Día 02: Number of Triplets</a></h3>
 <p>Si fijamos <span class="math inline">\(A, C\)</span> con dos <code>for</code> podemos obtener cuál es el valor de <span class="math inline">\(B\)</span> que necesitamos. Además, como todos los puntos son enteros podemos chequear si <span class="math inline">\(A_x + C_x \land A_y + C_y\)</span> son pares para evitar trabajar con flotantes. Así, hemos fijado <span class="math inline">\(B = ((A_x + C_x) / 2, (A_y + C_y) / 2)\)</span> y necesitamos chequear si este punto está en la entrada. Podemos hacer esto con un set (obtendrás TLE si usas un map) y así resolver el problema en <span class="math inline">\(O(n^2 \log n)\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemproblem-02" aria-expanded="false" aria-controls="collapseTwo">
@@ -536,8 +548,8 @@ Día 01: White poison gargle
 </div>
 <!-- begin body -->
 <div id="collapseProblemproblem-01" class="collapse">
-<div id="día-01-white-poison-gargle" class="section level3 card-body solution-body">
-<h3><a href="https://vjudge.net/problem/Gym-247724E" target="_blank">Día 01: White poison gargle</a></h3>
+<div class="card-body solution-body">
+<h3 id="día-01-white-poison-gargle"><a href="https://vjudge.net/problem/Gym-247724E" target="_blank">Día 01: White poison gargle</a></h3>
 <p>Tenemos:</p>
 <p><span class="math display">\[S = 1 + a + a^2 + a^3\dots + a^k\]</span></p>
 <p>Podemos hallar una fórmula condensada de S y obtenemos:</p>
@@ -609,7 +621,7 @@ int main () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

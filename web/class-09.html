@@ -15,7 +15,6 @@
 <title>Clase 09: Backtracking I</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +25,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +79,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -361,6 +370,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -442,7 +454,10 @@ int main () {
 }</code></pre>
 <p>Ahora, regresando al problema de generar el conjunto potencia de un conjunto. Primero, veamos un ejemplo pequeño. Si queremos generar el conjunto potencia de <span class="math inline">\(A = \{1, 2, 3\}\)</span>, podemos escribir una función que siga estos estados:</p>
 <div class="row text-center">
-<p><img src="images/class-09/power-set.png" /></p>
+<div class="figure">
+<img src="images/class-09/power-set.png" />
+
+</div>
 </div>
 <p>Esto es, si estamos en el estado <span class="math inline">\((a_1, a_2, \dots a_x) \mid a_1 &lt; a_2 &lt; \dots &lt; a_x\)</span>, entonces podemos ir al estado <span class="math inline">\((a_1, a_2, \dots, a_x, a_y) \mid a_x &lt; a_y \leq n\)</span>.</p>
 <p>Y podemos implementar esta idea usando recursión así:</p>
@@ -722,7 +737,10 @@ int main () {
 <p><!-- ends code --></p>
 <p>Aqui estamos siguiendo estos estados:</p>
 <div class="row text-center">
-<p><img src="images/class-09/permutation.png" /></p>
+<div class="figure">
+<img src="images/class-09/permutation.png" />
+
+</div>
 </div>
 <p>Esta imagen representa lo que se conoce como el <strong>árbol de recursión</strong>, ese nos muestra como la función hace las transiciones.</p>
 <p>Además, notamos que no necesitamos hacer algo como esto:</p>
@@ -757,7 +775,10 @@ Sudoku
 <p>Con backtracking es fácil generar todas los posibles movimientos de un juego y escoger el mejor movimiento.</p>
 <p><strong>Problema:</strong></p>
 <div class="row text-center">
-<p><img src="images/class-09/sudoku1.png" /></p>
+<div class="figure">
+<img src="images/class-09/sudoku1.png" />
+
+</div>
 </div>
 <p>Completa el sudoku de arriba de tal manera que cada número del 1 al 9 es encontrado solo una vez en cada fila, columna y cuadrante.</p>
 <p><strong>Solución:</strong> Podemos buscar todas las posibilidades usando backtracking.</p>
@@ -880,7 +901,10 @@ int main () {
 <p><!-- ends code --></p>
 <p>Con este código podemos obtener esta solución:</p>
 <div class="row text-center">
-<p><img src="images/class-09/sudoku2.png" /></p>
+<div class="figure">
+<img src="images/class-09/sudoku2.png" />
+
+</div>
 </div>
 <div class="topic">
 El problema de las N-reinas
@@ -960,7 +984,10 @@ int main () {
 <p><!-- ends code --></p>
 <p>Para <span class="math inline">\(N = 4\)</span> el árbol de recursión de nuestra solución luce así:</p>
 <div class="row text-center">
-<p><img src="images/class-09/n-queen.png" /></p>
+<div class="figure">
+<img src="images/class-09/n-queen.png" />
+
+</div>
 </div>
 <p>Imagen tomada de <a href="http://jeffe.cs.illinois.edu/teaching/algorithms/">Jeff Erickson - Algorithms - Chapter 2: Backtracking</a>.</p>
 <p>La complejidad de la anterior solución viene de la equación:</p>
@@ -988,8 +1015,8 @@ A: CD
 </div>
 <!-- begin body -->
 <div id="collapseProblemA" class="collapse">
-<div id="cd" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=565" target="_blank">CD</a></h3>
+<div class="card-body solution-body">
+<h3 id="cd"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=565" target="_blank">CD</a></h3>
 <p>Cada elemento puede o no ser tomado, entonces podemos implementar una solución backtracking; además, de esta manera podemos mantener el orden inicial de los elementos.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
@@ -1055,8 +1082,8 @@ B: Hanoi Tower Troubles Again!
 </div>
 <!-- begin body -->
 <div id="collapseProblemB" class="collapse">
-<div id="hanoi-tower-troubles-again" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1217" target="_blank">Hanoi Tower Troubles Again!</a></h3>
+<div class="card-body solution-body">
+<h3 id="hanoi-tower-troubles-again"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1217" target="_blank">Hanoi Tower Troubles Again!</a></h3>
 <p>Hay un enfoque greedy: pon el balón en la primera pila donde puedas ponerlo.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
@@ -1117,8 +1144,8 @@ C: Marcus
 </div>
 <!-- begin body -->
 <div id="collapseProblemC" class="collapse">
-<div id="marcus" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1393" target="_blank">Marcus</a></h3>
+<div class="card-body solution-body">
+<h3 id="marcus"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1393" target="_blank">Marcus</a></h3>
 <p>Identifica el punto inicial y luego busca en la matriz usando backtracking.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
@@ -1194,8 +1221,8 @@ D: Back to the 8-Queens
 </div>
 <!-- begin body -->
 <div id="collapseProblemD" class="collapse">
-<div id="back-to-the-8-queens" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2026" target="_blank">Back to the 8-Queens</a></h3>
+<div class="card-body solution-body">
+<h3 id="back-to-the-8-queens"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2026" target="_blank">Back to the 8-Queens</a></h3>
 <p>Solo hay 92 configuraciones válidas, puedes generarlas con backtracking y luego solo hacer una busqueda lineal por cada test.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
@@ -1274,8 +1301,8 @@ E: Boggle Blitz
 </div>
 <!-- begin body -->
 <div id="collapseProblemE" class="collapse">
-<div id="boggle-blitz" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=428" target="_blank">Boggle Blitz</a></h3>
+<div class="card-body solution-body">
+<h3 id="boggle-blitz"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=428" target="_blank">Boggle Blitz</a></h3>
 <p>Solo implementa una solución backtracking para hacer una búsqueda completa.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
@@ -1352,7 +1379,7 @@ int main () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

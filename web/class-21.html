@@ -15,7 +15,6 @@
 <title>Clase 21: 3 Dynamic Programming Classic Problems</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -487,10 +499,10 @@ int main(){
 <li><p><span class="math inline">\(memo_{i} = a_{i}\)</span>, pues ese elemento solo es el máximo subarreglo</p></li>
 <li><p><span class="math inline">\(memo_{i} = a_{l} + a_{l+1} + \ldots + a_{i}\)</span>, pues existe un <span class="math inline">\(l &lt; i\)</span> tal que el subarreglo <span class="math inline">\([l, i]\)</span> es el máximo.</p></li>
 </ul>
-<p>Notemos que “Para que el elemento <span class="math inline">\(l\)</span> sea tomado hacia la izquierda de <span class="math inline">\(i\)</span>, primero deberemos tomar el <span class="math inline">\((i - 1)\)</span>”, por lo que analizamos:</p>
+<p>Notemos que &quot;Para que el elemento <span class="math inline">\(l\)</span> sea tomado hacia la izquierda de <span class="math inline">\(i\)</span>, primero deberemos tomar el <span class="math inline">\((i - 1)\)</span>&quot;, por lo que analizamos:</p>
 <p><span class="math display">\[ X_{i-1} = a_{l} + a_{l+1} + \ldots + a_{i-1}, \text{ para algun }l &lt; i \]</span></p>
 <p>Y para que <span class="math inline">\(X_{i - 1} + a_{i}\)</span> sea máximo, ya que <span class="math inline">\(a_{i}\)</span> es constante para <span class="math inline">\(i\)</span>, se debe dar que <span class="math inline">\(X_{i - 1}\)</span> debe ser máximo.</p>
-<p>Ya que <span class="math inline">\(X_{i - 1}\)</span> es una “un subarreglo que termina en <span class="math inline">\((i - 1)\)</span> y que debe ser máximo”, claramente <span class="math inline">\(X_{i - 1} = memo_{i - 1}\)</span>, así que las segunda opción se vuelve:</p>
+<p>Ya que <span class="math inline">\(X_{i - 1}\)</span> es una &quot;un subarreglo que termina en <span class="math inline">\((i - 1)\)</span> y que debe ser máximo&quot;, claramente <span class="math inline">\(X_{i - 1} = memo_{i - 1}\)</span>, así que las segunda opción se vuelve:</p>
 <ul>
 <li><span class="math inline">\(memo_{i} = a_{i} + memo_{i - 1}\)</span>.</li>
 </ul>
@@ -553,7 +565,7 @@ int main(){
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

@@ -15,7 +15,6 @@
 <title>Clase 05: Fuerza Bruta I</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +25,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +79,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -361,6 +370,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -404,7 +416,10 @@ $(document).ready(function () {
 Paradigmas de problem solving
 </div>
 <p>Un paradigma es una manera de resolver problemas. En competitiva hay 4 paradigmas de problem solving fundamentales:</p>
-<p><img src="images/class-05/programming-paradigms.png" /></p>
+<div class="figure">
+<img src="images/class-05/programming-paradigms.png" />
+
+</div>
 <p>Búsqueda completa es un método general que puede ser usado para resolver casi cualquier problema computacional. Básicamente se trata de generar todas las posibles soluciones de un problema para hacer algo con estas soluciones (contar la cantidad de elementos, encontrar una solución en particular, etc).</p>
 <p>Soluciones de búsqueda completa pueden ser encontradas de dos maneras: iterativas o recursivas. Cuando es iterativo lo puedes encontrar como un solo loop, dos loops, tres o más loops, usando two pointers, etc. Cuando es recursivo lo puedes encontrar como una función recursiva simple, como una función recursiva que busca distintos estados mediante <code>trial and error</code> (backtracking), puede tener prunning para no visitar todos los estados, etc.</p>
 <p>Cuando resuelvas un problema de búsqueda completa usarás alguna combinación de estas estructuras. Sin embargo, cada problema es distinto y deberá atacarse de manera distinta. No existe una método mágico que funcione para todos los problemas de búsqueda completa, por eso en clases se irá mostrando técnicas conocidas para atacar una gran variedad de problemas. El dominar estas técnicas te ayudará a resolver cada vez una mayor cantidad de problemas y cada vez más dificiles.</p>
@@ -684,7 +699,8 @@ Análisis por casos
 </ul>
 <p>Puedes tomar 3 elementos distintos cualquiera y encontrarás una respuesta en ellos (¿puedes probarlo?).</p>
 <ul>
-<li><p>Caso 3: Hay exactamente 2 elementos diferentes.</p>
+<li>Caso 3: Hay exactamente 2 elementos diferentes.</li>
+</ul>
 <p>Fijemos <span class="math inline">\(x = a_i\)</span> y <span class="math inline">\(y = a_j\)</span>.</p>
 <ul>
 <li>Caso 3.1: <span class="math inline">\(a_i &lt; a_j\)</span></li>
@@ -698,8 +714,7 @@ Análisis por casos
 <p>Si los intercambiamos el array no puede estar en orden decreciente. Si el array no está en orden creciente, entonces tenemos una respuesta, sino el array tiene la forma:</p>
 <p><span class="math display">\[a_1 = x \leq a_2 = x \leq \dots \leq a_i = x \leq \dots \leq a_j = y \leq \dots \leq a_n =y\]</span></p>
 <p>Entonces, si existe una respuesta, esta debe estar en <span class="math inline">\([i, j)\)</span> o <span class="math inline">\((i, j]\)</span>. Así, solo necesitamos verificar un par de enteros <span class="math inline">\((i, i - 1) \mid a_i &gt; a_{i+ 1}\)</span>.</p>
-<p>Usando todos estos casos podemos implementar una solución en <span class="math inline">\(O(n \log n)\)</span>.</p></li>
-</ul>
+<p>Usando todos estos casos podemos implementar una solución en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <!-- Begins problem example05 -->
 <div id="example05" class="card">
 <!-- begin code -->
@@ -868,8 +883,8 @@ A: Simple Equations
 </div>
 <!-- begin body -->
 <div id="collapseProblemA" class="collapse">
-<div id="simple-equations" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2612" target="_blank">Simple Equations</a></h3>
+<div class="card-body solution-body">
+<h3 id="simple-equations"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2612" target="_blank">Simple Equations</a></h3>
 <p><span class="math display">\[0 \leq x^2 \quad \forall x \in \mathbb{N}\]</span> <span class="math display">\[\to x^2 \leq x^2 + y^2 + z^2 = C\]</span> <span class="math display">\[x^2 \leq C\]</span> <span class="math display">\[|x| \leq \sqrt{C}\]</span> <span class="math display">\[-\sqrt{C} \leq x \leq \sqrt{C}\]</span></p>
 <p>Lo mismo se cumple para <span class="math inline">\(y\)</span> y <span class="math inline">\(z\)</span>. Además si tenemos <span class="math inline">\(x, y\)</span>, entonces</p>
 <p><span class="math inline">\(z = A - x - y\)</span>. De esta manera, podemos fijar <span class="math inline">\(x, y\)</span> en <span class="math inline">\(O(\sqrt{C}^2) = O(C)\)</span> y chequear si las ecuaciones se cumplen en <span class="math inline">\(O(1)\)</span>. No te olvides que <span class="math inline">\(x, y, z\)</span> deben ser distintos.</p>
@@ -929,8 +944,8 @@ B: 2Char
 </div>
 <!-- begin body -->
 <div id="collapseProblemB" class="collapse">
-<div id="char" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/593/A" target="_blank">2Char</a></h3>
+<div class="card-body solution-body">
+<h3 id="char"><a href="https://codeforces.com/problemset/problem/593/A" target="_blank">2Char</a></h3>
 <p>La clave de este problema es darse cuenta cuál es el espacio de búsqueda. Como cada texto tendrá como máximo dos caracteres distintos y el máximo tamaño posible podemos fijar cuales serán los dos caracteres y solo tomar las cadenas que solo tengan esos caracteres.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
@@ -990,8 +1005,8 @@ C: Kaprekar Numbers
 </div>
 <!-- begin body -->
 <div id="collapseProblemC" class="collapse">
-<div id="kaprekar-numbers" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=915" target="_blank">Kaprekar Numbers</a></h3>
+<div class="card-body solution-body">
+<h3 id="kaprekar-numbers"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=915" target="_blank">Kaprekar Numbers</a></h3>
 <p>Podemos preprocesar los números de Kaprekar en <span class="math inline">\([2, 40000]\)</span> (solo hay 19 de ellos). Después podemos responder cada query buscando en esos 19 elementos.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
@@ -1080,8 +1095,8 @@ D: Ranges
 </div>
 <!-- begin body -->
 <div id="collapseProblemD" class="collapse">
-<div id="ranges" class="section level3 card-body solution-body">
-<h3><a href="https://www.spoj.com/problems/RRANGE/en/" target="_blank">Ranges</a></h3>
+<div class="card-body solution-body">
+<h3 id="ranges"><a href="https://www.spoj.com/problems/RRANGE/en/" target="_blank">Ranges</a></h3>
 <p>Primero, si tenemos esta suma:</p>
 <p><span class="math display">\[l + (l + 1) + (l + 2) + \dots + (r - 1) + (r)\]</span></p>
 <p>Podemos calcularla en <span class="math inline">\(O(1)\)</span> usando esta fórmula:</p>
@@ -1155,8 +1170,8 @@ E: Classroom Watch
 </div>
 <!-- begin body -->
 <div id="collapseProblemE" class="collapse">
-<div id="classroom-watch" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/876/C" target="_blank">Classroom Watch</a></h3>
+<div class="card-body solution-body">
+<h3 id="classroom-watch"><a href="https://codeforces.com/problemset/problem/876/C" target="_blank">Classroom Watch</a></h3>
 <p>Sea <span class="math inline">\(f(x) =\)</span> suma de dígitos de <span class="math inline">\(x\)</span>.</p>
 <p>Por los límites del problema tenemos que <span class="math inline">\(0 \leq f(x) \leq 9 \cdot 9\)</span>. Entonces, tenemos:</p>
 <p><span class="math display">\[\max(0, n - 9 \cdot 9) \leq x \leq n\]</span></p>
@@ -1205,8 +1220,8 @@ F: Hyperset
 </div>
 <!-- begin body -->
 <div id="collapseProblemF" class="collapse">
-<div id="hyperset" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/1287/B" target="_blank">Hyperset</a></h3>
+<div class="card-body solution-body">
+<h3 id="hyperset"><a href="https://codeforces.com/problemset/problem/1287/B" target="_blank">Hyperset</a></h3>
 <p>Si fijamos dos cartas podemos determinar cual debe ser la tercera. Ten cuidado con la implementación.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemF" aria-expanded="false" aria-controls="collapseTwo">
@@ -1274,8 +1289,8 @@ G: Get AC
 </div>
 <!-- begin body -->
 <div id="collapseProblemG" class="collapse">
-<div id="get-ac" class="section level3 card-body solution-body">
-<h3><a href="https://abc122.contest.atcoder.jp/tasks/abc122_c?lang=en" target="_blank">Get AC</a></h3>
+<div class="card-body solution-body">
+<h3 id="get-ac"><a href="https://abc122.contest.atcoder.jp/tasks/abc122_c?lang=en" target="_blank">Get AC</a></h3>
 <p>Podemos calcular cuando <code>AC</code> hay en un rango usando prefix sums y teniendo cuidando con los casos borde.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemG" aria-expanded="false" aria-controls="collapseTwo">
@@ -1335,7 +1350,7 @@ int main () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

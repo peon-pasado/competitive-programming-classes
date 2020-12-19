@@ -15,7 +15,6 @@
 <title>Clase 06: Fuerza Bruta II</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -26,6 +25,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -71,6 +79,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -361,6 +370,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -454,13 +466,17 @@ Two Pointers
 <p>Para este problema podemos usar la técnica two pointers + sorting y tener una solución en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <p>Primero ordenamos el array e inicializamos <span class="math inline">\(l = 0, r = n - 1\)</span>. <span class="math inline">\(l\)</span> solo podrá incrementar y <span class="math inline">\(r\)</span> solo podrá disminuir. Ahora, por la propiedad de tricotomía solo hay 3 casos:</p>
 <ul>
-<li><p><span class="math inline">\(a[l] + a[r] = target\)</span></p>
-<p>Entonces, ya tenemos una repuesta y nuestro programa termina.</p></li>
-<li><p><span class="math inline">\(a[l] + a[r] &lt; target\)</span></p>
-<p>En este caso necesitamos obtener una suma mayor. Disminuir <span class="math inline">\(r\)</span> solo hará que la suma se mantenga igual o que disminuya. Aumentar <span class="math inline">\(l\)</span> hará que la suma siga igual o aumente. Entonces, incrementamos <span class="math inline">\(l\)</span>.</p></li>
-<li><p><span class="math inline">\(a[l] + a[r] &gt; target\)</span></p>
-<p>Necesitamos obtener una suma menor. Analizando como el caso anterior determinamos que debemos disminuir a <span class="math inline">\(r\)</span>.</p></li>
+<li><span class="math inline">\(a[l] + a[r] = target\)</span></li>
 </ul>
+<p>Entonces, ya tenemos una repuesta y nuestro programa termina.</p>
+<ul>
+<li><span class="math inline">\(a[l] + a[r] &lt; target\)</span></li>
+</ul>
+<p>En este caso necesitamos obtener una suma mayor. Disminuir <span class="math inline">\(r\)</span> solo hará que la suma se mantenga igual o que disminuya. Aumentar <span class="math inline">\(l\)</span> hará que la suma siga igual o aumente. Entonces, incrementamos <span class="math inline">\(l\)</span>.</p>
+<ul>
+<li><span class="math inline">\(a[l] + a[r] &gt; target\)</span></li>
+</ul>
+<p>Necesitamos obtener una suma menor. Analizando como el caso anterior determinamos que debemos disminuir a <span class="math inline">\(r\)</span>.</p>
 <pre class="cpp"><code>class Solution {
 public:
     vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
@@ -705,8 +721,8 @@ A: Fox And Snake
 </div>
 <!-- begin body -->
 <div id="collapseProblemA" class="collapse">
-<div id="fox-and-snake" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/510/A" target="_blank">Fox And Snake</a></h3>
+<div class="card-body solution-body">
+<h3 id="fox-and-snake"><a href="https://codeforces.com/problemset/problem/510/A" target="_blank">Fox And Snake</a></h3>
 <p>There is a pattern every four rows.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemA" aria-expanded="false" aria-controls="collapseTwo">
@@ -763,8 +779,8 @@ B: Brutality
 </div>
 <!-- begin body -->
 <div id="collapseProblemB" class="collapse">
-<div id="brutality" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/1107/C" target="_blank">Brutality</a></h3>
+<div class="card-body solution-body">
+<h3 id="brutality"><a href="https://codeforces.com/problemset/problem/1107/C" target="_blank">Brutality</a></h3>
 <p>La estrategia optima es tomar elementos iguales consecutivos y seleccionar los k mayores de ellos. Podemos implementar esa idea usando two pointers y sorting en <span class="math inline">\(O(n \log n)\)</span>.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemB" aria-expanded="false" aria-controls="collapseTwo">
@@ -825,8 +841,8 @@ C: Counting Chaos
 </div>
 <!-- begin body -->
 <div id="collapseProblemC" class="collapse">
-<div id="counting-chaos" class="section level3 card-body solution-body">
-<h3><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2284" target="_blank">Counting Chaos</a></h3>
+<div class="card-body solution-body">
+<h3 id="counting-chaos"><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2284" target="_blank">Counting Chaos</a></h3>
 <p>Solo intenta todas las opciones.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemC" aria-expanded="false" aria-controls="collapseTwo">
@@ -897,8 +913,8 @@ D: Number of Parallelograms
 </div>
 <!-- begin body -->
 <div id="collapseProblemD" class="collapse">
-<div id="number-of-parallelograms" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/660/D" target="_blank">Number of Parallelograms </a></h3>
+<div class="card-body solution-body">
+<h3 id="number-of-parallelograms"><a href="https://codeforces.com/problemset/problem/660/D" target="_blank">Number of Parallelograms </a></h3>
 <p>En un paralelogramo ABCD tenemos <span class="math inline">\(\overline{AB} = \overline{CD}\)</span>. Así, si tenemos <span class="math inline">\(x\)</span> vectores iguales podemos formar <span class="math inline">\(\binom{n}{2}\)</span> paralelogramos, así el problema se reduce a encontrar la cantidad vectores iguales.</p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemD" aria-expanded="false" aria-controls="collapseTwo">
@@ -959,8 +975,8 @@ E: Nice Garland
 </div>
 <!-- begin body -->
 <div id="collapseProblemE" class="collapse">
-<div id="nice-garland" class="section level3 card-body solution-body">
-<h3><a href="https://codeforces.com/problemset/problem/1108/C" target="_blank">Nice Garland </a></h3>
+<div class="card-body solution-body">
+<h3 id="nice-garland"><a href="https://codeforces.com/problemset/problem/1108/C" target="_blank">Nice Garland </a></h3>
 <p>Basta darse cuenta que la respuesta tiene la forma <span class="math inline">\(abcabcabc\dots\)</span> donde <span class="math inline">\(abc\)</span> es una permutación de <span class="math inline">\(RGB\)</span>, luego podemos probar todas las permutaciones en <span class="math inline">\(O(3!n) = O(n)\)</span></p>
 <!-- begin code -->
 <div class="collapsed code-title" type="button" data-toggle="collapse" data-target="#codeProblemE" aria-expanded="false" aria-controls="collapseTwo">
@@ -1022,7 +1038,7 @@ int main () {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();

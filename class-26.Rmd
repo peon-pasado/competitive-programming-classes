@@ -1,0 +1,278 @@
+---
+title: "Clase 26: Introducción a Strings"
+author: "GPC-UNI Resto del Mundo"
+date: "19-12-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Strings
+
+Hasta ahora hemos usado los objetos `std::string` sin problemas porque la mayoria de veces que los usábamos sólo necesitábamos realizar comparaciones unas cuantas veces.
+
+Recordemos que la comparación usual de dos strings de tamaño $n$ es $O(n)$, así que si necesitamos realizar esta acción múltiples veces no podremos tener un algoritmo lo suficientemente eficiente por los métodos tradicionales.
+
+Si bien es cierto que la comparación de dos strings es una operación elemental cuando trabajamos con este tipo de dato, el problema más común que se tiene es el verificar si un string $p$ es un substring de un string $t$.
+
+# Algoritmo Z
+
+Dado un string $s$ de longitud $n$, definiremos la función $z(i)$ para cada posición $i$ como:
+
+$$ z(i) = \max\{k : s[0, k - 1] = s[i, i + k - 1]\} $$
+
+Y consideraremos de manera trivial que $z(0) = 0$ (ya que esta posición no tiene un valor bien definido).
+
+## Algoritmo naive
+
+Una idea muy simple sería calcular los $z(i)$ de manera directa, esperando que la complejidad sea lo suficientemente buena. El algoritmo es:
+
+```C++
+vector<int> z(n, 0);
+for(int i = 1; i < n; i++){
+    while(i + z[i] < n and s[i + z[i]] == s[z[i]]) z[i] += 1;
+}
+```
+
+Sin embargo, la complejidad de este algoritmo para una cadena de la forma $aaaaa\ldots$ es cuadrática, por lo que deberemos buscar alguna alternativa para optimizarlo.
+
+## Mejora a complejidad lineal
+
+Consideremos que deseamos procesar el valor de $z(i)$ dado que ya procesamos los $z(j)$ para todos los $j < i$. Tomemos el $j < i$ tal que $j + z(j) - 1$ sea el máximo de todos los $j$ posibles. Denotaremos los valores de $j$ y $j + z(j) - 1$ deseados por $l$ y $r$ (El $r$ debe ser el máximo posible).
+
+Esto nos permitirá aprovechar la información anterior de manera eficiente considerando algunos casos que se pueden dar:
+
+1) $r < i$: En este caso no hay nada que hacer, así que ejecutaremos el algoritmo de manera trivial.
+
+2) $i \leq r$: En este caso tenemos que $i$ está dentro del rango del intervalo $[l, r]$ (ya que $l$ es menor que $i$ por definición), por lo tanto deberemos considerar lo siguiente:
+
+1. El rango $[0, r - l]$ coincide con el $[l, r]$, por lo que $[i - l, r - l]$ coincide con $[i, r]$ pero $s[r - l + 1] \not = s[r + 1]$.
+
+2. Debido a que los rangos $[i - l, r - l]$ y $[i, r]$ coinciden, podemos inicializar el valor de $z(i)$ con el mínimo entre $z[i - l]$ y $r - i + 1$, siendo el primero una aproximación gracias a la coincidencia y el segundo debido a que no sabemos absolutamente nada de $r + 1$ o posiciones siguientes, así que no podemos asegurar que dichos caracteres coincidan.
+
+Esto nos permite cambiar el algoritmo naive:
+
+```C++
+int l = 0, r = 0;
+vector<int> z(n, 0);
+for(int i = 1; i < n; i++){
+    z[i] = min(r - i + 1, z[i - l])
+    if(z[i] < 0) z[i] = 0; // Cuando r < i puede volverse negativo
+    while(i + z[i] < n and s[i + z[i]] == s[z[i]]) z[i] += 1;
+    if(i + z[i] - 1 > r){
+        l = i;
+        r = i + z[i] - 1;
+    }
+}
+```
+
+Esta modificación parece haber mejorado la complejidad, ya que nos permite obviar el procesamiento de posiciones que definitivamente coinciden, pero ¿Cuánto ha mejorado?
+
+## Análisis de la complejidad
+
+Claramente todas las operaciones del bucle excepto el `while` toman $O(1)$, así que la complejidad del algoritmo depende principalmente de cuántas iteraciones realiza este.
+
+Notemos que la cantidad de iteraciones del `while` depende del valor inicial de $z(i)$ que hemos aproximado inicialmente. Tendremos que analizar algunos casos al respecto:
+
+1. $i > r$: En este caso, el `while` ejecuta tantas iteraciones como coincidencias hayan, pero el ejecutar una iteración obligará a que el nuevo intervalo $[l', r']$ sea $[i, i + z(i) - 1]$, ya que $z(i) - 1 + i \geq i$. Además, cada iteración aumenta en 1 el valor del nuevo $r$.
+
+2. $i \leq r$: En este caso tendremos un $z(i)$ inicializado a un valor positivo. Ciertamente necesitamos saber cuántas iteraciones realizará el `while`, pero esto depende de cuántas coincidencias hayan inicialmente:
+
+1) $z(i) < r - i + 1$: En este caso no se realizarán bucles, ya que los caracteres $s[z(i - l) + 1]$ y $s[i - l + z(i - l) + 1] = s[i + z(i - l) + 1]$ no coinciden.
+
+2) $z(i) == r - i + 1$: En este caso, tenemos que el intervalo de $i$ está definido inicialmente como $[i, r]$, así que cada iteración que realice el `while` aumentará el valor del nuevo $r$ en 1.
+
+Obviamente descartamos el caso en el que $z(i) > r - i + 1$ por la aproximación inicial que usamos.
+
+Notemos que $r < n$ en todo momento, así que solo puede aumentar $n - 1$ veces a lo mucho. Lo anterior nos permite concluir que la cantidad de iteraciones del `while` será $O(n)$ en total, por lo que el algoritmo tiene complejidad final de $O(n)$.
+
+## Aplicaciones
+
+- Buscar las ocurrencias de un string $s$ en un string $t$.
+- Comprimir un string: Hallar el string $t$ de mínima longitud tal que el string $s$ es una concatenación de múltiples copias de $t$.
+
+### Problema para implementar
+
+- [Z-funktsiya](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=281)
+
+# Algoritmo de Knuth-Morris-Pratt (KMP)
+
+Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z o el de Manacher, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.
+
+**Definición:** Se define como **borde** de un string $s$ a aquel sufijo de $s$ que también es prefijo de $s$, es decir:
+
+$$ s[0, k - 1] = s[n - k, n - 1] $$
+
+Para algún $k$.
+
+Notaremos que los bordes nos ayudarán a obtener información importante de un string, que podremos aplicar en la búsqueda de ocurrencias de un patrón en cualquier texto con complejidad lineal.
+
+## Prefix function
+
+Dado un string $s$ de longitud $n$, definiremos la función $\pi(i)$ para cada posición $i$ como:
+
+$$ \pi(i) = \max\{k \leq i : s[0, k - 1] = s[i - k + 1, i]\} $$
+
+Y consideraremos de manera trivial que $\pi(0) = 0$ (por definición, el único $k$ válido es $k = 0$).
+
+### Algoritmo trivial
+
+La idea más simple para calcular la función $\pi$ es usar fuerza bruta, lo cual nos da una complejidad de $O(n^{3})$:
+
+```C++
+vector<int> pi(n, 0);
+for(int i = 0; i < n; i++){
+    for(int k = i; k > 0; k--){
+        if(s.substr(0, k) == s.substr(i - k + 1, k)){
+            pi[i] = k;
+            break;
+        }
+    }
+}
+```
+
+Sin embargo, esta complejidad es demasiado alta para poder ser aplicada a la mayoría de los casos, por lo que tendremos que buscar una mejor alternativa.
+
+### Mejora a complejidad lineal
+
+Descartaremos por completo la idea de intentar optimizar la complejidad del algoritmo trivial y aprovecharemos la naturaleza de la función.
+
+Notemos que como $\pi[i]$ es la longitud del borde *propio* más largo del prefijo $i$, esto quiere decir que el sufijo de tamaño $\pi[i]$ del prefijo de $i$ coincide con el prefijo de tamaño $\pi[i]$ de $s$.
+
+Podemos aprovechar lo anterior para intentar buscar los mejores candidatos cada vez hasta que concluyamos que no hay ninguno.
+
+Consideremos la cadena $s$ y que queremos calcular $\pi[i]$:
+
+Tenemos el prefijo:
+
+$$ s_{1}s_{2}\ldots,s_{i-1}s_{i} $$
+
+Una primera idea sería iterar sobre todos los posibles $k$ tales que el sufijo de tamaño $k$ que termina en $i-1$ coincide con el prefijo de tamaño $k$ del string e intentar comparar los caracteres $s_{k}$ y $s_{i}$. Obviamente, si iteramos sobre los posibles $k$ en orden decreciente, nos detendremos en la primera vez que se dé $s_{k} = s_{i}$ (Si no existe dicha vez, consideraremos la cadena vacía).
+
+Entonces, es importante recordar la definición de $\pi[i]$, ya que $\pi[i - 1]$ es el máximo $k$ posible, así que será nuestro primer candidato.
+
+La problemática surge cuando tenemos que descartar dicho valor de $k$: ¿Qué hacer si $s_{\pi[i - 1]} \not = s_{i}$? La respuesta a esta pregunta se basa en la misma definición de $\pi[i]$:
+
+Sabemos que $s[0, \pi[i-1] - 1] = s[i - \pi[i - 1], i - 1]$, así que nuestro siguiente $k$ es sufijo de $s[0, \pi[i - 1] - 1]$, y como debe ser el máximo posible, esto es $\pi[\pi[i - 1] - 1]$.
+
+Si consideramos que $k$ es una variable, entonces podemos generalizar el cambio de valor de $k$ por:
+
+$$ k \leftarrow \pi[k - 1] $$
+
+Y esto deberemos realizarlo hasta que $k = 0$, en cuyo caso tendremos como sufijo anterior a $s_{i}$ a la cadena vacía. Finalmente, si $s_{k} = s_{i}$, el valor de $\pi[i]$ será $k + 1$; en caso contrario, será $k$ (que será 0 para entonces).
+
+Así obtenemos el siguiente algoritmo:
+
+```C++
+vector<int> pi(n, 0);
+for(int i = 1; i < n; i++){
+    int k = pi[i - 1];
+    while(k > 0 and s[k] != s[i]) k = pi[k - 1];
+    if(s[k] == s[i]) k += 1;
+    pi[i] = k;
+}
+```
+
+Ahora debemos analizar la complejidad, y una vez más dependemos de la cantidad de iteraciones que realiza el `while`:
+
+1. Podemos considerar que la cantidad de iteraciones que realiza el `while` es igual a la cantidad de operaciones que se realizan sobre la variable $k$, ya que antes de iniciar el bucle este es asignado al valor del $\pi[i - 1]$, que podríamos considerar como un *checkpoint* del valor anterior de $k$.
+
+2. El valor de $k$ aumenta 1 sola vez en cada iteración del `for` y siempre es no negativo.
+
+3. Una iteración del `while` reduce el valor de $k$ en al menos 1. Esto se da porque $\pi[k - 1] \leq k - 1$ por definición de $\pi$, así que $\pi[k - 1] < k$.
+
+4. Usando 2) y 3) notamos que la máxima cantidad de iteraciones que puede realizar el `while` en todo el algoritmo es $O(n)$, pues el $k$ aumenta en 1 a lo mucho $n - 1$ veces.
+
+Finalmente, nuestra complejidad es lineal.
+
+
+### Problema para implementar
+
+- [Prefiks-funktsiya](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=280)
+
+## Aplicaciones
+
+- Buscar las ocurrencias de un string $s$ en un string $t$.
+- Contar la frecuencia de cada prefijo del string $s$ como substring de $s$.
+- Comprimir un string: Hallar el string $t$ de mínima longitud tal que el string $s$ es una concatenación de múltiples copias de $t$.
+
+# Extra: Algoritmo de Manacher
+
+Dado un string $s$ de longitud $n$, se nos pide hallar todos los substrings de $s$ que sean palíndromos. Una primera idea trivial, de manera análoga a la del algoritmo Z, sería fijar cada posición como posible centro del palíndromo y hallar cuantas coincidencias hay entre los extremos. Esta idea deberá separar entre palíndromos de longitud par e impar para hacer el cálculo adecuadamente.
+
+Obviamente, el algoritmo trivial tiene una complejidad de $O(n^{2})$, lo cual no es eficiente en absoluto. 
+
+Una opción es aprovechar nuestros conocimientos de hashing y notar que la máxima longitud que uno se puede extender es calculable usando binary search. Esta versión del algoritmo tendría una complejidad de $O(n\log{n})$ con un factor pesado por las operaciones modulares.
+
+Al igual que el algoritmo Z, mejoraremos la implementación del algoritmo trivial, planteando dos funciones $d_{1}$ y $d_{2}$ que nos darán las respuestas para los palíndromos de longitud impar y par, respectivamente, que están centrados en cada posición. 
+
+Definamos:
+
+$$ d_{1}(i) = \max\{k : s[i - k, i + k] \text{ es palindromo}\} $$
+
+$$ d_{2}(i) = \max\{k : s[i - k - 1, i + k] \text{ es palindromo}\} $$
+
+De esta manera, nuestro algoritmo trivial será:
+
+```C++
+vector<int> d1(n, 1); // El caracter s[i] ya es un substring palindromo
+vector<int> d2(n, 0);
+for(int i = 0; i < n; i++){
+    while(i >= d1[i] and i + d1[i] < n and s[i - d1[i]] == s[i + d1[i]]) d1[i] += 1;
+    while(i >= d2[i] + 1 and i + d2[i] < n and s[i - d2[i] - 1] == s[i + d2[i]]) d2[i] += 1;
+}
+```
+
+## Mejora a complejidad lineal
+
+Consideraremos primero cómo mejorar la complejidad para el cálculo de $d_{1}(i)$ y luego analizaremos la mejora para $d_{2}(i)$.
+
+De manera análoga al algoritmo Z, usaremos las variables $l$ y $r$ para denotar al palíndromo procesado más a la derecha ($r$ máximo posible) de todos los procesados anteriormente a la posición $i$.
+
+Entonces, tendremos la posición $i$ y el rango $[l, r]$. Esto generará dos posibles casos al igual que el algoritmo Z:
+
+1. $r < i$: En este caso ejecutaremos el algoritmo trivial porque no podemos aprovechar la información.
+
+2. $i \leq r$: En este caso, notamos que el centro del palíndromo $[l, r]$ está antes de $i$, por lo que su reflejo (que sería la posición $i' = l + (r - i)$) es menor que $i$. De esta manera, como tenemos precisamente que $[l, r]$ es un palíndromo, entonces cada posición que rodee a $i'$ va a ser igual que su reflejo alrededor de $i$, por lo que podemos usar $d_{1}(i')$ como una primera aproximación. Sin embargo, de manera similar al algoritmo Z, no podemos prometer más de lo que podemos, así que la aproximación debe ser a lo mucho $r - i + 1$.
+
+Notemos que en el caso de $d_{2}(i)$ se da exactamente el mismo criterio pero debemos modificar la posición del reflejo de $i$ a $i' = l + (r - i) + 1$, ya que la posición reflejada es $l + (r - i)$ pero el "centro" se ubica uno a la derecha.
+
+Las implementaciones para calcular $d_{1}$ y $d_{2}$ se harán de manera separada, ya que cada uno tendrá sus respectivos $l$ y $r$:
+
+```C++
+vector<int> d1(n, 1);
+int l = 0, r = -1;
+for(int i = 0; i < n; i++){
+	d1[i] = max(1, min(r - i + 1, d1[l + r - i]));
+	while(i >= d1[i] and i + d1[i] < n and s[i - d1[i]] == s[i + d1[i]]) d1[i] += 1;
+	d1[i] -= 1;
+	if(i + d1[i] > r){
+		l = i - d1[i];
+		r = i + d1[i];
+    }
+}
+```
+
+```C++
+vector<int> d2(n, 0);
+int l = 0; r = -1;
+for(int i = 0; i < n; i++){
+	d2[i] = max(0, min(r - i + 1, d2[l + r - i + 1]));
+	while(i >= d2[i] + 1 and i + d2[i] < n and s[i - d2[i] - 1] == s[i + d2[i]]) d2[i] += 1;
+	d2[i] -= 1;
+	if(i + d2[i] > r){
+		l = i - d2[i] - 1;
+		r = i + d2[i];
+	}
+}
+```
+
+Finalmente, notamos que se darán casos similares que el algoritmo Z (solo se realizarán iteraciones cuando $d2[i] = r - i + 1$), así que cada iteración realizada en el `while` aumentará en $1$ el valor de $r$.
+
+Por lo anterior, obtuvimos un algoritmo con complejidad $O(n)$.
+
+### Problema para implementar
+
+- [Manacher's Algorithm](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=282)

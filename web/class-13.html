@@ -15,7 +15,6 @@
 <title>Clase 13: Backtracking 2</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
-<script src="site_libs/elevate-section-attrs-2.0/elevate-section-attrs.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -24,6 +23,15 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -69,6 +77,7 @@ h6 {
   text-align: left;
 }
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 
@@ -359,6 +368,9 @@ $(document).ready(function () {
     <li>
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -430,13 +442,13 @@ int main() {
 </div>
 <div id="parenthesis-balance" class="section level4">
 <h4>Parenthesis Balance</h4>
-<p>Dado una secuencia de parentesis “(” y “)”, cual es la mínima cantidad de parentesis que debo invertir para que la secuencia este balanceada. Una secuencia S es balanceada si:</p>
+<p>Dado una secuencia de parentesis &quot;(&quot; y &quot;)&quot;, cual es la mínima cantidad de parentesis que debo invertir para que la secuencia este balanceada. Una secuencia S es balanceada si:</p>
 <ol style="list-style-type: decimal">
 <li><p>S es vacía.</p></li>
 <li><p>S se puede expresar como (E), donde E es una secuencia balanceada.</p></li>
 <li><p>S se puede expresar como AB, donde A y B son secuencias balanceadas.</p></li>
 </ol>
-<p>Una secuencia balanceada se puede traducir a lo siguiente; asignamos a “(” el valor de 1, y a “)” el valor de -1, se debe cumplir que la suma de los <span class="math inline">\(i\)</span> primeros valores debes sumar mayor o igual a 0, para todo <span class="math inline">\(i\)</span>.</p>
+<p>Una secuencia balanceada se puede traducir a lo siguiente; asignamos a &quot;(&quot; el valor de 1, y a &quot;)&quot; el valor de -1, se debe cumplir que la suma de los <span class="math inline">\(i\)</span> primeros valores debes sumar mayor o igual a 0, para todo <span class="math inline">\(i\)</span>.</p>
 <pre class="cpp"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -537,7 +549,7 @@ int main() {
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
