@@ -1,0 +1,218 @@
+---
+title: "Clase 27: Introducción a Strings - II"
+author: "GPC-UNI Resto del Mundo"
+date: "23-01-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# KMP Automaton
+
+El algoritmo KMP puede ser extendido a un autómata sobre un string $s$. Este autómata nos va a permitir hallar la cantidad de ocurrencias de $s$ en cualquier string $t$ dado y todo en tiempo lineal.
+
+La variación que realizaremos sobre el algoritmo original es que ahora definiremos una función $go(i, c)$, que nos dirá el máximo borde del prefijo de tamaño $i$ al concatenarle el caracter $c$. Notemos que lo único que necesitaremos cambiar es que ahora la comparación de $s_{k}$ ya no se dará con $s_{i}$, sino con $c$ (pues es el siguiente caracter a añadir).
+
+Sin embargo, podemos plantear una recursión en vez de una forma iterativa para notar que, si procesamos los valores de $go$ por $i$ creciente, nos bastará $O(1)$ para obtener el resultado de cada caracter en cada posición.
+
+1. Si $i > 0$ y $c \not = s_{i}$: $go[i][c] = go[\pi[i - 1]][c]$, que sería una iteración del algoritmo, pero como ya tendremos procesado el resultado de la siguiente iteración, nos bastará asignarlo.
+
+2. En caso contrario, tendremos que bien $i = 0$ o $c = s_{i}$: Si $c = s_{i}$, se da que $go[i][c] = i + 1$; en caso contrario, tendremos que $i = 0$, en cuyo caso la respuesta es $0$. Podemos generalizar ambos casos asignando $go[i][c] = i + (c == s_{i})$.
+
+Entonces, podemos usar el siguiente algoritmo para llenar una tabla $go[n][\Sigma]$:
+
+```C++
+for(int i = 0; i < n; i++){
+    for(int c = 0; c < E; c++){
+        if(i > 0 and c != s[i] - 'a'){
+            go[i][c] = go[pi[i - 1]][c];
+        }
+        else{
+            go[i][c] = i + (c == s[i] - 'a');
+        }
+    }
+}
+```
+Claramente la complejidad será de $O(n\cdot\Sigma)$, que al sumarle la complejidad $O(n)$ para procesar la función $\pi$ mantendrá la complejidad lineal (Pues $\Sigma$ suele ser considerado como constante en términos prácticos).
+
+### Problema para resolver en clase
+
+- [Anthem of Berland](https://codeforces.com/contest/808/problem/G)
+
+# Trie
+
+El *retrieval tree* o **Trie** es una estructura de datos que permite almacenar strings y trabajar con sus prefijos, de manera que se plantea un árbol en el que cada nodo representará un prefijo de alguna de las cadenas y cada arista es una transición etiquetada con la letra que corresponde.
+
+Definamos un poco el árbol que se termina formando:
+
+1. El conjunto de nodos $V$ será tal que existirá un nodo por cada prefijo de alguna de las cadenas (sin repeticiones) y la raiz del árbol representará a la cadena vacía.
+
+2. El conjunto de aristas está definido de manera que cada una tendrá como etiqueta una letra $c$ y la arista $(u, v)$ con etiqueta $c$ existe si $prefix(u) + c = prefix(v)$ donde $prefix(u)$ es el prefijo al que representa el nodo $u$.
+
+Podemos denotar el nodo que representa a la cadena vacía con $0$ e ir añadiendo nodos al grafo. Ahora, si consideramos que nuestro alfabeto es $\Sigma$, entonces cada nodo tendrá a lo mucho $|\Sigma|$ aristas, así que podemos almacenar las transiciones de dos maneras:
+
+1. Cuando $|\Sigma|$ es pequeño, podemos almacenar las transiciones en un vector de tamaño fijo $|\Sigma|$ y usar una función que mapee cada caracter del alfabeto a un número entre $0$ y $|\Sigma| - 1$. Esto costará una memoria de $O(n|\Sigma|)$, donde $n$ es la cantidad de nodos del trie (que esta acotado numéricamente por la suma de las longitudes de las cadenas + 1). En este caso, como la transición está almacenada en un vector, acceder a ella toma $O(1)$.
+
+2. Cuando $|\Sigma|$ es grande, podemos almacenar las transiciones en un `std::map`, de esta manera almacenaremos exactamente la cantidad de aristas en total, así que la complejidad espacial será de $O(n)$, pero en este caso, el acceder a una transición tomará $O(\log{\min{\{n, |\Sigma|\}}})$.
+
+Inicialmente el Trie solo tendrá el nodo que representa a la cadena vacía y no tendrá aristas, y luego iremos insertando los strings de nuestro conjunto.
+
+### Inserción
+
+Empezaremos por el nodo que representa a la cadena vacía e iremos iterando sobre los caracteres de la cadena a insertar (sea $s$). 
+
+En cada caracter $s_{i}$ hay dos posibilidades:
+
+1. La transición del nodo $pos$ con etiqueta $s_{i}$ existe: En este caso, nos basta con seguir la transición ya establecida.
+
+2. La transición del nodo $pos$ con etiqueta $s_{i}$ no existe: En este caso, creamos un nodo nuevo $v$, sin transiciones, y establecemos la transición de $pos$ con etiqueta $s_{i}$ a $v$.
+
+Al terminar de procesar todos los caracteres de $s$ llegaremos a un nodo $pos$ que tendrá que ser marcado como **terminal**, ya que existe una cadena en nuestro conjunto que es representada por dicho nodo.
+
+**Nota:** $pos$ es una variable, no es un nodo fijo, por eso lo referenciamos como tal.
+
+```C++
+// Consideraremos que tenemos un arreglo trie[n][sigma]
+// Y si trie[pos][c] = 0 quiere decir que la transición no existe.
+// nodes es la variable que contiene la cantidad de nodos del grafo
+
+int nodes = 1; // Inicialmente tenemos al nodo 0
+
+void insert(string &s){
+    int pos = 0;
+    for(int i = 0; i < s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0){
+            trie[pos][nxt] = nodes++; // Creamos un nodo
+        }
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    terminal[pos] = true; // Marcamos el nodo como terminal
+}
+```
+
+Notemos que la función $mapeo(c)$ nos da un entero entre $0$ y $|\Sigma| - 1$ como describimos anteriormente.
+
+La complejidad de esta acción es $O(|s|)$.
+
+### Búsqueda
+
+Para poder buscar una cadena dentro de nuestro trie, nos basta con iterar sobre los caracteres y usar las transiciones establecidas; es evidente que si no hay alguna de las transiciones, la cadena no pertenecerá al conjunto.
+
+```C++
+bool search(string &s){
+    int pos = 0;
+    for(int i = 0; i < s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0) return false;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    return true;
+}
+```
+
+La complejidad de esta acción es $O(|s|)$.
+
+### Eliminación
+
+Para poder *eliminar* una cadena (bajo la premisa de que esta está en nuestro conjunto del Trie), podemos extender la información que tiene cada nodo:
+
+Como cada nodo representa a un prefijo de alguna de las cadenas, podemos considerar que mantenemos el conteo de cuántas veces aparece cada prefijo, de forma que si eliminamos la cadena $s$, tendremos que restar 1 a las frecuencias de los prefijos de $s$ dentro del Trie.
+
+```C++
+// Declaramos un arreglo frec[n] que tendrá
+// la frecuencia de cada nodo como prefijo
+
+void erase(string &s){
+    int pos = 0;
+    for(int i = 0; i < s.size(); i++){
+        int nxt = mapeo(s[i]);
+        frec[pos] -= 1;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    frec[pos] -= 1;
+}
+```
+
+La complejidad de esta acción es $O(|s|)$.
+
+Esta extensión de la estructura requiere una modificación en la función de búsqueda: Ahora no solo nos fijaremos si la transición existe, sino que también verificaremos que la frecuencia del nodo de la transición no sea 0.
+
+```C++
+bool search(string &s){
+    int pos = 0;
+    for(int i = 0; i < s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0 or frec[trie[pos][nxt]] == 0) return false;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    return true;
+}
+```
+
+## Aplicaciones de Trie
+
+### Ordenar un conjunto de strings
+
+Notemos que si usamos un árbol binario de búsqueda para almacenar las etiquetas de las aristas, podremos recorrerlas en orden, por lo que nos bastará insertar las cadenas y luego mandar un DFS sobre el Trie y podremos obtener el orden lexicográfico entre ellas.
+
+```C++
+// Insertamos todas las cadenas previamente
+// y consideramos que las aristas del trie
+// están almacenadas con map<int, int> o map<char, int>
+
+void DFS(int u){
+    if(pattern[u]) printf("%d ", u);
+    for(auto e : trie[u]){
+        DFS(e.second);
+    }
+}
+```
+
+Esto tomará una complejidad de $O(n\cdot\log{|\Sigma|})$ u $O(n)$ dependiendo de la implementación del Trie. Podemos extender este concepto y hallar el k-ésimo string de un conjunto de strings en $O(maxlen)$, donde $maxlen$ es la máxima longitud de entre todos los strings del conjunto.
+
+### Máximo Bitwise XOR
+
+Podemos usar el trie sobre un conjunto de números, todos en base binaria, y considerar que todos tienen una longitud fija $L$.
+
+Si tenemos un entero $x$ fijo con representación binaria de longitud $l \leq L$ (no hay problema si es menor, solamente rellenamos con *leading zeroes*) y deseamos hallar el máximo valor posible de:
+
+$$ M = \max_{y \in S}{\{x \oplus y\}} $$
+
+Entonces podemos usar un algoritmo Greedy para determinar $M$, apoyándonos con la estructura del Trie.
+
+Iteraremos desde el bit de mayor orden ($L$ - 1) hasta el de menor orden ($0$) e iremos intentando "forzar" que el resultado tenga el $i$-ésimo bit prendido.
+
+Esta idea funciona pues si logramos que el $i$-ésimo bit se prenda, entonces su aporte será de:
+
+$$ 2^{i} $$
+
+Y es bien sabido que:
+
+$$ 2^{i} > \sum\limits_{j = 0}^{i - 1} 2^{j} $$
+
+Lo que implica que si prendemos el $i$-ésimo bit tendremos un resultado mayor que si no lo activáramos pero sí prendiéramos los bits siguientes.
+
+```C++
+int maximizeXor(int x){
+    int ans = 0;
+    int pos = 0;
+    for(int i = L - 1; i >= 0; i--){
+        int have = (x >> i) & 1; // i-ésimo bit de x
+        int nxt = have ^ 1; // Inicialmente queremos have ^ 1 para que el bit del XOR esté prendido
+        if(trie[pos][nxt] == 0) nxt ^= 1; // Si no hay transición, cambiamos al bit opuesto
+        if(trie[pos][nxt] == 0) return -1; // No hay ningun numero en nuestro conjunto
+        ans |= (have ^ nxt) << i; // Actualizamos la respuesta
+        pos = trie[pos][nxt];
+    }
+    return ans;
+}
+```
+
+Esto tendrá una complejidad de $O(L)$.
+
+## Problemas para implementar en clase
+
+- [ADA University - January 9 - Trie](https://www.e-olymp.com/en/contests/15100)

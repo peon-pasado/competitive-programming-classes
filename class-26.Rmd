@@ -1,5 +1,5 @@
 ---
-title: "Clase 26: Introducción a Strings"
+title: "Clase 26: Introducción a Strings - I"
 author: "GPC-UNI Resto del Mundo"
 date: "19-12-2020"
 output: html_document
@@ -99,7 +99,7 @@ Notemos que $r < n$ en todo momento, así que solo puede aumentar $n - 1$ veces 
 
 # Algoritmo de Knuth-Morris-Pratt (KMP)
 
-Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z o el de Manacher, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.
+Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.
 
 **Definición:** Se define como **borde** de un string $s$ a aquel sufijo de $s$ que también es prefijo de $s$, es decir:
 

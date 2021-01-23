@@ -12,7 +12,7 @@
 <meta name="author" content="GPC-UNI Resto del Mundo" />
 
 
-<title>Clase 26: Introducción a Strings</title>
+<title>Clase 26: Introducción a Strings - I</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -369,7 +369,10 @@ $(document).ready(function () {
       <a href="class-25.html">Binary Indexed Tree</a>
     </li>
     <li>
-      <a href="class-26.html">Introducción a Strings</a>
+      <a href="class-26.html">Introducción a Strings - I</a>
+    </li>
+    <li>
+      <a href="class-27.html">Introducción a Strings - II</a>
     </li>
   </ul>
 </li>
@@ -402,7 +405,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Clase 26: Introducción a Strings</h1>
+<h1 class="title toc-ignore">Clase 26: Introducción a Strings - I</h1>
 <h4 class="author">GPC-UNI Resto del Mundo</h4>
 <h4 class="date">19-12-2020</h4>
 
@@ -486,7 +489,7 @@ for(int i = 1; i &lt; n; i++){
 </div>
 <div id="algoritmo-de-knuth-morris-pratt-kmp" class="section level1">
 <h1>Algoritmo de Knuth-Morris-Pratt (KMP)</h1>
-<p>Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z o el de Manacher, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.</p>
+<p>Ahora plantearemos una función nueva que no es procesada de manera similar al algoritmo Z, además esta nueva función puede ser extendida para construir un autómata y procesar strings de manera eficiente.</p>
 <p><strong>Definición:</strong> Se define como <strong>borde</strong> de un string <span class="math inline">\(s\)</span> a aquel sufijo de <span class="math inline">\(s\)</span> que también es prefijo de <span class="math inline">\(s\)</span>, es decir:</p>
 <p><span class="math display">\[ s[0, k - 1] = s[n - k, n - 1] \]</span></p>
 <p>Para algún <span class="math inline">\(k\)</span>.</p>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="GPC-UNI Resto del Mundo" />
+
+
+<title>Clase 27: Introducción a Strings - II</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">GPC-UNI Resto del mundo</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Cronograma</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Clases
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="class-01.html">Introducción</a>
+    </li>
+    <li>
+      <a href="class-02.html">Complejidades + STL</a>
+    </li>
+    <li>
+      <a href="class-03.html">Contest 1</a>
+    </li>
+    <li>
+      <a href="class-04.html">Teoría de números</a>
+    </li>
+    <li>
+      <a href="class-05.html">Fuerza bruta I</a>
+    </li>
+    <li>
+      <a href="class-06.html">Fuerza bruta II</a>
+    </li>
+    <li>
+      <a href="class-07.html">Contest 2</a>
+    </li>
+    <li>
+      <a href="class-08.html">Recursión</a>
+    </li>
+    <li>
+      <a href="class-09.html">Backtracking I</a>
+    </li>
+    <li>
+      <a href="class-10.html">Recapitulacion I</a>
+    </li>
+    <li>
+      <a href="class-11.html">Contest UNI-UTEC I</a>
+    </li>
+    <li>
+      <a href="class-12.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-13.html">Backtracking II</a>
+    </li>
+    <li>
+      <a href="class-14.html">Bitmask</a>
+    </li>
+    <li>
+      <a href="class-15.html">Introducción a Greedy</a>
+    </li>
+    <li>
+      <a href="class-16.html">7 Greedy Problems</a>
+    </li>
+    <li>
+      <a href="class-17.html">Meet in the middle</a>
+    </li>
+    <li>
+      <a href="class-18.html">Dynamic Programming</a>
+    </li>
+    <li>
+      <a href="class-19.html">Grafos</a>
+    </li>
+    <li>
+      <a href="class-20.html">Divide and Conquer</a>
+    </li>
+    <li>
+      <a href="class-21.html">DP Classics</a>
+    </li>
+    <li>
+      <a href="class-22.html">Max Flow Introduction</a>
+    </li>
+    <li>
+      <a href="class-23.html">Max Flow Algorithm</a>
+    </li>
+    <li>
+      <a href="class-24.html">Sparse Table</a>
+    </li>
+    <li>
+      <a href="class-25.html">Binary Indexed Tree</a>
+    </li>
+    <li>
+      <a href="class-26.html">Introducción a Strings - I</a>
+    </li>
+    <li>
+      <a href="class-27.html">Introducción a Strings - II</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    TC Argentina 2020
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="TCAC1-EditorialI.html">Editorial Contest 1 - Inicial</a>
+    </li>
+    <li>
+      <a href="TCAC1-EditorialA.html">Editorial Contest 1 - Avanzado</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="daily-problem.html">Problema del día</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clase 27: Introducción a Strings - II</h1>
+<h4 class="author">GPC-UNI Resto del Mundo</h4>
+<h4 class="date">23-01-2020</h4>
+
+</div>
+
+
+<div id="kmp-automaton" class="section level1">
+<h1>KMP Automaton</h1>
+<p>El algoritmo KMP puede ser extendido a un autómata sobre un string <span class="math inline">\(s\)</span>. Este autómata nos va a permitir hallar la cantidad de ocurrencias de <span class="math inline">\(s\)</span> en cualquier string <span class="math inline">\(t\)</span> dado y todo en tiempo lineal.</p>
+<p>La variación que realizaremos sobre el algoritmo original es que ahora definiremos una función <span class="math inline">\(go(i, c)\)</span>, que nos dirá el máximo borde del prefijo de tamaño <span class="math inline">\(i\)</span> al concatenarle el caracter <span class="math inline">\(c\)</span>. Notemos que lo único que necesitaremos cambiar es que ahora la comparación de <span class="math inline">\(s_{k}\)</span> ya no se dará con <span class="math inline">\(s_{i}\)</span>, sino con <span class="math inline">\(c\)</span> (pues es el siguiente caracter a añadir).</p>
+<p>Sin embargo, podemos plantear una recursión en vez de una forma iterativa para notar que, si procesamos los valores de <span class="math inline">\(go\)</span> por <span class="math inline">\(i\)</span> creciente, nos bastará <span class="math inline">\(O(1)\)</span> para obtener el resultado de cada caracter en cada posición.</p>
+<ol style="list-style-type: decimal">
+<li><p>Si <span class="math inline">\(i &gt; 0\)</span> y <span class="math inline">\(c \not = s_{i}\)</span>: <span class="math inline">\(go[i][c] = go[\pi[i - 1]][c]\)</span>, que sería una iteración del algoritmo, pero como ya tendremos procesado el resultado de la siguiente iteración, nos bastará asignarlo.</p></li>
+<li><p>En caso contrario, tendremos que bien <span class="math inline">\(i = 0\)</span> o <span class="math inline">\(c = s_{i}\)</span>: Si <span class="math inline">\(c = s_{i}\)</span>, se da que <span class="math inline">\(go[i][c] = i + 1\)</span>; en caso contrario, tendremos que <span class="math inline">\(i = 0\)</span>, en cuyo caso la respuesta es <span class="math inline">\(0\)</span>. Podemos generalizar ambos casos asignando <span class="math inline">\(go[i][c] = i + (c == s_{i})\)</span>.</p></li>
+</ol>
+<p>Entonces, podemos usar el siguiente algoritmo para llenar una tabla <span class="math inline">\(go[n][\Sigma]\)</span>:</p>
+<pre class="c++"><code>for(int i = 0; i &lt; n; i++){
+    for(int c = 0; c &lt; E; c++){
+        if(i &gt; 0 and c != s[i] - &#39;a&#39;){
+            go[i][c] = go[pi[i - 1]][c];
+        }
+        else{
+            go[i][c] = i + (c == s[i] - &#39;a&#39;);
+        }
+    }
+}</code></pre>
+<p>Claramente la complejidad será de <span class="math inline">\(O(n\cdot\Sigma)\)</span>, que al sumarle la complejidad <span class="math inline">\(O(n)\)</span> para procesar la función <span class="math inline">\(\pi\)</span> mantendrá la complejidad lineal (Pues <span class="math inline">\(\Sigma\)</span> suele ser considerado como constante en términos prácticos).</p>
+<div id="problema-para-resolver-en-clase" class="section level3">
+<h3>Problema para resolver en clase</h3>
+<ul>
+<li><a href="https://codeforces.com/contest/808/problem/G">Anthem of Berland</a></li>
+</ul>
+</div>
+</div>
+<div id="trie" class="section level1">
+<h1>Trie</h1>
+<p>El <em>retrieval tree</em> o <strong>Trie</strong> es una estructura de datos que permite almacenar strings y trabajar con sus prefijos, de manera que se plantea un árbol en el que cada nodo representará un prefijo de alguna de las cadenas y cada arista es una transición etiquetada con la letra que corresponde.</p>
+<p>Definamos un poco el árbol que se termina formando:</p>
+<ol style="list-style-type: decimal">
+<li><p>El conjunto de nodos <span class="math inline">\(V\)</span> será tal que existirá un nodo por cada prefijo de alguna de las cadenas (sin repeticiones) y la raiz del árbol representará a la cadena vacía.</p></li>
+<li><p>El conjunto de aristas está definido de manera que cada una tendrá como etiqueta una letra <span class="math inline">\(c\)</span> y la arista <span class="math inline">\((u, v)\)</span> con etiqueta <span class="math inline">\(c\)</span> existe si <span class="math inline">\(prefix(u) + c = prefix(v)\)</span> donde <span class="math inline">\(prefix(u)\)</span> es el prefijo al que representa el nodo <span class="math inline">\(u\)</span>.</p></li>
+</ol>
+<p>Podemos denotar el nodo que representa a la cadena vacía con <span class="math inline">\(0\)</span> e ir añadiendo nodos al grafo. Ahora, si consideramos que nuestro alfabeto es <span class="math inline">\(\Sigma\)</span>, entonces cada nodo tendrá a lo mucho <span class="math inline">\(|\Sigma|\)</span> aristas, así que podemos almacenar las transiciones de dos maneras:</p>
+<ol style="list-style-type: decimal">
+<li><p>Cuando <span class="math inline">\(|\Sigma|\)</span> es pequeño, podemos almacenar las transiciones en un vector de tamaño fijo <span class="math inline">\(|\Sigma|\)</span> y usar una función que mapee cada caracter del alfabeto a un número entre <span class="math inline">\(0\)</span> y <span class="math inline">\(|\Sigma| - 1\)</span>. Esto costará una memoria de <span class="math inline">\(O(n|\Sigma|)\)</span>, donde <span class="math inline">\(n\)</span> es la cantidad de nodos del trie (que esta acotado numéricamente por la suma de las longitudes de las cadenas + 1). En este caso, como la transición está almacenada en un vector, acceder a ella toma <span class="math inline">\(O(1)\)</span>.</p></li>
+<li><p>Cuando <span class="math inline">\(|\Sigma|\)</span> es grande, podemos almacenar las transiciones en un <code>std::map</code>, de esta manera almacenaremos exactamente la cantidad de aristas en total, así que la complejidad espacial será de <span class="math inline">\(O(n)\)</span>, pero en este caso, el acceder a una transición tomará <span class="math inline">\(O(\log{\min{\{n, |\Sigma|\}}})\)</span>.</p></li>
+</ol>
+<p>Inicialmente el Trie solo tendrá el nodo que representa a la cadena vacía y no tendrá aristas, y luego iremos insertando los strings de nuestro conjunto.</p>
+<div id="inserción" class="section level3">
+<h3>Inserción</h3>
+<p>Empezaremos por el nodo que representa a la cadena vacía e iremos iterando sobre los caracteres de la cadena a insertar (sea <span class="math inline">\(s\)</span>).</p>
+<p>En cada caracter <span class="math inline">\(s_{i}\)</span> hay dos posibilidades:</p>
+<ol style="list-style-type: decimal">
+<li><p>La transición del nodo <span class="math inline">\(pos\)</span> con etiqueta <span class="math inline">\(s_{i}\)</span> existe: En este caso, nos basta con seguir la transición ya establecida.</p></li>
+<li><p>La transición del nodo <span class="math inline">\(pos\)</span> con etiqueta <span class="math inline">\(s_{i}\)</span> no existe: En este caso, creamos un nodo nuevo <span class="math inline">\(v\)</span>, sin transiciones, y establecemos la transición de <span class="math inline">\(pos\)</span> con etiqueta <span class="math inline">\(s_{i}\)</span> a <span class="math inline">\(v\)</span>.</p></li>
+</ol>
+<p>Al terminar de procesar todos los caracteres de <span class="math inline">\(s\)</span> llegaremos a un nodo <span class="math inline">\(pos\)</span> que tendrá que ser marcado como <strong>terminal</strong>, ya que existe una cadena en nuestro conjunto que es representada por dicho nodo.</p>
+<p><strong>Nota:</strong> <span class="math inline">\(pos\)</span> es una variable, no es un nodo fijo, por eso lo referenciamos como tal.</p>
+<pre class="c++"><code>// Consideraremos que tenemos un arreglo trie[n][sigma]
+// Y si trie[pos][c] = 0 quiere decir que la transición no existe.
+// nodes es la variable que contiene la cantidad de nodos del grafo
+
+int nodes = 1; // Inicialmente tenemos al nodo 0
+
+void insert(string &amp;s){
+    int pos = 0;
+    for(int i = 0; i &lt; s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0){
+            trie[pos][nxt] = nodes++; // Creamos un nodo
+        }
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    terminal[pos] = true; // Marcamos el nodo como terminal
+}</code></pre>
+<p>Notemos que la función <span class="math inline">\(mapeo(c)\)</span> nos da un entero entre <span class="math inline">\(0\)</span> y <span class="math inline">\(|\Sigma| - 1\)</span> como describimos anteriormente.</p>
+<p>La complejidad de esta acción es <span class="math inline">\(O(|s|)\)</span>.</p>
+</div>
+<div id="búsqueda" class="section level3">
+<h3>Búsqueda</h3>
+<p>Para poder buscar una cadena dentro de nuestro trie, nos basta con iterar sobre los caracteres y usar las transiciones establecidas; es evidente que si no hay alguna de las transiciones, la cadena no pertenecerá al conjunto.</p>
+<pre class="c++"><code>bool search(string &amp;s){
+    int pos = 0;
+    for(int i = 0; i &lt; s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0) return false;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    return true;
+}</code></pre>
+<p>La complejidad de esta acción es <span class="math inline">\(O(|s|)\)</span>.</p>
+</div>
+<div id="eliminación" class="section level3">
+<h3>Eliminación</h3>
+<p>Para poder <em>eliminar</em> una cadena (bajo la premisa de que esta está en nuestro conjunto del Trie), podemos extender la información que tiene cada nodo:</p>
+<p>Como cada nodo representa a un prefijo de alguna de las cadenas, podemos considerar que mantenemos el conteo de cuántas veces aparece cada prefijo, de forma que si eliminamos la cadena <span class="math inline">\(s\)</span>, tendremos que restar 1 a las frecuencias de los prefijos de <span class="math inline">\(s\)</span> dentro del Trie.</p>
+<pre class="c++"><code>// Declaramos un arreglo frec[n] que tendrá
+// la frecuencia de cada nodo como prefijo
+
+void erase(string &amp;s){
+    int pos = 0;
+    for(int i = 0; i &lt; s.size(); i++){
+        int nxt = mapeo(s[i]);
+        frec[pos] -= 1;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    frec[pos] -= 1;
+}</code></pre>
+<p>La complejidad de esta acción es <span class="math inline">\(O(|s|)\)</span>.</p>
+<p>Esta extensión de la estructura requiere una modificación en la función de búsqueda: Ahora no solo nos fijaremos si la transición existe, sino que también verificaremos que la frecuencia del nodo de la transición no sea 0.</p>
+<pre class="c++"><code>bool search(string &amp;s){
+    int pos = 0;
+    for(int i = 0; i &lt; s.size(); i++){
+        int nxt = mapeo(s[i]);
+        if(trie[pos][nxt] == 0 or frec[trie[pos][nxt]] == 0) return false;
+        pos = trie[pos][nxt]; // Avanzamos por la transicion
+    }
+    return true;
+}</code></pre>
+</div>
+<div id="aplicaciones-de-trie" class="section level2">
+<h2>Aplicaciones de Trie</h2>
+<div id="ordenar-un-conjunto-de-strings" class="section level3">
+<h3>Ordenar un conjunto de strings</h3>
+<p>Notemos que si usamos un árbol binario de búsqueda para almacenar las etiquetas de las aristas, podremos recorrerlas en orden, por lo que nos bastará insertar las cadenas y luego mandar un DFS sobre el Trie y podremos obtener el orden lexicográfico entre ellas.</p>
+<pre class="c++"><code>// Insertamos todas las cadenas previamente
+// y consideramos que las aristas del trie
+// están almacenadas con map&lt;int, int&gt; o map&lt;char, int&gt;
+
+void DFS(int u){
+    if(pattern[u]) printf(&quot;%d &quot;, u);
+    for(auto e : trie[u]){
+        DFS(e.second);
+    }
+}</code></pre>
+<p>Esto tomará una complejidad de <span class="math inline">\(O(n\cdot\log{|\Sigma|})\)</span> u <span class="math inline">\(O(n)\)</span> dependiendo de la implementación del Trie. Podemos extender este concepto y hallar el k-ésimo string de un conjunto de strings en <span class="math inline">\(O(maxlen)\)</span>, donde <span class="math inline">\(maxlen\)</span> es la máxima longitud de entre todos los strings del conjunto.</p>
+</div>
+<div id="máximo-bitwise-xor" class="section level3">
+<h3>Máximo Bitwise XOR</h3>
+<p>Podemos usar el trie sobre un conjunto de números, todos en base binaria, y considerar que todos tienen una longitud fija <span class="math inline">\(L\)</span>.</p>
+<p>Si tenemos un entero <span class="math inline">\(x\)</span> fijo con representación binaria de longitud <span class="math inline">\(l \leq L\)</span> (no hay problema si es menor, solamente rellenamos con <em>leading zeroes</em>) y deseamos hallar el máximo valor posible de:</p>
+<p><span class="math display">\[ M = \max_{y \in S}{\{x \oplus y\}} \]</span></p>
+<p>Entonces podemos usar un algoritmo Greedy para determinar <span class="math inline">\(M\)</span>, apoyándonos con la estructura del Trie.</p>
+<p>Iteraremos desde el bit de mayor orden (<span class="math inline">\(L\)</span> - 1) hasta el de menor orden (<span class="math inline">\(0\)</span>) e iremos intentando &quot;forzar&quot; que el resultado tenga el <span class="math inline">\(i\)</span>-ésimo bit prendido.</p>
+<p>Esta idea funciona pues si logramos que el <span class="math inline">\(i\)</span>-ésimo bit se prenda, entonces su aporte será de:</p>
+<p><span class="math display">\[ 2^{i} \]</span></p>
+<p>Y es bien sabido que:</p>
+<p><span class="math display">\[ 2^{i} &gt; \sum\limits_{j = 0}^{i - 1} 2^{j} \]</span></p>
+<p>Lo que implica que si prendemos el <span class="math inline">\(i\)</span>-ésimo bit tendremos un resultado mayor que si no lo activáramos pero sí prendiéramos los bits siguientes.</p>
+<pre class="c++"><code>int maximizeXor(int x){
+    int ans = 0;
+    int pos = 0;
+    for(int i = L - 1; i &gt;= 0; i--){
+        int have = (x &gt;&gt; i) &amp; 1; // i-ésimo bit de x
+        int nxt = have ^ 1; // Inicialmente queremos have ^ 1 para que el bit del XOR esté prendido
+        if(trie[pos][nxt] == 0) nxt ^= 1; // Si no hay transición, cambiamos al bit opuesto
+        if(trie[pos][nxt] == 0) return -1; // No hay ningun numero en nuestro conjunto
+        ans |= (have ^ nxt) &lt;&lt; i; // Actualizamos la respuesta
+        pos = trie[pos][nxt];
+    }
+    return ans;
+}</code></pre>
+<p>Esto tendrá una complejidad de <span class="math inline">\(O(L)\)</span>.</p>
+</div>
+</div>
+<div id="problemas-para-implementar-en-clase" class="section level2">
+<h2>Problemas para implementar en clase</h2>
+<ul>
+<li><a href="https://www.e-olymp.com/en/contests/15100">ADA University - January 9 - Trie</a></li>
+</ul>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

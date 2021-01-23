@@ -78,4 +78,6 @@ Entrenamiento de verano de programacion competitiva UNI Resto del mundo 2020
 
 ## Semana 16
 
-- [Introducción a Strings](./class-26.html)
+- [Introducción a Strings - I](./class-26.html)
+
+- [Introducción a Strings - II](./class-27.html)
